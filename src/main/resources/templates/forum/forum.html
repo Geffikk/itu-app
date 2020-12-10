@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/head :: head">
+<body>
+    <nav th:insert="fragments/navbar :: navbar"></nav>
+
+    <!--
+    <div class="oblubeneVlakna valign-wrapper">
+        <span>Oblubene temy: </span>
+        <div class="oblubenyPredmet" th:each="oblubeneVlakno : ${oblubeneVlakna}">
+            <a th:href="odkaznavlakno">
+                <span th:text="${oblubeneVlakno.getName()}"></span><br>
+                <span th:text="${oblubeneVlakno.getUser()}"></span>
+            </a>
+        </div>
+    </div>
+    -->
+
+    <div class="container forumContainer">
+        <div class="row">
+
+            <div class="col s12 m12 l12">
+                <div class="card cardRocniky">
+                    <div class="card-title">Vyber rok!</div>
+                    <div class="card-content center-align cardRocniky">
+                        <div th:each="rok : ${roky}">
+                            <a th:href="@{/forum/rok/} + ${rok.id}" th:text="${rok.name}" class="btn indigo rocnik"><i class="material-icons right dropdown-trigger" data-target="dropdown">arrow_drop_down</i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Dropdown Structures -->
+    <!--
+    <ul id="dropdown" class="dropdown-content ">
+        <li><a th:href="@{/forum/rocnik} + ${rocnik.id} + '/LS'" class="indigo white-text">LS</a></li>
+        <li><a th:href="@{/forum/rocnik} + ${rocnik.id} + '/ZS'" class="indigo white-text">ZS</a></li>
+    </ul>
+    -->
+    <footer th:replace="fragments/footer :: footer"></footer>
+</body>
+
+</html>

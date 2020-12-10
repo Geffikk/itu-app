@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+</head>
+
+<body>
+    <footer th:fragment="footer" class="page-footer indigo">
+        <div class="container">
+            <div class="row">
+                <div class="col l6 s12">
+                    <h5 class="white-text">Project Forum</h5>
+                    <p class="grey-text text-lighten-4">It's Spring MVC application.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-copyright indigo darken-3">
+            <div class="container">&copy; 2020-2021 Maroš Geffert Patrik Tomov</div>
+        </div>
+
+        <script type="text/javascript" th:src="@{/resources/js/signin-signup-modal.js}"></script>
+        <!-- Compiled and minified JavaScript -->
+        <script>
+            $(document).ready(function(){
+                $('.sidenav').sidenav();
+            });
+        </script>
+        <script>
+            $(document).ready(function(){
+                $('.dropdown-trigger').dropdown({
+                    coverTrigger: false
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function(){
+                $('.modal').modal()
+            });
+        </script>
+    </footer>
+</body>
+</html>
