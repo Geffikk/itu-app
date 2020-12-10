@@ -48,9 +48,11 @@
                 <div style="margin-bottom: 0;">
                     <div  style="margin-bottom: 0;">
                         <div class="col s2 right">
-                            <a class="btn-floating btn right" th:href="@{/topic/delete/} + ${topic.id}">
-                                <i class="material-icons black-text red darken-4">delete</i>
-                            </a>
+                            <div th:if="${#authentication.getName().equals(topic.getUser().getUsername())}">
+                                <a class="btn-floating btn right" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/delete/' + ${skupina.id}">
+                                    <i class="material-icons black-text red darken-4">delete</i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -83,13 +85,15 @@
                     <h6 th:text="${post.user.username}" class="blue-grey-text lighten-3-text"></h6>
                 </div>
                 <div>
-                    <div class="col s2 right">
-                        <a class="btn-floating btnred darken-4 right" th:href="@{/post/delete/} + ${post.id}">
-                            <i class="material-icons black-text red darken-4">delete</i>
-                        </a>
-                        <form th:action="@{/topic/} + ${topic.id} + '/edit/' + ${post.id}">
-                            <button type="submit" class="btn-floating btn material-icons black-text yellow darken-1 right">edit</button>
-                        </form>
+                    <div th:if="${#authentication.getName().equals(post.topic.user.username)}">
+                        <div class="col s2 right">
+                            <a class="btn-floating btnred darken-4 right" th:href="@{/post/delete/} + ${post.id}">
+                                <i class="material-icons black-text red darken-4">delete</i>
+                            </a>
+                            <form th:action="@{/topic/} + ${topic.id} + '/edit/' + ${post.id}">
+                                <button type="submit" class="btn-floating btn material-icons black-text yellow darken-1 right">edit</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

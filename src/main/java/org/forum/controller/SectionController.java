@@ -7,6 +7,7 @@ import org.forum.newform.NewSectionForm;
 import org.forum.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -84,7 +85,6 @@ public class SectionController {
                          RedirectAttributes model) {
         User user = userService.findByUsername(authentication.getName());
         Section section = sectionService.findOne(id);
-
         sectionService.delete(id);
 
         model.addFlashAttribute("message", "section.successfully.deleted");
