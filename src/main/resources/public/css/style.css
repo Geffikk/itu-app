@@ -234,7 +234,7 @@ h2{
 
 .kdeSom{
 	position: absolute;
-	width: 300px;
+	width: 320px;
 	height: 70px;
 	margin-left: 200px;
 }
@@ -244,6 +244,21 @@ h2{
 	height: 70px;
 }
 
-.forumContainer{
-	
+.rowRok{
+	margin-top: 120px;
+}
+
+.navratoveTlacitko{
+	width: 150px;
+	padding: 0px;
+}
+.scrollDown{
+	position: fixed;
+	top: 69px;
+	right: 10px;
+}
+.scrollUp{
+	position: fixed;
+	bottom: 69px;
+	right: 10px;
 }

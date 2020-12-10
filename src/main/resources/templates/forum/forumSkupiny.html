@@ -9,9 +9,13 @@
         <div class="row valign-wrapper">
             <div class="col s12 m4 l4">
                 <div class="card cardRocniky">
+                    <div class="card-title">Pomocné tlačítka!</div>
                     <div class="card-content center-align cardRocniky">
-                        <div class="buttonclass" th:each="skolskyRok : ${skolskeRoky}">
-                            <a th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id}" th:text="${skolskyRok.name}" th:classappend="${idSkolskehoRoku == skolskyRok.id} ? _ : indigo" class="btn rocnik"><i class="material-icons right dropdown-trigger" data-target="dropdown">arrow_drop_down</i></a>
+                        <div>
+                            <a th:href="@{/forum}" class="btn rocnik navratoveTlacitko">Späť na rok</a>
+                        </div>
+                        <div>
+                            <a th:href="@{/forum} + '/rok/' + ${rok.id}" class="btn rocnik navratoveTlacitko">Späť na kategóriu</a>
                         </div>
                     </div>
                 </div>
