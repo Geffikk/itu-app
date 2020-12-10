@@ -4,10 +4,12 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:insert="fragments/head :: head"></head>
 <body>
-    <nav th:insert="fragments/navbar :: navbar"></nav>
+    <nav th:insert="fragments/navbar :: navbar" id="up"></nav>
 
     <div class="scrollDown">
-        <a href="#down" class="btn indigo right" id="up">Go Down</a>
+        <a href="#down" class="btn indigo right">
+            <i class="material-icons">arrow_circle_down</i>
+        </a>
     </div>
 
     <div class="container">
@@ -109,7 +111,7 @@
                     <div class="row">
                         <div class="col s2 right">
                             <button class="btn waves-effect waves-light indigo" type="submit" name="action">
-                                Reply <i class="material-icons right">send</i>
+                                Reply <i class="material-icons right" id="down">send</i>
                             </button>
                         </div>
                     </div>
@@ -126,7 +128,9 @@
 
     </div>
     <div class="scrollUp">
-        <a href="#up" class="btn indigo right" id="down">Go Up</a>
+        <a href="#up" class="btn indigo right">
+            <i class="material-icons">arrow_circle_up</i>
+        </a>
     </div>
     <footer th:replace="fragments/footer :: footer"></footer>
 </body>

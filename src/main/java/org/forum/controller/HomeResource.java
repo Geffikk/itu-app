@@ -47,7 +47,7 @@ public class HomeResource {
         // TODO: 10/12/2020
         //spravit premennu oblubeneVlakna -> podla authorization.name si vyhladat uzivatela
         // a vybrat z neho jeho oblubene vlakna
-        model.addAttribute("currentPath", "");
+        model.addAttribute("currentPath", "null");
         model.addAttribute("roky", yearService.findAll());
         return "forum/forum";
     }

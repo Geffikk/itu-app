@@ -35,11 +35,15 @@ public class DemoDatabaseSet {
             // create objects
             System.out.println("Creating new objects...");
 
-            User tempUser1 = new User("patriktomov@gmail.com", "Patres11", "1234");
+            User tempUser1 = new User("patriktomov@gmail.com", "Patres11", "$2y$12$M7fYQOMVRAuCK0bzrTqMiunl6BQv4IzmFGr6.5yYPE6okcgPTqfZS");
+            User tempUser2 = new User("maros.geffert@gmail.com", "Maros22", "$2y$12$M7fYQOMVRAuCK0bzrTqMiunl6BQv4IzmFGr6.5yYPE6okcgPTqfZS");
+
 
             UserAdditionalInfo tempInfo1 = new UserAdditionalInfo("0904481833", "Patrik", "Tomov", "Bardejov", "Student FIT", "VUT FIT");
+            UserAdditionalInfo tempInfo2 = new UserAdditionalInfo("0904481833", "Maros", "Geffert", "Bardejov", "Student FIT", "VUT FIT");
 
             tempUser1.setInfo(tempInfo1);
+            tempUser2.setInfo(tempInfo2);
 
             Year tempYear1 = new Year("2020");
             Year tempYear2 = new Year("2019");
@@ -184,6 +188,7 @@ public class DemoDatabaseSet {
             System.out.println("Saving objects...");
 
             session.save(tempUser1);
+            session.save(tempUser2);
 
             session.save(tempYear1);
             session.save(tempYear2);

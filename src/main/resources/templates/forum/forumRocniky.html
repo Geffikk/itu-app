@@ -11,9 +11,10 @@
 
             <div class="col s12 m6 l6">
                 <div class="card cardRocniky">
+                    <div class="card-title">Pomocné tlačítka!</div>
                     <div class="card-content center-align cardRocniky">
-                        <div th:each="rok : ${roky}">
-                            <a th:href="@{/forum/rok/} + ${rok.id}" th:text="${rok.name}" th:classappend="${idRoku == rok.id} ? _ : indigo" class="btn rocnik"><i class="material-icons right dropdown-trigger" data-target="dropdown">arrow_drop_down</i></a>
+                        <div>
+                            <a th:href="@{/forum}" class="btn rocnik navratoveTlacitko">Späť na rok</a>
                         </div>
                     </div>
                 </div>
