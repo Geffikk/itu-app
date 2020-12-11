@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Forum</string>
+    <string name="name">Name</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+    <string name="password_check">Confirm Password</string>
+    <string name="register">Register</string>
+</resources>
