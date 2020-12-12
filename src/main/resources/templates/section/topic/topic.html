@@ -152,6 +152,9 @@
                     <div class="namebox indigo darken-1 right bottom">
                         <h6 th:text="${post.user.username}" class="blue-text lighten-3-text center-align center-vertical username"></h6>
                     </div>
+
+
+
                     <div>
                         <div th:if="${#authentication.getName().equals(post.topic.user.username)}">
                             <div class="col s2 right" style="margin-top: -38px">
