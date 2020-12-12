@@ -120,23 +120,30 @@
         <div class="row">
             <form th:action="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id}
                                 + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id}" method="POST" th:object="${newPost}">
-
-                <textarea th:field="*{content}" name="content" id="editor">
-                    &lt;p&gt;This is some sample content.&lt;/p&gt;
-                </textarea>
-                <script>
-                    ClassicEditor
-                    .create( document.querySelector( '#editor' ) )
-                    .then( editor => {
-                    console.log( editor );
-                    } )
-                    .catch( error => {
-                    console.error( error );
-                    } );
-                </script>
-                <button class="btn btn-primary right indigo darken-3" type="submit">
-                    <i class="material-icons blue-text">send</i>
-                </button>
+                <div th:if="${#authentication.getAuthorities().contains('ROLE_TEXT')}">
+                    <textarea th:field="*{content}" name="content" id="editor">
+                        &lt;p&gt;This is some sample content.&lt;/p&gt;
+                    </textarea>
+                    <script>
+                        ClassicEditor
+                        .create( document.querySelector( '#editor' ) )
+                        .then( editor => {
+                        console.log( editor );
+                        } )
+                        .catch( error => {
+                        console.error( error );
+                        } );
+                    </script>
+                    <button class="btn btn-primary right indigo darken-3" type="submit">
+                        <i class="material-icons blue-text">send</i>
+                    </button>
+                </div>
+                <div th:unless="${#authentication.getAuthorities().contains('ROLE_TEXT')}">
+                    <textarea th:field="*{content}" name="content" id="text">
+                        &lt;p&gt;This is some sample content.&lt;/p&gt;
+                    </textarea>
+                    <label for="text">Reply:</label>
+                </div>
             </form>
         </div>
 

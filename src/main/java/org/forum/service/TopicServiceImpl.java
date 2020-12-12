@@ -82,4 +82,24 @@ public class TopicServiceImpl implements TopicService {
     public void delete(Topic topic) {
         topicRepository.delete(topic);
     }
+
+    @Override
+    public List<Topic> findAllByContent(String s) {
+        List<Topic> topics = topicRepository.findByContentLike("%" + s + "%");
+
+        if (topics == null) {
+            throw new RuntimeException("Content: " + s + " nebol najdeny!");
+        }
+        return topics;
+    }
+
+    @Override
+    public List<Topic> findAllByTitle(String s) {
+        List<Topic> topics = topicRepository.findByTitleLike( s );
+
+        if (topics == null) {
+            throw new RuntimeException("Content: " + s + " nebol najdeny!");
+        }
+        return topics;
+    }
 }

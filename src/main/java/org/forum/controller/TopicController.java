@@ -83,10 +83,6 @@ public class TopicController {
         return "section/topic/topic";
     }
 
-
-
-
-
     @RequestMapping(value = "new", method = RequestMethod.GET)
     public String getNewTopicForm(Model model) {
         model.addAttribute("newTopic", new NewTopicForm());
