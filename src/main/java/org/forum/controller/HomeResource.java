@@ -27,6 +27,8 @@ public class HomeResource {
     @Autowired
     private UserProfileService userProfileService;
 
+    @Autowired
+    private UserService userService;
     @RequestMapping(value = { "/help" })
     public String tryIt(Model model) {
         return "section/topic/text";
