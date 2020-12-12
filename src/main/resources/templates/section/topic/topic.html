@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:insert="fragments/head :: head"></head>
+<head th:insert="fragments/head :: head">
+</head>
 <body>
     <nav th:insert="fragments/navbar :: navbar" id="up"></nav>
 
@@ -13,11 +14,11 @@
     </div>
 
     <div class="container">
-        <div class="row z-depth-1" style="margin-bottom: 40px; padding: 10px;">
+        <div class="row z-depth-1 indigo darken-3" style="margin-bottom: 40px; padding: 10px;">
             <div class="col s12">
-                <h5>
-                    <a th:href="@{/section/} + ${topic.section.id}" th:text="${topic.section.name}"></a>
-                    : : <span th:text="${topic.title}"></span>
+                <h5 class="white-text">
+                    <a th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id}" th:text="${topic.section.name}" class="btn-large indigo waves-effect waves-blue" style="font-family: 'Comic Sans MS'; color: inherit;"></a>
+                    -> <span style="font-family: 'Comic Sans MS'" th:text="${topic.title}"></span>
                 </h5>
                 <div class="like right">
                     <a th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/add'">
@@ -28,32 +29,38 @@
         </div>
 
         <!-- TOPIC  -->
-        <div class="row z-depth-1" style="padding-left: 20px;">
+        <div class="row z-depth-1" style="border-radius: 15px">
+            <div style="border-style: solid; border-color: midnightblue; border-radius: 15px">
+                <div class="row"  style="margin-bottom: 0;">
+                    <div class="col s10">
+                        <!-- Author & Date -->
+                        <a th:href="@{/user/} + ${topic.user.username}"><span th:text="'@' + ${topic.user.username}"></span></a>
+                        <span th:text="${topic.creationDate} ? ${#calendars.format(topic.creationDate, 'HH:mm:ss - dd MMMM yyyy')}"></span>
+                        <div class="divider"></div>
 
-            <div class="row"  style="margin-bottom: 0;">
-                <div class="col s10">
-                    <!-- Author & Date -->
-                    <a th:href="@{/user/} + ${topic.user.username}"><span th:text="'@' + ${topic.user.username}"></span></a>
-                    <span th:text="${topic.creationDate} ? ${#calendars.format(topic.creationDate, 'HH:mm:ss - dd MMMM yyyy')}"></span>
-                    <div class="divider"></div>
-
-                    <!-- Message -->
-                    <p th:utext="${#strings.replace(topic.content,T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"></p>
-                    <br>
+                        <!-- Message -->
+                        <p th:utext="${#strings.replace(topic.content,T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"></p>
+                        <br>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row" >
-                <div class="col s10 left">
-                    <h6 th:text="${topic.user.username}" class="blue-grey-text lighten-3-text"></h6>
-                </div>
-                <div style="margin-bottom: 0;">
-                    <div  style="margin-bottom: 0;">
-                        <div class="col s2 right">
-                            <div th:if="${#authentication.getName().equals(topic.getUser().getUsername())}">
-                                <a class="btn-floating btn right" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/delete/' + ${skupina.id}">
-                                    <i class="material-icons black-text red darken-4">delete</i>
-                                </a>
+                <div class="row" >
+                    <div class="namebox indigo darken-3 right">
+                        <h6 th:text="${topic.user.username}" class="blue-text lighten-3-text center-align center-vertical username2"></h6>
+                    </div>
+                    <div style="margin-bottom: 0;">
+                        <div  style="margin-bottom: 0;">
+                            <div class="col s2 right" style="margin-top: -38px">
+                                <div th:if="${#authentication.getName().equals(topic.getUser().getUsername())}">
+                                    <a class="btn-floating btn btn-small right" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/delete/' + ${skupina.id}" style="margin-left: 10px">
+                                        <i class="material-icons black-text red darken-4">delete</i>
+                                    </a>
+                                    <form th:action="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/edit/' + ${skupina.id}">
+                                        <button type="submit" class="btn-floating btn btn-small material-icons black-text yellow darken-1 right">
+                                            <i class="material-icons black-text yellow darken-4">edit</i>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -62,39 +69,47 @@
         </div>
 
         <!-- POSTS -->
-        <div class="row z-depth-1" th:each="post : ${posts}" th:id="${post.id}" style="padding-left: 20px;">
+        <div class="row z-depth-1" th:each="post : ${posts}" th:id="${post.id}" style="border-radius: 15px">
 
-            <div class="row" style="margin-bottom: 0;">
-                <div class="right">
-                    <a href="#" class="btn indigo">
-                        <i class="material-icons">done_outline</i>
-                    </a>
-                </div>
-                <div class="col s10">
+            <div style="border-style: solid; border-color: midnightblue; border-radius: 15px">
+                <div class="row" style="margin-bottom: 0;">
+                    <div class="right">
+                        <a href="#" class="btn indigo" style="border-radius: 0px 13px 0px 0px;">
+                            <i class="material-icons">done_outline</i>
+                        </a>
+                    </div>
+
                     <!-- Author & Date -->
-                    <a th:href="@{/user/} + ${post.user.username}"><span th:text="'@' + ${post.user.username}"></span></a>
-                    <span th:text="${post.creationDate} ? ${#calendars.format(post.creationDate, 'HH:mm:ss')} + ' ' + #{page.topic.on.day} + ' ' + ${#calendars.format(post.creationDate, 'dd MMMM yyyy')}"></span>
-                    <div class="divider"></div>
-
-                    <!-- Message -->
-                    <p th:utext="${#strings.replace(post.content,T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"></p>
+                    <div class="datebox indigo darken-1 right">
+                        <a class="blue-text datefont" th:href="@{/user/} + ${post.user.username}"><span th:text="'@' + ${post.user.username}"></span></a>
+                        <span class="blue-text datefont" th:text="${post.creationDate} ? ${#calendars.format(post.creationDate, 'HH:mm:ss')} + ' ' + #{page.topic.on.day} + ' ' + ${#calendars.format(post.creationDate, 'dd MMMM yyyy')}"></span>
+                    </div>
                     <br>
+                    <br>
+                    <div class="col s10">
+                        <!-- Message -->
+                        <div th:utext="${post.content}"></div>
+                        <br>
+                        <br>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col s10 left">
-                    <h6 th:text="${post.user.username}" class="blue-grey-text lighten-3-text"></h6>
-                </div>
-                <div>
-                    <div th:if="${#authentication.getName().equals(post.topic.user.username)}">
-                        <div class="col s2 right">
-                            <a class="btn-floating btnred darken-4 right" th:href="@{/post/delete/} + ${post.id}">
-                                <i class="material-icons black-text red darken-4">delete</i>
-                            </a>
-                            <form th:action="@{/topic/} + ${topic.id} + '/edit/' + ${post.id}">
-                                <button type="submit" class="btn-floating btn material-icons black-text yellow darken-1 right">edit</button>
-                            </form>
+                <div class="row">
+                    <div class="namebox indigo darken-1 right bottom">
+                        <h6 th:text="${post.user.username}" class="blue-text lighten-3-text center-align center-vertical username"></h6>
+                    </div>
+                    <div>
+                        <div th:if="${#authentication.getName().equals(post.topic.user.username)}">
+                            <div class="col s2 right" style="margin-top: -38px">
+                                <a class="btn-floating btn-small btnred darken-4 right" th:href="@{/post/delete/} + ${post.id}" style="margin-left: 10px">
+                                    <i class="material-icons black-text red darken-4">delete</i>
+                                </a>
+                                <form th:action="@{/topic/} + ${topic.id} + '/edit/' + ${post.id}">
+                                    <button type="submit" class="btn-floating btn btn-small material-icons black-text yellow darken-1 right">
+                                        <i class="material-icons black-text yellow darken-4">edit</i>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -103,26 +118,27 @@
 
         <!-- SECTION REPLY -->
         <div class="row">
-            <div class="col s10 z-depth-1 right">
-                <form th:action="@{/topic/} + ${topic.id}" method="POST" th:object="${newPost}">
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <textarea th:field="*{content}" id="content" name="content" class="materialize-textarea"></textarea>
-                            <label for="content">Your reply</label>
-                            <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="red-text">Invalid content!</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s2 right">
-                            <button class="btn waves-effect waves-light indigo" type="submit" name="action">
-                                Reply <i class="material-icons right" id="down">send</i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+            <form th:action="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id}
+                                + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id}" method="POST" th:object="${newPost}">
 
+                <textarea th:field="*{content}" name="content" id="editor">
+                    &lt;p&gt;This is some sample content.&lt;/p&gt;
+                </textarea>
+                <script>
+                    ClassicEditor
+                    .create( document.querySelector( '#editor' ) )
+                    .then( editor => {
+                    console.log( editor );
+                    } )
+                    .catch( error => {
+                    console.error( error );
+                    } );
+                </script>
+                <button class="btn btn-primary right indigo darken-3" type="submit">
+                    <i class="material-icons blue-text">send</i>
+                </button>
+            </form>
+        </div>
 
         <div class="row z-depth-1" sec:authorize="!isAuthenticated()">
             <div class="col s12">
@@ -136,6 +152,7 @@
             <i class="material-icons">arrow_circle_up</i>
         </a>
     </div>
+
     <footer th:replace="fragments/footer :: footer"></footer>
 </body>
 </html>
