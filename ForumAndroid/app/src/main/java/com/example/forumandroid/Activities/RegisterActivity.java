@@ -1,9 +1,11 @@
 package com.example.forumandroid.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,13 +14,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.forumandroid.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    // Declare Firebase Auth
+    // Declare Firebase Auth and firestore
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseStore;
 
     // Declare widgets
     private EditText registerName, registerEmail, registerPassword, registerPasswordCheck;
@@ -41,8 +51,9 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        // Initialize Firebase Auth
+        // Initialize Firebase Auth and firestore
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseStore = FirebaseFirestore.getInstance();
 
         // Initialize widgets
         registerName = findViewById(R.id.registerName);
@@ -71,8 +82,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
             else if( ! registerPasswordText.equals(registerPasswordCheckText)) {
                 showMessage("Passwords does not match.");
-
-                // TODO acc failed create information messages
             }
             else {
                 CreateAccount(registerEmailText, registerPasswordText, registerNameText);
@@ -88,7 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
             if ( task.isSuccessful() ) {
                 /* Registration successful */
                 showMessage("Account successfully created.");
-                updateUserName(registerNameText, firebaseAuth.getCurrentUser());
+                updateUserName(registerNameText, firebaseAuth.getCurrentUser().getUid());
                 showHomeActivity();
             }
             else {
@@ -108,8 +117,11 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
-    private void updateUserName(String registerNameText, FirebaseUser currentUser) {
+    private void updateUserName(String registerNameText, String userId) {
+        Map<String, Object> user = new HashMap<>();
+        user.put("name", registerNameText);
 
+        firebaseStore.collection("users").document(userId).set(user);
     }
 
     private void showMessage(String msg) {
@@ -122,16 +134,3 @@ public class RegisterActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
     }
 }
-
-
-/*
-
-service firebase.storage {
-  match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read, write: if request.auth != null;
-    }
-  }
-}
-
-*/
