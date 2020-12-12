@@ -120,10 +120,6 @@ public class TopicController {
         return "redirect:/forum/rok/" + year.getId() + "/rocnik/" + studyYear.getId() + "/skupina/" + section.getId() + "/vlakno/" + topic.getId();
     }
 
-
-
-
-
     @RequestMapping(value = "new", method = RequestMethod.GET)
     public String getNewTopicForm(Model model) {
         model.addAttribute("newTopic", new NewTopicForm());

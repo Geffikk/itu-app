@@ -88,4 +88,14 @@ public class PostServiceImpl implements PostService {
         post.setContent(content);
         save(post);
     }
+
+    @Override
+    public List<Post> findAllByContent(String s) {
+        List<Post> posts = postRepository.findByContentLike("%" + s + "%");
+
+        if (posts == null) {
+            throw new RuntimeException("Content: " + s + " nebol najdeny!");
+        }
+        return posts;
+    }
 }

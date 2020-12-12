@@ -36,31 +36,35 @@
                                     <!-- USERNAME -->
                                     <a th:text="${error}" style="color:red;"></a>
                                     <div class="row">
-                                        <div class="input-field col s12">
-                                            <input id="username" name="username" type="text" class="validate" />
-                                            <label for="username">Username</label>
+
+                                        <!-- USERNAME -->
+                                        <a th:text="${error}" style="color:red;"></a>
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <input id="username" name="username" type="text" class="validate" />
+                                                <label for="username">Username</label>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <!-- PASSWORD -->
+                                        <!-- PASSWORD -->
 
-                                    <div class="row">
-                                        <div class="input-field col s12">
-                                            <input id="password" name="password" type="password" class="validate" />
-                                            <label for="password" class="active">Password</label>
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <input id="password" name="password" type="password" class="validate" />
+                                                <label for="password" class="active">Password</label>
+                                            </div>
                                         </div>
+
+                                        <input class="btn waves-effect waves-light indigo" type="submit" name="action" value="Login" />
+
                                     </div>
-
-                                    <input class="btn waves-effect waves-light indigo" type="submit" name="action" value="Login" />
-
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
 </div >
 <script type="text/javascript" th:src="@{https://code.jquery.com/jquery-2.1.1.min.js}"></script>
