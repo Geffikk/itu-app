@@ -2,6 +2,7 @@ package com.example.forumandroid.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,16 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText registerName, registerEmail, registerPassword, registerPasswordCheck;
     private Button registerButton;
     private ProgressBar registerProgressBar;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if ( firebaseAuth.getCurrentUser() != null ) {
+            /* User already logged in */
+            showHomeActivityAndFinish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,16 +79,22 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void CreateAccount(String registerEmailText, String registerPasswordText, String registerNameText) {
         firebaseAuth.createUserWithEmailAndPassword(registerEmailText, registerPasswordText).addOnCompleteListener(this, task -> {
-            if (task.isSuccessful()) {
+            if ( task.isSuccessful() ) {
                 /* Registration successful */
                 showMessage("Account successfully created.");
                 updateUserName(registerNameText, firebaseAuth.getCurrentUser());
+                showHomeActivityAndFinish();
             }
             else {
                 /* Registration not successful */
-                showMessage("Failed to create an account.");
+                showMessage("Failed to create an account. Reason: " + task.getException().getMessage());
             }
         });
+    }
+
+    private void showHomeActivityAndFinish() {
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+        finish();
     }
 
     private void updateUserName(String registerNameText, FirebaseUser currentUser) {
