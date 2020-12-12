@@ -3,7 +3,9 @@ package org.forum.entities;
 import org.forum.entities.user.User;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -41,6 +43,18 @@ public class Post {
 
     @Column(name = "posledny_datum_upravy", nullable = false)
     private Date lastUpdateDate;
+
+
+    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinTable(
+            name = "uzivatel_like_prispevok",
+            joinColumns = @JoinColumn(name = "id_prispevku"),
+            inverseJoinColumns = @JoinColumn(name = "id_uzivatela")
+    )
+    private List<User> gotLikeFromUsers;
+
+
 
     /** CONSTRUCTORS **/
     public Post() {
@@ -122,6 +136,23 @@ public class Post {
     public void setLastUpdateDate(Date lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
     }
+
+    public List<User> getGotLikeFromUsers() {
+        return gotLikeFromUsers;
+    }
+
+    public void setGotLikeFromUsers(List<User> gotLikeFromUsers) {
+        this.gotLikeFromUsers = gotLikeFromUsers;
+    }
+
+    public void addUserToLiked(User user){
+        if(gotLikeFromUsers == null){
+            gotLikeFromUsers = new ArrayList<>();
+        }
+
+        gotLikeFromUsers.add(user);
+    }
+
 
     @Override
     public String toString() {

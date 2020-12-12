@@ -42,13 +42,14 @@ public class SectionController {
     public String getTopicsFromSection(@PathVariable int idRoku, @PathVariable int idRocnik, @PathVariable int idSkupiny,
                                        Model model) {
 
-        model.addAttribute("idRoku", idRoku);
         model.addAttribute("currentPath", yearService.findOne(idRoku).getName() + " / " + studyYearService.findOne(idRocnik).getName() + " / " + sectionService.findOne(idSkupiny).getName() + " / ");
         model.addAttribute("skolskyRok", studyYearService.findOne(idRocnik));
         model.addAttribute("roky", yearService.findAll());
-        model.addAttribute("skupina", sectionService.findOne(idSkupiny));
         model.addAttribute("vlakna", topicService.findBySection(idSkupiny));
         model.addAttribute("rok", yearService.findOne(idRoku));
+        model.addAttribute("skupiny", sectionService.findByStudyYear(studyYearService.findOne(idRocnik)));
+        model.addAttribute("skupina", sectionService.findOne(idSkupiny));
+        model.addAttribute("skupinaId", idSkupiny);
         return "section/section";
     }
 

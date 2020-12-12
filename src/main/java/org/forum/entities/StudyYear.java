@@ -27,7 +27,7 @@ public class StudyYear {
            joinColumns = @JoinColumn(name = "id_rocnika"),
            inverseJoinColumns = @JoinColumn(name = "id_roku")
     )
-    private Set<Year> years;
+    private List<Year> years;
 
     /** CONSTRUCTORS **/
     public StudyYear() {
@@ -55,17 +55,17 @@ public class StudyYear {
         this.name = name;
     }
 
-    public Set<Year> getYears() {
+    public List<Year> getYears() {
         return years;
     }
 
-    public void setYears(Set<Year> years) {
+    public void setYears(List<Year> years) {
         this.years = years;
     }
 
     public void addYear(Year year){
         if(years == null){
-            years = new HashSet<>();
+            years = new ArrayList<>();
         }
         years.add(year);
     }

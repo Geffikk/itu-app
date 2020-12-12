@@ -22,6 +22,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findRecentMoney() {
+        return userRepository.findTop5ByOrderByMoneyDesc();
+    }
+
+    @Override
+    public List<User> findRecentPoints() {
+        return userRepository.findTop5ByOrderByPointsDesc();
+    }
+
+    @Override
     public User findOne(int id) {
             Optional<User> optional = userRepository.findById(id);
             User user = null;
