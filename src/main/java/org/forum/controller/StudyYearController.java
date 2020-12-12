@@ -33,7 +33,6 @@ public class StudyYearController {
     public String getSectionsFromStudyYear(@PathVariable int idRoku, @PathVariable int idRocnik,
                                        Model model) {
 
-        model.addAttribute("idRoku", idRoku);
         model.addAttribute("rok", yearService.findOne(idRoku));
         model.addAttribute("currentPath", yearService.findOne(idRoku).getName() + " / " + studyYearService.findOne(idRocnik).getName() + " / ");
         model.addAttribute("skolskyRok", studyYearService.findOne(idRocnik));

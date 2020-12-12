@@ -8,40 +8,25 @@
     <!-- CONTENT-->
 
 
-  <div class="container rankingContainer">
-   
-    <div class="row">
+  <div class="container">
+    <div class="row rowRanking">
       <div class="col s12 m6">
           <div class="card">
               <div class="card-content">
-                  <span class="card-title">Top 10 poradcov!!!</span>
-                  <p>1. Tomino Lisicky</p>
-                  <p>2. Tomino Lisicky</p>
-                  <p>3. Tomino Lisicky</p>
-                  <p>4. Tomino Lisicky</p>
-                  <p>5. Tomino Lisicky</p>
-                  <p>6. Tomino Lisicky</p>
-                  <p>7. Tomino Lisicky</p>
-                  <p>8. Tomino Lisicky</p>
-                  <p>9. Tomino Lisicky</p>
-                  <p>10. Tomino Lisicky</p>
+                  <span class="card-title">Top 5 poradcov!!!</span>
+                  <div th:each="uzivatelP : ${uzivateliaPoints}">
+                      <span th:text="${uzivatelP.getUsername()} + ' - počet bodov: ' + ${uzivatelP.getPoints()}"></span>
+                  </div>
               </div>
           </div>
       </div>
       <div class="col s12 m6">
         <div class="card">
             <div class="card-content">
-                <span class="card-title">Top 10 rich bitches!!!</span>
-                <p>1. Tomino Lisicky</p>
-                <p>2. Tomino Lisicky</p>
-                <p>3. Tomino Lisicky</p>
-                <p>4. Tomino Lisicky</p>
-                <p>5. Tomino Lisicky</p>
-                <p>6. Tomino Lisicky</p>
-                <p>7. Tomino Lisicky</p>
-                <p>8. Tomino Lisicky</p>
-                <p>9. Tomino Lisicky</p>
-                <p>10. Tomino Lisicky</p>
+                <span class="card-title">Top 5 rich bitches!!!</span>
+                <div th:each="uzivatelM : ${uzivateliaMoney}">
+                    <span th:text="${uzivatelM.getUsername()} + ' - počet peňazí: ' + ${uzivatelM.getMoney()}"></span>
+                </div>
             </div>
         </div>
     </div>

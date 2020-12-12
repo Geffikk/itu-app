@@ -72,7 +72,11 @@
                 </div>
                 <div class="col s10">
                     <!-- Author & Date -->
-                    <a th:href="@{/user/} + ${post.user.username}"><span th:text="'@' + ${post.user.username}"></span></a>
+                    <div class="popup" onclick="showPopUp()">
+                        <span th:text="${post.user.getUsername()}"></span>
+                        <span th:text="'Počet bodov: ' + ${post.user.getPoints()} + '  ' + 'Počet peňazí: ' + ${post.user.getMoney()}" class="popuptext" id="myPopup"></span>
+                    </div>
+                    <!-- <a th:href="@{/user/} + ${post.user.username}"><span th:text="'@' + ${post.user.username}"></span></a> -->
                     <span th:text="${post.creationDate} ? ${#calendars.format(post.creationDate, 'HH:mm:ss')} + ' ' + #{page.topic.on.day} + ' ' + ${#calendars.format(post.creationDate, 'dd MMMM yyyy')}"></span>
                     <div class="divider"></div>
 
@@ -82,22 +86,36 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row footerPost">
                 <div class="col s10 left">
                     <h6 th:text="${post.user.username}" class="blue-grey-text lighten-3-text"></h6>
                 </div>
-                <div>
-                    <div th:if="${#authentication.getName().equals(post.topic.user.username)}">
-                        <div class="col s2 right">
-                            <a class="btn-floating btnred darken-4 right" th:href="@{/post/delete/} + ${post.id}">
-                                <i class="material-icons black-text red darken-4">delete</i>
-                            </a>
-                            <form th:action="@{/topic/} + ${topic.id} + '/edit/' + ${post.id}">
-                                <button type="submit" class="btn-floating btn material-icons black-text yellow darken-1 right">edit</button>
-                            </form>
-                        </div>
-                    </div>
+
+
+                <div th:if="${#authentication.getName().equals(post.topic.user.username)}" class="col s2 right rankingDiv center-align">
+
+                    <a th:disabled="${post.getGotLikeFromUsers().contains(uzivatel)}" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/prispevok/pridaj1/' + ${post.id}" class="btn indigo sipka">
+                        <i class="material-icons">arrow_drop_up</i>
+                    </a>
+                    <span th:text="${post.ranking}" class="rankingCislo"></span>
+                    <a th:disabled="${post.getGotLikeFromUsers().contains(uzivatel)}" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/prispevok/odcitaj1/' + ${post.id}" class="btn indigo sipka">
+                        <i class="material-icons">arrow_drop_down</i>
+                    </a>
+
+
+
+
+                    <!--
+                    <a class="btn-floating btnred darken-4 right" th:href="@{/post/delete/} + ${post.id}">
+                        <i class="material-icons black-text red darken-4">delete</i>
+                    </a>
+                    <form th:action="@{/topic/} + ${topic.id} + '/edit/' + ${post.id}">
+                        <button type="submit" class="btn-floating btn material-icons black-text yellow darken-1 right">edit</button>
+                    </form>
+                    -->
                 </div>
+
+
             </div>
         </div>
 
