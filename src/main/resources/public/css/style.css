@@ -277,3 +277,33 @@ h2{
 	height: 60px;
 	margin-top: 10px;
 }
+
+.namebox{
+	position: absolute;
+	width: auto;
+	padding-right: 12px;
+	padding-left: 12px;
+	height: 42px;
+	margin-top: -20px;
+	margin-right: -100px;
+	border-radius: 0px 10px 0px 13px;
+}
+
+.datebox{
+	position: absolute;
+	width: auto;
+	padding-right: 12px;
+	padding-left: 12px;
+	height: 23px;
+	border-radius: 11px 0px 10px 0px;
+}
+
+.datefont{
+	font-size: 13px;
+	font-family: "Comic Sans MS"
+}
+
+.username{
+	font-size: 16px;
+	font-family: "Comic Sans MS"
+}

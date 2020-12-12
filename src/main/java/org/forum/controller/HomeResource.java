@@ -7,6 +7,7 @@ import org.forum.newform.ProfilForm;
 import org.forum.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +21,15 @@ public class HomeResource {
     private YearService yearService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private UserProfileService userProfileService;
 
-
+    @RequestMapping(value = { "/help" })
+    public String tryIt(Model model) {
+        return "section/topic/text";
+    }
 
     @RequestMapping(value = { "/", "/home" })
     public String home(Model model) {
@@ -40,6 +47,13 @@ public class HomeResource {
         return "home/obchod";
     }
 
+    @RequestMapping(value = "/spinandwin")
+    public String showGame(Model model) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("user", userService.findByUsername(authentication.getName()));
+        return "user/spin_and_win";
+    }
 
     /** FORUM **/
     @RequestMapping(value = "/forum")
@@ -51,12 +65,6 @@ public class HomeResource {
         model.addAttribute("roky", yearService.findAll());
         return "forum/forum";
     }
-
-
-
-
-
-
 
 
     @RequestMapping("/403")
