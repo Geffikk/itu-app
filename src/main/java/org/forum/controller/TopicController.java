@@ -51,6 +51,11 @@ public class TopicController {
                                Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Year year = yearService.findOne(idRoku);
+        StudyYear studyYear = studyYearService.findOne(idRocnik);
+        Section section = sectionService.findOne(idSkupiny);
+        Topic topic = topicService.findOne(idVlakno);
+        NewPostFrom editPostFrom = new NewPostFrom();
 
         if(authentication.getName().equals("anonymousUser")){
             model.addAttribute("oblubeneVlakna", null);
@@ -64,14 +69,10 @@ public class TopicController {
             model.addAttribute("uzivatel", user);
         }
 
-        Topic topic = topicService.findOne(idVlakno);
-        NewPostFrom editPostFrom = new NewPostFrom();
-
-
-        model.addAttribute("currentPath", yearService.findOne(idRoku).getName() + " / " + studyYearService.findOne(idRocnik).getName() + " / " + sectionService.findOne(idSkupiny).getName() + " / " + topicService.findOne(idVlakno).getTitle());
-        model.addAttribute("skolskyRok", studyYearService.findOne(idRocnik));
-        model.addAttribute("rok", yearService.findOne(idRoku));
-        model.addAttribute("skupina", sectionService.findOne(idSkupiny));
+        model.addAttribute("currentPath", year.getName() + " / " + studyYear.getName() + " / " + section.getName() + " / " + topic.getTitle());
+        model.addAttribute("skolskyRok", studyYear);
+        model.addAttribute("rok", year);
+        model.addAttribute("skupina", section);
         model.addAttribute("editPost", editPostFrom);
         model.addAttribute("topic", topic);
         model.addAttribute("posts", postService.findByTopic(idVlakno));
@@ -112,7 +113,7 @@ public class TopicController {
         model.addAttribute("aktualnaSkupina", section);
 
         model.addAttribute("editPost", editPostFrom);
-        model.addAttribute("currentPath", studyYearService.findOne(idRocnik).getName() + " / " + yearService.findOne(idRoku).getName() + " / " + sectionService.findOne(idSkupiny).getName() + " / " + topicService.findOne(idVlakno).getTitle());
+        model.addAttribute("currentPath", year.getName() + " / " + studyYear.getName() + " / " + section.getName() + " / " + topic.getTitle());
         model.addAttribute("topic", topic);
         model.addAttribute("posts", postService.findByTopic(idVlakno));
         model.addAttribute("newPost", new NewPostFrom());

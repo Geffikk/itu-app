@@ -40,6 +40,8 @@ public class YearController {
                                            Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Year year = yearService.findOne(idRoku);
+
 
         if(authentication.getName().equals("anonymousUser")){
             model.addAttribute("oblubeneVlakna", null);
@@ -49,10 +51,10 @@ public class YearController {
             model.addAttribute("oblubeneVlakna", user.getFavoriteTopics());
         }
 
-        model.addAttribute("currentPath", yearService.findOne(idRoku).getName() + " / ");
-        model.addAttribute("skolskeRoky", studyYearService.findByYear(yearService.findOne(idRoku)));
+        model.addAttribute("currentPath", year.getName() + " / ");
+        model.addAttribute("skolskeRoky", studyYearService.findByYear(year));
         model.addAttribute("roky", yearService.findAll());
-        model.addAttribute("rok", yearService.findOne(idRoku));
+        model.addAttribute("rok", year);
         model.addAttribute("idRoku", idRoku);
 
         return "forum/forumRocniky";

@@ -2,6 +2,7 @@ package org.forum.controller;
 
 import org.forum.entities.Section;
 import org.forum.entities.StudyYear;
+import org.forum.entities.Year;
 import org.forum.entities.user.User;
 import org.forum.newform.NewSectionForm;
 import org.forum.service.*;
@@ -44,6 +45,9 @@ public class SectionController {
                                        Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Year year = yearService.findOne(idRoku);
+        StudyYear studyYear = studyYearService.findOne(idRocnik);
+        Section section = sectionService.findOne(idSkupiny);
 
         if(authentication.getName().equals("anonymousUser")){
             model.addAttribute("oblubeneVlakna", null);
@@ -53,13 +57,13 @@ public class SectionController {
             model.addAttribute("oblubeneVlakna", user.getFavoriteTopics());
         }
 
-        model.addAttribute("currentPath", yearService.findOne(idRoku).getName() + " / " + studyYearService.findOne(idRocnik).getName() + " / " + sectionService.findOne(idSkupiny).getName() + " / ");
-        model.addAttribute("skolskyRok", studyYearService.findOne(idRocnik));
+        model.addAttribute("currentPath", year.getName() + " / " + studyYear.getName() + " / " + section.getName() + " / ");
+        model.addAttribute("skolskyRok", studyYear);
         model.addAttribute("roky", yearService.findAll());
         model.addAttribute("vlakna", topicService.findBySection(idSkupiny));
-        model.addAttribute("rok", yearService.findOne(idRoku));
-        model.addAttribute("skupiny", sectionService.findByStudyYear(studyYearService.findOne(idRocnik)));
-        model.addAttribute("skupina", sectionService.findOne(idSkupiny));
+        model.addAttribute("rok", year);
+        model.addAttribute("skupiny", sectionService.findByStudyYear(studyYear));
+        model.addAttribute("skupina", section);
         model.addAttribute("skupinaId", idSkupiny);
         return "section/section";
     }
