@@ -13,6 +13,22 @@
         </a>
     </div>
 
+    <div th:if="${oblubeneVlakna != null}" class="oblubeneVlakna valign-wrapper  indigo darken-1 z-depth-3">
+        <div class="oblubeneTemy">
+            <span class="white-text oblubeneVlakno">Oblubene temy: </span>
+        </div>
+
+        <div class="oblubenyPredmet center-align" th:each="oblubeneVlakno : ${oblubeneVlakna}">
+            <div class="oblubeneVlakno">
+                <a th:href="@{/forum/rok/} + ${oblubeneVlakno.getSection().getStudyYear().getYear().getId()} + '/rocnik/' + ${oblubeneVlakno.getSection().getStudyYear().getId()} + '/skupina/' + ${oblubeneVlakno.getSection().getId()} + '/vlakno/' + ${oblubeneVlakno.getId()}">
+                    <span th:text="${oblubeneVlakno.getTitle()}" class="white-text"></span><br>
+                    <span th:text="${oblubeneVlakno.getSection().getName()}" class="white-text"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
     <div class="container">
         <div class="row z-depth-1 indigo darken-3" style="margin-bottom: 40px; padding: 10px;">
             <div class="col s12">
@@ -20,10 +36,20 @@
                     <a th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id}" th:text="${topic.section.name}" class="btn-large indigo waves-effect waves-blue" style="font-family: 'Comic Sans MS'; color: inherit;"></a>
                     -> <span style="font-family: 'Comic Sans MS'" th:text="${topic.title}"></span>
                 </h5>
-                <div class="like right">
+                <div th:if="${!uzivatel.getUsername().equals('ANONYMOUS')}" class="like right">
+                    <form th:action="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/add'">
+                        <button th:if="${!uzivatel.getFavoriteTopics().contains(topic)}" type="submit" class="btn-floating btn indigo darken-4 right">
+                            <i class="material-icons">favorite_border</i>
+                        </button>
+                        <button th:if="${uzivatel.getFavoriteTopics().contains(topic)}" type="submit" class="btn-floating btn indigo darken-4 right">
+                            <i class="material-icons">favorite</i>
+                        </button>
+                    </form>
+                    <!--
                     <a th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/add'">
                         <i class="material-icons">favorite_border</i>
                     </a>
+                    -->
                 </div>
             </div>
         </div>
@@ -80,16 +106,6 @@
                     </div>
 
                     <!-- Author & Date -->
-                    <div class="popup" onclick="showPopUp()">
-                        <span th:text="${post.user.getUsername()}"></span>
-                        <span th:text="'Počet bodov: ' + ${post.user.getPoints()} + '  ' + 'Počet peňazí: ' + ${post.user.getMoney()}" class="popuptext" id="myPopup"></span>
-                    </div>
-                    <!-- <a th:href="@{/user/} + ${post.user.username}"><span th:text="'@' + ${post.user.username}"></span></a> -->
-                    <span th:text="${post.creationDate} ? ${#calendars.format(post.creationDate, 'HH:mm:ss')} + ' ' + #{page.topic.on.day} + ' ' + ${#calendars.format(post.creationDate, 'dd MMMM yyyy')}"></span>
-                    <div class="divider"></div>
-
-                    <!-- Message -->
-                    <p th:utext="${#strings.replace(post.content,T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"></p>
                     <div class="datebox indigo darken-1 right">
                         <a class="blue-text datefont" th:href="@{/user/} + ${post.user.username}"><span th:text="'@' + ${post.user.username}"></span></a>
                         <span class="blue-text datefont" th:text="${post.creationDate} ? ${#calendars.format(post.creationDate, 'HH:mm:ss')} + ' ' + #{page.topic.on.day} + ' ' + ${#calendars.format(post.creationDate, 'dd MMMM yyyy')}"></span>
@@ -104,22 +120,23 @@
                     </div>
                 </div>
 
-            <div class="row footerPost">
-                <div class="col s10 left">
-                    <h6 th:text="${post.user.username}" class="blue-grey-text lighten-3-text"></h6>
-                </div>
+                <div class="row rowFotter">
+
+                    <div class="center-align likeDiv">
+                        <a th:disabled="${post.getGotLikeFromUsers().contains(uzivatel) or uzivatel.getUsername().equals('ANONYMOUS')}" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/prispevok/pridaj1/' + ${post.id}" class="btn indigo sipka">
+                            <i class="material-icons">thumb_up</i>
+                        </a>
+                        <span th:text="${post.ranking}" class="rankingCislo"></span>
+                        <a th:disabled="${post.getGotLikeFromUsers().contains(uzivatel) or uzivatel.getUsername().equals('ANONYMOUS')}" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/prispevok/odcitaj1/' + ${post.id}" class="btn indigo sipka">
+                            <i class="material-icons">thumb_down</i>
+                        </a>
+
+                    </div>
 
 
-                <div th:if="${#authentication.getName().equals(post.topic.user.username)}" class="col s2 right rankingDiv center-align">
-
-                    <a th:disabled="${post.getGotLikeFromUsers().contains(uzivatel)}" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/prispevok/pridaj1/' + ${post.id}" class="btn indigo sipka">
-                        <i class="material-icons">arrow_drop_up</i>
-                    </a>
-                    <span th:text="${post.ranking}" class="rankingCislo"></span>
-                    <a th:disabled="${post.getGotLikeFromUsers().contains(uzivatel)}" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/prispevok/odcitaj1/' + ${post.id}" class="btn indigo sipka">
-                        <i class="material-icons">arrow_drop_down</i>
-                    </a>
-
+                    <div class="namebox indigo darken-1 right bottom">
+                        <h6 th:text="${post.user.username}" class="blue-text lighten-3-text center-align center-vertical username"></h6>
+                    </div>
 
 
 
@@ -150,8 +167,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
 

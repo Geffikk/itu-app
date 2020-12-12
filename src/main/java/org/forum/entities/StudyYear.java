@@ -20,14 +20,11 @@ public class StudyYear {
     @Column(name = "nazov", length = 50)
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+    /** ROCNIK PATRI DO ROKU **/
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinTable(
-           name = "rocnik_rok",
-           joinColumns = @JoinColumn(name = "id_rocnika"),
-           inverseJoinColumns = @JoinColumn(name = "id_roku")
-    )
-    private List<Year> years;
+    @JoinColumn(name = "id_roku")
+    private Year year;
 
     /** CONSTRUCTORS **/
     public StudyYear() {
@@ -55,18 +52,11 @@ public class StudyYear {
         this.name = name;
     }
 
-    public List<Year> getYears() {
-        return years;
+    public Year getYear() {
+        return year;
     }
 
-    public void setYears(List<Year> years) {
-        this.years = years;
-    }
-
-    public void addYear(Year year){
-        if(years == null){
-            years = new ArrayList<>();
-        }
-        years.add(year);
+    public void setYear(Year year) {
+        this.year = year;
     }
 }
