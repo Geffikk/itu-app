@@ -16,6 +16,7 @@ public interface StudyYearService {
 
     StudyYear findByName(String name);
 
+    List<StudyYear> findByYear(Year year);
 
     StudyYear save(StudyYear studyYear);
 

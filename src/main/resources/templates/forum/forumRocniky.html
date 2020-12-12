@@ -5,28 +5,42 @@
 <body>
     <nav th:insert="fragments/navbar :: navbar"></nav>
 
+    <div th:if="${oblubeneVlakna != null}" class="oblubeneVlakna valign-wrapper  indigo darken-1 z-depth-3">
+        <div class="oblubeneTemy">
+            <span class="white-text oblubeneVlakno">Oblubene temy: </span>
+        </div>
+
+        <div class="oblubenyPredmet center-align" th:each="oblubeneVlakno : ${oblubeneVlakna}">
+            <div class="oblubeneVlakno">
+                <a th:href="@{/forum/rok/} + ${oblubeneVlakno.getSection().getStudyYear().getYear().getId()} + '/rocnik/' + ${oblubeneVlakno.getSection().getStudyYear().getId()} + '/skupina/' + ${oblubeneVlakno.getSection().getId()} + '/vlakno/' + ${oblubeneVlakno.getId()}">
+                    <span th:text="${oblubeneVlakno.getTitle()}" class="white-text"></span><br>
+                    <span th:text="${oblubeneVlakno.getSection().getName()}" class="white-text"></span>
+                </a>
+            </div>
+        </div>
+    </div>
 
     <div class="container forumContainer">
         <div class="row valign-wrapper">
 
             <div class="col s12 m6 l6">
                 <div class="card cardRocniky">
-                    <div class="card-title">Pomocné tlačítka!</div>
                     <div class="card-content center-align cardRocniky">
-                        <div>
-                            <a th:href="@{/forum}" class="btn rocnik navratoveTlacitko">Späť na rok</a>
+                        <div th:each="rok : ${roky}">
+                            <a th:href="@{/forum/rok/} + ${rok.id}" th:text="${rok.name}" th:classappend="${idRoku == rok.id ? '_' : 'indigo'}" class="btn  rocnik"></a>
                         </div>
                     </div>
                 </div>
             </div>
 
 
+
             <div class="col s12 m6 l6">
                 <div class="card cardRocniky">
-                    <div class="card-title">Vyber rocnik!</div>
+                    <div class="card-title">Vyber kategoriu!</div>
                     <div class="card-content center-align cardRocniky">
                         <div class="buttonclass" th:each="skolskyRok : ${skolskeRoky}">
-                            <a th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id}" th:text="${skolskyRok.name}" class="btn indigo rocnik"><i class="material-icons right dropdown-trigger" data-target="dropdown">arrow_drop_down</i></a>
+                            <a th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id}" th:text="${skolskyRok.name}" class="btn indigo rocnik"></a>
                         </div>
                     </div>
                 </div>

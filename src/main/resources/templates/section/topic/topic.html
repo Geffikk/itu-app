@@ -13,6 +13,22 @@
         </a>
     </div>
 
+    <div th:if="${oblubeneVlakna != null}" class="oblubeneVlakna valign-wrapper  indigo darken-1 z-depth-3">
+        <div class="oblubeneTemy">
+            <span class="white-text oblubeneVlakno">Oblubene temy: </span>
+        </div>
+
+        <div class="oblubenyPredmet center-align" th:each="oblubeneVlakno : ${oblubeneVlakna}">
+            <div class="oblubeneVlakno">
+                <a th:href="@{/forum/rok/} + ${oblubeneVlakno.getSection().getStudyYear().getYear().getId()} + '/rocnik/' + ${oblubeneVlakno.getSection().getStudyYear().getId()} + '/skupina/' + ${oblubeneVlakno.getSection().getId()} + '/vlakno/' + ${oblubeneVlakno.getId()}">
+                    <span th:text="${oblubeneVlakno.getTitle()}" class="white-text"></span><br>
+                    <span th:text="${oblubeneVlakno.getSection().getName()}" class="white-text"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
     <div class="container">
         <div class="row z-depth-1 indigo darken-3" style="margin-bottom: 40px; padding: 10px;">
             <div class="col s12">
@@ -20,10 +36,20 @@
                     <a th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id}" th:text="${topic.section.name}" class="btn-large indigo waves-effect waves-blue" style="font-family: 'Comic Sans MS'; color: inherit;"></a>
                     -> <span style="font-family: 'Comic Sans MS'" th:text="${topic.title}"></span>
                 </h5>
-                <div class="like right">
+                <div th:if="${!uzivatel.getUsername().equals('ANONYMOUS')}" class="like right">
+                    <form th:action="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/add'">
+                        <button th:if="${!uzivatel.getFavoriteTopics().contains(topic)}" type="submit" class="btn-floating btn indigo darken-4 right">
+                            <i class="material-icons">favorite_border</i>
+                        </button>
+                        <button th:if="${uzivatel.getFavoriteTopics().contains(topic)}" type="submit" class="btn-floating btn indigo darken-4 right">
+                            <i class="material-icons">favorite</i>
+                        </button>
+                    </form>
+                    <!--
                     <a th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/add'">
                         <i class="material-icons">favorite_border</i>
                     </a>
+                    -->
                 </div>
             </div>
         </div>
@@ -94,6 +120,34 @@
                     </div>
                 </div>
 
+                <div class="row rowFotter">
+
+                    <div class="center-align likeDiv">
+                        <a th:disabled="${post.getGotLikeFromUsers().contains(uzivatel) or uzivatel.getUsername().equals('ANONYMOUS')}" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/prispevok/pridaj1/' + ${post.id}" class="btn indigo sipka">
+                            <i class="material-icons">thumb_up</i>
+                        </a>
+                        <span th:text="${post.ranking}" class="rankingCislo"></span>
+                        <a th:disabled="${post.getGotLikeFromUsers().contains(uzivatel) or uzivatel.getUsername().equals('ANONYMOUS')}" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/prispevok/odcitaj1/' + ${post.id}" class="btn indigo sipka">
+                            <i class="material-icons">thumb_down</i>
+                        </a>
+
+                    </div>
+
+
+                    <div class="namebox indigo darken-1 right bottom">
+                        <h6 th:text="${post.user.username}" class="blue-text lighten-3-text center-align center-vertical username"></h6>
+                    </div>
+
+
+
+                    <!--
+                    <a class="btn-floating btnred darken-4 right" th:href="@{/post/delete/} + ${post.id}">
+                        <i class="material-icons black-text red darken-4">delete</i>
+                    </a>
+                    <form th:action="@{/topic/} + ${topic.id} + '/edit/' + ${post.id}">
+                        <button type="submit" class="btn-floating btn material-icons black-text yellow darken-1 right">edit</button>
+                    </form>
+                    -->
                 <div class="row">
                     <div class="namebox indigo darken-1 right bottom">
                         <h6 th:text="${post.user.username}" class="blue-text lighten-3-text center-align center-vertical username"></h6>

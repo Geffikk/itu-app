@@ -39,6 +39,11 @@ public class StudyYearServiceImpl implements StudyYearService {
         return studyYearRepository.findByName(name);
     }
 
+    @Override
+    public List<StudyYear> findByYear(Year year) {
+        return studyYearRepository.findByYear(year);
+    }
+
 
     @Override
     public StudyYear save(StudyYear studyYear) {

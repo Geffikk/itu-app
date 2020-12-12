@@ -3,11 +3,15 @@ package org.forum.controller;
 
 import org.forum.entities.StudyYear;
 import org.forum.entities.Year;
+import org.forum.entities.user.User;
 import org.forum.service.SectionService;
 import org.forum.service.StudyYearService;
+import org.forum.service.UserService;
 import org.forum.service.YearService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,17 +32,31 @@ public class StudyYearController {
     @Autowired
     private YearService yearService;
 
+    @Autowired
+    private UserService userService;
+
     /** STUDY YEAR OVERVIEW **/
     @RequestMapping("{idRocnik}")
     public String getSectionsFromStudyYear(@PathVariable int idRoku, @PathVariable int idRocnik,
                                        Model model) {
 
-        model.addAttribute("idRoku", idRoku);
-        model.addAttribute("rok", yearService.findOne(idRoku));
-        model.addAttribute("currentPath", yearService.findOne(idRoku).getName() + " / " + studyYearService.findOne(idRocnik).getName() + " / ");
-        model.addAttribute("skolskyRok", studyYearService.findOne(idRocnik));
-        model.addAttribute("skolskeRoky", yearService.findOne(idRoku).getStudyYears());
-        model.addAttribute("skupiny", sectionService.findByStudyYear(studyYearService.findOne(idRocnik)));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Year year = yearService.findOne(idRoku);
+        StudyYear studyYear = studyYearService.findOne(idRocnik);
+
+        if(authentication.getName().equals("anonymousUser")){
+            model.addAttribute("oblubeneVlakna", null);
+        }
+        else{
+            User user = userService.findByUsername(authentication.getName());
+            model.addAttribute("oblubeneVlakna", user.getFavoriteTopics());
+        }
+
+        model.addAttribute("rok", year);
+        model.addAttribute("currentPath", year.getName() + " / " + studyYear.getName() + " / ");
+        model.addAttribute("skolskyRok", studyYear);
+        model.addAttribute("skolskeRoky", studyYearService.findByYear(year));
+        model.addAttribute("skupiny", sectionService.findByStudyYear(studyYear));
         model.addAttribute("idSkolskehoRoku", idRocnik);
         return "forum/forumSkupiny";
     }

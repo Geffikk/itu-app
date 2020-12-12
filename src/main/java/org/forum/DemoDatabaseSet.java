@@ -35,8 +35,12 @@ public class DemoDatabaseSet {
             // create objects
             System.out.println("Creating new objects...");
 
-            User tempUser1 = new User("patriktomov@gmail.com", "Patres11", "$2y$12$M7fYQOMVRAuCK0bzrTqMiunl6BQv4IzmFGr6.5yYPE6okcgPTqfZS");
-            User tempUser2 = new User("maros.geffert@gmail.com", "Maros22", "$2y$12$M7fYQOMVRAuCK0bzrTqMiunl6BQv4IzmFGr6.5yYPE6okcgPTqfZS");
+            User tempUser1 = new User("patriktomov@gmail.com", "Patres", "$2y$12$M7fYQOMVRAuCK0bzrTqMiunl6BQv4IzmFGr6.5yYPE6okcgPTqfZS", 100, 10);
+            User tempUser2 = new User("maros.geffert@gmail.com", "Maros", "$2y$12$M7fYQOMVRAuCK0bzrTqMiunl6BQv4IzmFGr6.5yYPE6okcgPTqfZS", 200, 20);
+            User tempUser3 = new User("maros1.geffert@gmail.com", "Andrej", "$2y$12$M7fYQOMVRAuCK0bzrTqMiunl6BQv4IzmFGr6.5yYPE6okcgPTqfZS", 300, 30);
+            User tempUser4 = new User("maros2.geffert@gmail.com", "Adam", "$2y$12$M7fYQOMVRAuCK0bzrTqMiunl6BQv4IzmFGr6.5yYPE6okcgPTqfZS", 400, 40);
+            User tempUser5 = new User("maros3.geffert@gmail.com", "Tomas", "$2y$12$M7fYQOMVRAuCK0bzrTqMiunl6BQv4IzmFGr6.5yYPE6okcgPTqfZS", 500, 60);
+            User tempUser6 = new User("maros4.geffert@gmail.com", "Martin", "$2y$12$M7fYQOMVRAuCK0bzrTqMiunl6BQv4IzmFGr6.5yYPE6okcgPTqfZS", 600, 50);
 
 
             UserAdditionalInfo tempInfo1 = new UserAdditionalInfo("0904481833", "Patrik", "Tomov", "Bardejov", "Student FIT", "VUT FIT");
@@ -60,17 +64,19 @@ public class DemoDatabaseSet {
             StudyYear tempStudyYear9 = new StudyYear("VOLITELNE");
             StudyYear tempStudyYear10 = new StudyYear("VSEOBECNE");
 
-            tempYear1.addStudyYear(tempStudyYear1);
-            tempYear1.addStudyYear(tempStudyYear2);
-            tempYear1.addStudyYear(tempStudyYear3);
-            tempYear1.addStudyYear(tempStudyYear4);
-            tempYear1.addStudyYear(tempStudyYear5);
 
-            tempYear2.addStudyYear(tempStudyYear6);
-            tempYear2.addStudyYear(tempStudyYear7);
-            tempYear2.addStudyYear(tempStudyYear8);
-            tempYear2.addStudyYear(tempStudyYear9);
-            tempYear2.addStudyYear(tempStudyYear10);
+            tempStudyYear1.setYear(tempYear1);
+            tempStudyYear2.setYear(tempYear1);
+            tempStudyYear3.setYear(tempYear1);
+            tempStudyYear4.setYear(tempYear1);
+            tempStudyYear5.setYear(tempYear1);
+
+            tempStudyYear6.setYear(tempYear2);
+            tempStudyYear7.setYear(tempYear2);
+            tempStudyYear8.setYear(tempYear2);
+            tempStudyYear9.setYear(tempYear2);
+            tempStudyYear10.setYear(tempYear2);
+
 
             Section tempSkupina1 = new Section("IDA");
             Section tempSkupina2 = new Section("IEL");
@@ -189,6 +195,10 @@ public class DemoDatabaseSet {
 
             session.save(tempUser1);
             session.save(tempUser2);
+            session.save(tempUser3);
+            session.save(tempUser4);
+            session.save(tempUser5);
+            session.save(tempUser6);
 
             session.save(tempYear1);
             session.save(tempYear2);

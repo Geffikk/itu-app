@@ -13,5 +13,7 @@ public interface StudyYearRepository extends JpaRepository<StudyYear, Integer> {
 
     StudyYear findByName(String name);
 
+    List<StudyYear> findByYear(Year year);
+
 
 }

@@ -21,14 +21,6 @@ public class Year {
     @Column(name = "nazov", length = 50)
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinTable(
-            name = "rocnik_rok",
-            joinColumns = @JoinColumn(name = "id_roku"),
-            inverseJoinColumns = @JoinColumn(name = "id_rocnika")
-    )
-    private Set<StudyYear> studyYears;
 
 
 
@@ -57,18 +49,5 @@ public class Year {
         this.name = name;
     }
 
-    public Set<StudyYear> getStudyYears() {
-        return studyYears;
-    }
 
-    public void setStudyYears(Set<StudyYear> studyYears) {
-        this.studyYears = studyYears;
-    }
-
-    public void addStudyYear(StudyYear studyYear){
-        if(studyYears == null){
-            studyYears = new HashSet<>();
-        }
-        studyYears.add(studyYear);
-    }
 }
