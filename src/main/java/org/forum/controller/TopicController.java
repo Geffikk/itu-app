@@ -44,16 +44,11 @@ public class TopicController {
     @Autowired
     private YearService yearService;
 
-
-
-
     @RequestMapping(value = "{idVlakno}")
     public String getTopicById(@PathVariable int idRoku, @PathVariable int idRocnik, @PathVariable int idSkupiny, @PathVariable int idVlakno, Model model) {
 
         Topic topic = topicService.findOne(idVlakno);
-
         NewPostFrom editPostFrom = new NewPostFrom();
-
 
         model.addAttribute("currentPath", yearService.findOne(idRoku).getName() + " / " + studyYearService.findOne(idRocnik).getName() + " / " + sectionService.findOne(idSkupiny).getName() + " / " + topicService.findOne(idVlakno).getTitle());
         model.addAttribute("skolskyRok", studyYearService.findOne(idRocnik));
@@ -65,8 +60,6 @@ public class TopicController {
         model.addAttribute("newPost", new NewPostFrom());
         return "section/topic/topic";
     }
-
-
 
     @RequestMapping(value = "{idVlakno}/add")
     public String addTopicToFavorite(@PathVariable int idRocnik, @PathVariable int idRoku, @PathVariable int idSkupiny, @PathVariable int idVlakno, Model model) {
@@ -143,6 +136,9 @@ public class TopicController {
     public String addPost(@Valid @ModelAttribute("newPost") NewPostFrom newPrispevok,
                           BindingResult result,
                           Authentication authentication,
+                          @PathVariable int idRoku,
+                          @PathVariable int idRocnik,
+                          @PathVariable int idSkupiny,
                           @PathVariable int idTopic,
                           Model model) {
 
@@ -159,7 +155,7 @@ public class TopicController {
         postService.save(post);
 
         model.asMap().clear();
-        return "redirect:/topic/" + idTopic;
+        return "redirect:/forum/rok/"+idRoku+"/rocnik/"+idRocnik+"/skupina/"+idSkupiny+"/vlakno/" + idTopic;
     }
 
     @RequestMapping(value = "new", method = RequestMethod.POST)
