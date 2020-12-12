@@ -1,7 +1,7 @@
 package org.forum.controller;
 
-import org.forum.entities.Post;
-import org.forum.entities.Topic;
+import org.forum.entities.*;
+import org.forum.entities.user.User;
 import org.forum.newform.NewPostFrom;
 import org.forum.newform.NewTopicForm;
 import org.forum.service.*;
@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,12 +48,26 @@ public class TopicController {
     @RequestMapping(value = "{idVlakno}")
     public String getTopicById(@PathVariable int idRoku, @PathVariable int idRocnik,
                                @PathVariable int idSkupiny, @PathVariable int idVlakno,
-                               Model model, Authentication authentication) {
+                               Model model) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(authentication.getName().equals("anonymousUser")){
+            model.addAttribute("oblubeneVlakna", null);
+            User tempUser = new User();
+            tempUser.setUsername("ANONYMOUS");
+            model.addAttribute("uzivatel", tempUser);
+        }
+        else{
+            User user = userService.findByUsername(authentication.getName());
+            model.addAttribute("oblubeneVlakna", user.getFavoriteTopics());
+            model.addAttribute("uzivatel", user);
+        }
 
         Topic topic = topicService.findOne(idVlakno);
         NewPostFrom editPostFrom = new NewPostFrom();
 
-        model.addAttribute("uzivatel", userService.findByUsername(authentication.getName()));
+
         model.addAttribute("currentPath", yearService.findOne(idRoku).getName() + " / " + studyYearService.findOne(idRocnik).getName() + " / " + sectionService.findOne(idSkupiny).getName() + " / " + topicService.findOne(idVlakno).getTitle());
         model.addAttribute("skolskyRok", studyYearService.findOne(idRocnik));
         model.addAttribute("rok", yearService.findOne(idRoku));
@@ -67,23 +82,41 @@ public class TopicController {
     @RequestMapping(value = "{idVlakno}/add")
     public String addTopicToFavorite(@PathVariable int idRocnik, @PathVariable int idRoku, @PathVariable int idSkupiny, @PathVariable int idVlakno, Model model) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = new User();
+
+        if(authentication.getName().equals("anonymousUser")){
+            model.addAttribute("oblubeneVlakna", null);
+            User tempUser = new User();
+            tempUser.setUsername("ANONYMOUS");
+            model.addAttribute("uzivatel", tempUser);
+        }
+        else{
+            user = userService.findByUsername(authentication.getName());
+            model.addAttribute("oblubeneVlakna", user.getFavoriteTopics());
+            model.addAttribute("uzivatel", user);
+        }
+
+        Year year = yearService.findOne(idRoku);
+        StudyYear studyYear = studyYearService.findOne(idRocnik);
+        Section section = sectionService.findOne(idSkupiny);
         Topic topic = topicService.findOne(idVlakno);
         NewPostFrom editPostFrom = new NewPostFrom();
 
-        model.addAttribute("aktualnyRocnik", studyYearService.findOne(idRocnik));
-        model.addAttribute("aktualnyRok", yearService.findOne(idRoku));
-        model.addAttribute("aktualnaSkupina", sectionService.findOne(idSkupiny));
-        // TODO: 10/12/2020
-        // podla authorization.name zistit meno kto je prihlaseny najst uzivatela a pridat toto vlakno
-        // do jeho oblubenych a redirect na tu istu stranku
+        user.addFavoriteTopic(topic);
+        userService.save(user);
 
+        model.addAttribute("aktualnyRocnik", studyYear);
+        model.addAttribute("aktualnyRok", year);
+        model.addAttribute("aktualnaSkupina", section);
 
         model.addAttribute("editPost", editPostFrom);
         model.addAttribute("currentPath", studyYearService.findOne(idRocnik).getName() + " / " + yearService.findOne(idRoku).getName() + " / " + sectionService.findOne(idSkupiny).getName() + " / " + topicService.findOne(idVlakno).getTitle());
         model.addAttribute("topic", topic);
         model.addAttribute("posts", postService.findByTopic(idVlakno));
         model.addAttribute("newPost", new NewPostFrom());
-        return "section/topic/topic";
+        return "redirect:/forum/rok/" + year.getId() + "/rocnik/" + studyYear.getId() + "/skupina/" + section.getId() + "/vlakno/" + topic.getId();
     }
 
 

@@ -6,15 +6,14 @@
     <nav th:insert="fragments/navbar :: navbar"></nav>
 
 
-    <div class="oblubeneVlakna valign-wrapper  indigo darken-1">
+    <div th:if="${oblubeneVlakna != null}" class="oblubeneVlakna valign-wrapper  indigo darken-1 z-depth-3">
         <div class="oblubeneTemy">
-            <span class="white-text">Oblubene temy: </span>
+            <span class="white-text oblubeneVlakno">Oblubene temy: </span>
         </div>
 
         <div class="oblubenyPredmet center-align" th:each="oblubeneVlakno : ${oblubeneVlakna}">
-            <div>
-                <!-- th:href="@{/forum/rok/} + ${oblubeneVlakno.getSection().getStudyYear().getYears().} + '/rocnik/' + ${oblubeneVlakno.getSection().getStudyYear().getId()} + '/skupina/' + ${oblubeneVlakno.getSection().getId()} + '/vlakno/' + ${oblubeneVlakno.getId()}" -->
-                <a class="oblubeneVlakno">
+            <div class="oblubeneVlakno">
+                <a th:href="@{/forum/rok/} + ${oblubeneVlakno.getSection().getStudyYear().getYear().getId()} + '/rocnik/' + ${oblubeneVlakno.getSection().getStudyYear().getId()} + '/skupina/' + ${oblubeneVlakno.getSection().getId()} + '/vlakno/' + ${oblubeneVlakno.getId()}">
                     <span th:text="${oblubeneVlakno.getTitle()}" class="white-text"></span><br>
                     <span th:text="${oblubeneVlakno.getSection().getName()}" class="white-text"></span>
                 </a>

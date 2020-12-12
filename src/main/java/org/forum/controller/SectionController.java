@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,6 +42,16 @@ public class SectionController {
     @RequestMapping("{idSkupiny}")
     public String getTopicsFromSection(@PathVariable int idRoku, @PathVariable int idRocnik, @PathVariable int idSkupiny,
                                        Model model) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(authentication.getName().equals("anonymousUser")){
+            model.addAttribute("oblubeneVlakna", null);
+        }
+        else{
+            User user = userService.findByUsername(authentication.getName());
+            model.addAttribute("oblubeneVlakna", user.getFavoriteTopics());
+        }
 
         model.addAttribute("currentPath", yearService.findOne(idRoku).getName() + " / " + studyYearService.findOne(idRocnik).getName() + " / " + sectionService.findOne(idSkupiny).getName() + " / ");
         model.addAttribute("skolskyRok", studyYearService.findOne(idRocnik));

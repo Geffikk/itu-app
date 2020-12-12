@@ -9,7 +9,7 @@
         <!-- INFROMATION -->
         <div class="row profilCard">
 
-            <div class="col s12 m6 l6">
+            <div class="col s12 m6 l6 profileCardInner">
                 <div class="row z-depth-2 infoCard">
                     <div class="row">
                         <div class="col s12">
@@ -45,13 +45,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col s6 center">
+                        <div class="col s6 right-align">
                             <p>Založené témy</p>
                             <p>Založené príspevky</p>
                             <p>Počet bodov</p>
                             <p>Počet peňazí</p>
                         </div>
-                        <div class="col s6 center">
+                        <div class="col s6">
                             <p th:text="${userProfile.topics.size()}"></p>
                             <p th:text="${userProfile.posts.size()}"></p>
                             <p th:text="${userProfile.user.getPoints()}"></p>

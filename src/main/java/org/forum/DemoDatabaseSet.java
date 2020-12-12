@@ -64,17 +64,19 @@ public class DemoDatabaseSet {
             StudyYear tempStudyYear9 = new StudyYear("VOLITELNE");
             StudyYear tempStudyYear10 = new StudyYear("VSEOBECNE");
 
-            tempYear1.addStudyYear(tempStudyYear1);
-            tempYear1.addStudyYear(tempStudyYear2);
-            tempYear1.addStudyYear(tempStudyYear3);
-            tempYear1.addStudyYear(tempStudyYear4);
-            tempYear1.addStudyYear(tempStudyYear5);
 
-            tempYear2.addStudyYear(tempStudyYear6);
-            tempYear2.addStudyYear(tempStudyYear7);
-            tempYear2.addStudyYear(tempStudyYear8);
-            tempYear2.addStudyYear(tempStudyYear9);
-            tempYear2.addStudyYear(tempStudyYear10);
+            tempStudyYear1.setYear(tempYear1);
+            tempStudyYear2.setYear(tempYear1);
+            tempStudyYear3.setYear(tempYear1);
+            tempStudyYear4.setYear(tempYear1);
+            tempStudyYear5.setYear(tempYear1);
+
+            tempStudyYear6.setYear(tempYear2);
+            tempStudyYear7.setYear(tempYear2);
+            tempStudyYear8.setYear(tempYear2);
+            tempStudyYear9.setYear(tempYear2);
+            tempStudyYear10.setYear(tempYear2);
+
 
             Section tempSkupina1 = new Section("IDA");
             Section tempSkupina2 = new Section("IEL");

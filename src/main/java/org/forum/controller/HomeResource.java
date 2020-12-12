@@ -24,17 +24,11 @@ public class HomeResource {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private UserProfileService userProfileService;
 
-    @Autowired
-    private UserService userService;
     @RequestMapping(value = { "/help" })
     public String tryIt(Model model) {
         return "section/topic/text";
     }
-    @Autowired
-    private UserService userService;
 
     @RequestMapping(value = { "/", "/home" })
     public String home(Model model) {
@@ -65,14 +59,19 @@ public class HomeResource {
 
     /** FORUM **/
     @RequestMapping(value = "/forum")
-    public String showForum(Model model, Authentication authentication) {
-        // TODO: 10/12/2020
-        //spravit premennu oblubeneVlakna -> podla authorization.name si vyhladat uzivatela
-        // a vybrat z neho jeho oblubene vlakna
+    public String showForum(Model model) {
 
-        User user = userService.findByUsername(authentication.getName());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        model.addAttribute("oblubeneVlakna", user.getFavoriteTopics());
+        if(authentication.getName().equals("anonymousUser")){
+            model.addAttribute("oblubeneVlakna", null);
+        }
+        else{
+            User user = userService.findByUsername(authentication.getName());
+            model.addAttribute("oblubeneVlakna", user.getFavoriteTopics());
+        }
+
+
         model.addAttribute("currentPath", "null");
         model.addAttribute("roky", yearService.findAll());
         return "forum/forum";
