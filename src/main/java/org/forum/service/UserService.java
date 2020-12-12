@@ -10,6 +10,10 @@ public interface UserService {
 
     List<User> findAll();
 
+    List<User> findRecentMoney();
+
+    List<User> findRecentPoints();
+
     User findOne(int id);
 
     User findByUsername(String username);

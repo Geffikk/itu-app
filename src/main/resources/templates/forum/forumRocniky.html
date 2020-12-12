@@ -11,22 +11,22 @@
 
             <div class="col s12 m6 l6">
                 <div class="card cardRocniky">
-                    <div class="card-title">Pomocné tlačítka!</div>
                     <div class="card-content center-align cardRocniky">
-                        <div>
-                            <a th:href="@{/forum}" class="btn rocnik navratoveTlacitko">Späť na rok</a>
+                        <div th:each="rok : ${roky}">
+                            <a th:href="@{/forum/rok/} + ${rok.id}" th:text="${rok.name}" th:classappend="${idRoku == rok.id ? '_' : 'indigo'}" class="btn  rocnik"></a>
                         </div>
                     </div>
                 </div>
             </div>
 
 
+
             <div class="col s12 m6 l6">
                 <div class="card cardRocniky">
-                    <div class="card-title">Vyber rocnik!</div>
+                    <div class="card-title">Vyber kategoriu!</div>
                     <div class="card-content center-align cardRocniky">
                         <div class="buttonclass" th:each="skolskyRok : ${skolskeRoky}">
-                            <a th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id}" th:text="${skolskyRok.name}" class="btn indigo rocnik"><i class="material-icons right dropdown-trigger" data-target="dropdown">arrow_drop_down</i></a>
+                            <a th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id}" th:text="${skolskyRok.name}" class="btn indigo rocnik"></a>
                         </div>
                     </div>
                 </div>

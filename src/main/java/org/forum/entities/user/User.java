@@ -1,8 +1,10 @@
 package org.forum.entities.user;
 
+import org.forum.entities.Post;
 import org.forum.entities.Section;
 import org.forum.entities.StudyYear;
 import org.forum.entities.Topic;
+
 
 import javax.persistence.*;
 import java.util.*;
@@ -55,7 +57,17 @@ public class User {
             joinColumns = @JoinColumn(name = "id_uzivatela"),
             inverseJoinColumns = @JoinColumn(name = "id_vlakna")
     )
-    private Set<Topic> favoriteTopics;
+    private List<Topic> favoriteTopics;
+
+
+    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinTable(
+            name = "uzivatel_like_prispevok",
+            joinColumns = @JoinColumn(name = "id_uzivatela"),
+            inverseJoinColumns = @JoinColumn(name = "id_prispevku")
+    )
+    private List<Post> likedPosts;
 
 
     /** CONSTRUCTORS **/
@@ -67,10 +79,12 @@ public class User {
     public User() {
     }
 
-    public User(String email, String username, String password) {
+    public User(String email, String username, String password, int points, int money) {
         this.email = email;
         this.username = username;
         this.password = password;
+        this.points = points;
+        this.money = money;
     }
 
     /** GETTERS AND SETTERS **/
@@ -156,12 +170,21 @@ public class User {
         this.info = info;
     }
 
-    public Set<Topic> getFavoriteTopics() {
+    public List<Topic> getFavoriteTopics() {
         return favoriteTopics;
     }
 
-    public void setFavoriteTopics(Set<Topic> favoriteTopics) {
+    public void setFavoriteTopics(List<Topic> favoriteTopics) {
         this.favoriteTopics = favoriteTopics;
+    }
+
+
+    public List<Post> getLikedPosts() {
+        return likedPosts;
+    }
+
+    public void setLikedPosts(List<Post> likedPosts) {
+        this.likedPosts = likedPosts;
     }
 
     public List<String> getRoleList() {
@@ -174,9 +197,16 @@ public class User {
 
     public void addFavoriteTopic(Topic topic){
         if(favoriteTopics == null){
-            favoriteTopics = new HashSet<>();
+            favoriteTopics = new ArrayList<>();
         }
         favoriteTopics.add(topic);
+    }
+
+    public void addLikedPost(Post post){
+        if(likedPosts == null){
+            likedPosts = new ArrayList<>();
+        }
+        likedPosts.add(post);
     }
 }
 

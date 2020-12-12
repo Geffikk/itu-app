@@ -5,17 +5,23 @@
 <body>
     <nav th:insert="fragments/navbar :: navbar"></nav>
 
-    <!--
-    <div class="oblubeneVlakna valign-wrapper">
-        <span>Oblubene temy: </span>
-        <div class="oblubenyPredmet" th:each="oblubeneVlakno : ${oblubeneVlakna}">
-            <a th:href="odkaznavlakno">
-                <span th:text="${oblubeneVlakno.getName()}"></span><br>
-                <span th:text="${oblubeneVlakno.getUser()}"></span>
-            </a>
+
+    <div class="oblubeneVlakna valign-wrapper  indigo darken-1">
+        <div class="oblubeneTemy">
+            <span class="white-text">Oblubene temy: </span>
+        </div>
+
+        <div class="oblubenyPredmet center-align" th:each="oblubeneVlakno : ${oblubeneVlakna}">
+            <div>
+                <!-- th:href="@{/forum/rok/} + ${oblubeneVlakno.getSection().getStudyYear().getYears().} + '/rocnik/' + ${oblubeneVlakno.getSection().getStudyYear().getId()} + '/skupina/' + ${oblubeneVlakno.getSection().getId()} + '/vlakno/' + ${oblubeneVlakno.getId()}" -->
+                <a class="oblubeneVlakno">
+                    <span th:text="${oblubeneVlakno.getTitle()}" class="white-text"></span><br>
+                    <span th:text="${oblubeneVlakno.getSection().getName()}" class="white-text"></span>
+                </a>
+            </div>
         </div>
     </div>
-    -->
+
 
     <div class="container forumContainer">
         <div class="row rowRok">

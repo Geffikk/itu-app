@@ -12,13 +12,13 @@
             <li><a th:href="@{/spinandwin}" class="indigo white-text">Happy Wheel</a></li>
         </ul>
         <div class="nav-wrapper">
-            <a href="#" class="brand-logo left hide-on-small-only"><img th:src="@{/resources/img/logo.png}" alt="" width=70 height="70"></a>
+            <a th:href="@{/}" class="brand-logo left hide-on-small-only"><img th:src="@{/resources/img/logo.png}" alt="" width=70 height="70"></a>
             <div class="kdeSom"><span th:text="'Aktuálna pozícia vo fóre: ' + ${currentPath}"></span></div>
             <a href="#" class="sidenav-trigger coverTrigger hide-on-med-and-up" data-target="mobile-links">
                 <i class="material-icons">menu</i>
             </a>
             <ul class="right hide-on-small-only">
-                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/}">Domov</a></li>
                 <li><a th:href="@{/forum}">Forum</a></li>
                 <li sec:authorize="!isAnonymous()"><a th:href="@{/profile}">Profil<i class="material-icons right dropdown-trigger" data-target="dropdown">arrow_drop_down</i></a></li>
                 <li sec:authorize="!isAnonymous()"><a th:href="@{/ranking}">Ranking</a></li>
@@ -30,9 +30,6 @@
                     <i class="material-icons">exit_to_app</i>
                 </a></li>
             </ul>
-        </div>
-        <div class="bluebox indigo">
-            <div class="username center-align center-vertical" th:text="${#authentication.getName()}"></div>
         </div>
         <ul class="sidenav" id="mobile-links">
             <li><a th:href="@{/}">Home</a></li>

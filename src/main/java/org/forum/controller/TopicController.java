@@ -45,11 +45,14 @@ public class TopicController {
     private YearService yearService;
 
     @RequestMapping(value = "{idVlakno}")
-    public String getTopicById(@PathVariable int idRoku, @PathVariable int idRocnik, @PathVariable int idSkupiny, @PathVariable int idVlakno, Model model) {
+    public String getTopicById(@PathVariable int idRoku, @PathVariable int idRocnik,
+                               @PathVariable int idSkupiny, @PathVariable int idVlakno,
+                               Model model, Authentication authentication) {
 
         Topic topic = topicService.findOne(idVlakno);
         NewPostFrom editPostFrom = new NewPostFrom();
 
+        model.addAttribute("uzivatel", userService.findByUsername(authentication.getName()));
         model.addAttribute("currentPath", yearService.findOne(idRoku).getName() + " / " + studyYearService.findOne(idRocnik).getName() + " / " + sectionService.findOne(idSkupiny).getName() + " / " + topicService.findOne(idVlakno).getTitle());
         model.addAttribute("skolskyRok", studyYearService.findOne(idRocnik));
         model.addAttribute("rok", yearService.findOne(idRoku));

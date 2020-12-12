@@ -9,23 +9,16 @@
 
     <div class="container forumContainer">
         <div class="row valign-wrapper">
-            <div class="col s12 m4 l4">
-                <div class="card cardRocniky">
-                    <div class="card-title">Pomocné tlačítka!</div>
-                    <div class="card-content center-align cardRocniky">
-                        <div>
-                            <a th:href="@{/forum}" class="btn rocnik navratoveTlacitko">Späť na rok</a>
-                        </div>
-                        <div>
-                            <a th:href="@{/forum} + '/rok/' + ${rok.id}" class="btn rocnik navratoveTlacitko">Späť na kategóriu</a>
-                        </div>
-                        <div>
-                            <a th:href="@{/forum} + '/rok/' + ${rok.id} + '/rocnik/' + ${skolskyRok.id}" class="btn rocnik navratoveTlacitko">Späť na skupinu</a>
+            <div class="col s12 m6 l6">
+                <div class="card sectionCard">
+                    <div class="card-content center-align">
+                        <div class="col s6 tlacitka1" th:each="skupina : ${skupiny}">
+                            <a th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id}" th:text="${skupina.name}" th:classappend="${skupinaId == skupina.id ? '_' : 'indigo'}" class="btn temyPodRocnikom"></a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col s12 m8 l8">
+            <div class="col s12 m6 l6">
                 <div class="card sectionCard">
                     <div class="scrollTopics">
                         <div class="col s12 jednoVlakno indigo white-text center-align" th:each="vlakno : ${vlakna}">

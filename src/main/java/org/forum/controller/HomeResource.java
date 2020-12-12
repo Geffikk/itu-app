@@ -1,5 +1,6 @@
 package org.forum.controller;
 
+import org.forum.entities.user.User;
 import org.forum.entities.user.UserProfile;
 import org.forum.entities.user.exception.UserNotFoundException;
 import org.forum.newform.NewSectionForm;
@@ -26,6 +27,8 @@ public class HomeResource {
     @Autowired
     private UserProfileService userProfileService;
 
+    @Autowired
+    private UserService userService;
     @RequestMapping(value = { "/help" })
     public String tryIt(Model model) {
         return "section/topic/text";
@@ -37,8 +40,11 @@ public class HomeResource {
     }
 
 
-    @RequestMapping(value = "/ranking")
+    @RequestMapping(value = "/rebricek")
     public String showRanking(Model model) {
+
+        model.addAttribute("uzivateliaMoney", userService.findRecentMoney());
+        model.addAttribute("uzivateliaPoints", userService.findRecentPoints());
         return "home/ranking";
     }
 
@@ -57,10 +63,14 @@ public class HomeResource {
 
     /** FORUM **/
     @RequestMapping(value = "/forum")
-    public String showForum(Model model) {
+    public String showForum(Model model, Authentication authentication) {
         // TODO: 10/12/2020
         //spravit premennu oblubeneVlakna -> podla authorization.name si vyhladat uzivatela
         // a vybrat z neho jeho oblubene vlakna
+
+        User user = userService.findByUsername(authentication.getName());
+
+        model.addAttribute("oblubeneVlakna", user.getFavoriteTopics());
         model.addAttribute("currentPath", "null");
         model.addAttribute("roky", yearService.findAll());
         return "forum/forum";
