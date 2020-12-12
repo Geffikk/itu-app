@@ -41,6 +41,8 @@ public class StudyYearController {
                                        Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Year year = yearService.findOne(idRoku);
+        StudyYear studyYear = studyYearService.findOne(idRocnik);
 
         if(authentication.getName().equals("anonymousUser")){
             model.addAttribute("oblubeneVlakna", null);
@@ -50,11 +52,11 @@ public class StudyYearController {
             model.addAttribute("oblubeneVlakna", user.getFavoriteTopics());
         }
 
-        model.addAttribute("rok", yearService.findOne(idRoku));
-        model.addAttribute("currentPath", yearService.findOne(idRoku).getName() + " / " + studyYearService.findOne(idRocnik).getName() + " / ");
-        model.addAttribute("skolskyRok", studyYearService.findOne(idRocnik));
-        model.addAttribute("skolskeRoky", studyYearService.findByYear(yearService.findOne(idRoku)));
-        model.addAttribute("skupiny", sectionService.findByStudyYear(studyYearService.findOne(idRocnik)));
+        model.addAttribute("rok", year);
+        model.addAttribute("currentPath", year.getName() + " / " + studyYear.getName() + " / ");
+        model.addAttribute("skolskyRok", studyYear);
+        model.addAttribute("skolskeRoky", studyYearService.findByYear(year));
+        model.addAttribute("skupiny", sectionService.findByStudyYear(studyYear));
         model.addAttribute("idSkolskehoRoku", idRocnik);
         return "forum/forumSkupiny";
     }
