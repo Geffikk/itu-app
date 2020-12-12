@@ -4,7 +4,7 @@
 </head>
 
 <body>
-    <footer th:fragment="footer" class="page-footer indigo">
+    <footer th:fragment="footer" class="page-footer indigo" id="down">
         <div class="container">
             <div class="row">
                 <div class="col l6 s12">
@@ -36,6 +36,13 @@
             $(document).ready(function(){
                 $('.modal').modal()
             });
+        </script>
+        <script>
+            // When the user clicks on <div>, open the popup
+            function showPopUp() {
+                var popup = document.getElementById("myPopup");
+                popup.classList.toggle("show");
+            }
         </script>
     </footer>
 </body>

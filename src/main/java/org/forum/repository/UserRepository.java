@@ -14,5 +14,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findByEmail(String email);
 
+    List<User> findTop5ByOrderByMoneyDesc();
+
+    List<User> findTop5ByOrderByPointsDesc();
+
     List<User> findByUsernameLike(String s);
 }

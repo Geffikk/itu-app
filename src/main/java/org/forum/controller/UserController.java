@@ -47,7 +47,7 @@ public class UserController {
     private UserAdditionalInfoService userAdditionalInfoService;
 
 
-    @RequestMapping(value = "/myprofile")
+    @RequestMapping(value = "/mojProfil")
     public String myProfile(Authentication authentication,
                             Model model) {
         String username = authentication.getName();

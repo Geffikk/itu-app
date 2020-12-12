@@ -8,40 +8,64 @@
     <!-- CONTENT-->
 
 
-  <div class="container rankingContainer">
-   
-    <div class="row">
-      <div class="col s12 m6">
+  <div class="container">
+    <div class="row rowRanking">
+      <div class="col s12 m6 l6">
           <div class="card">
               <div class="card-content">
-                  <span class="card-title">Top 10 poradcov!!!</span>
-                  <p>1. Tomino Lisicky</p>
-                  <p>2. Tomino Lisicky</p>
-                  <p>3. Tomino Lisicky</p>
-                  <p>4. Tomino Lisicky</p>
-                  <p>5. Tomino Lisicky</p>
-                  <p>6. Tomino Lisicky</p>
-                  <p>7. Tomino Lisicky</p>
-                  <p>8. Tomino Lisicky</p>
-                  <p>9. Tomino Lisicky</p>
-                  <p>10. Tomino Lisicky</p>
+                  <span class="card-title">Top 5 poradcov!!!</span>
+                  <div th:each="uzivatelP, iterStat1 : ${uzivateliaPoints}" class="valign-wrapper">
+                      <div th:if="${iterStat1.index == 0}" class="valign-wrapper firstPlace">
+                          <i class="material-icons firstPlace">looks_one</i>
+                          <span th:text="${uzivatelP.getUsername()} + ' - počet bodov: ' + ${uzivatelP.getPoints()}"></span>
+                      </div>
+                      <div th:if="${iterStat1.index == 1}" class="valign-wrapper secondPlace">
+                          <i class="material-icons secondPlace">looks_two</i>
+                          <span th:text="${uzivatelP.getUsername()} + ' - počet bodov: ' + ${uzivatelP.getPoints()}"></span>
+                      </div>
+                      <div th:if="${iterStat1.index == 2}" class="valign-wrapper thirdPlace">
+                          <i class="material-icons thirdPlace">looks_3</i>
+                          <span th:text="${uzivatelP.getUsername()} + ' - počet bodov: ' + ${uzivatelP.getPoints()}"></span>
+                      </div>
+                      <div th:if="${iterStat1.index == 3}" class="valign-wrapper" style="margin-left: 4px">
+                          <i class="material-icons" style="margin-right: 7px">looks_4</i>
+                          <span th:text="${uzivatelP.getUsername()} + ' - počet bodov: ' + ${uzivatelP.getPoints()}"></span>
+                      </div>
+                      <div th:if="${iterStat1.index == 4}" class="valign-wrapper" style="margin-left: 4px">
+                          <i class="material-icons" style="margin-right: 7px">looks_5</i>
+                          <span th:text="${uzivatelP.getUsername()} + ' - počet bodov: ' + ${uzivatelP.getPoints()}"></span>
+                      </div>
+
+                  </div>
               </div>
           </div>
       </div>
-      <div class="col s12 m6">
+      <div class="col s12 m6 l6">
         <div class="card">
             <div class="card-content">
-                <span class="card-title">Top 10 rich bitches!!!</span>
-                <p>1. Tomino Lisicky</p>
-                <p>2. Tomino Lisicky</p>
-                <p>3. Tomino Lisicky</p>
-                <p>4. Tomino Lisicky</p>
-                <p>5. Tomino Lisicky</p>
-                <p>6. Tomino Lisicky</p>
-                <p>7. Tomino Lisicky</p>
-                <p>8. Tomino Lisicky</p>
-                <p>9. Tomino Lisicky</p>
-                <p>10. Tomino Lisicky</p>
+                <span class="card-title">Top 5 rich bitches!!!</span>
+                <div th:each="uzivatelM, iterStat2 : ${uzivateliaMoney}">
+                    <div th:if="${iterStat2.index == 0}" class="valign-wrapper firstPlace">
+                        <i class="material-icons firstPlace">looks_one</i>
+                        <span th:text="${uzivatelM.getUsername()} + ' - počet peňazí: ' + ${uzivatelM.getMoney() + '$'}"></span>
+                    </div>
+                    <div th:if="${iterStat2.index == 1}" class="valign-wrapper secondPlace">
+                        <i class="material-icons secondPlace">looks_two</i>
+                        <span th:text="${uzivatelM.getUsername()} + ' - počet peňazí: ' + ${uzivatelM.getMoney() + '$'}"></span>
+                    </div>
+                    <div th:if="${iterStat2.index == 2}" class="valign-wrapper thirdPlace">
+                        <i class="material-icons thirdPlace">looks_3</i>
+                        <span th:text="${uzivatelM.getUsername()} + ' - počet peňazí: ' + ${uzivatelM.getMoney() + '$'}"></span>
+                    </div>
+                    <div th:if="${iterStat2.index == 3}" class="valign-wrapper" style="margin-left: 4px">
+                        <i class="material-icons" style="margin-right: 7px">looks_4</i>
+                        <span th:text="${uzivatelM.getUsername()} + ' - počet peňazí: ' + ${uzivatelM.getMoney() + '$'}"></span>
+                    </div>
+                    <div th:if="${iterStat2.index == 4}" class="valign-wrapper" style="margin-left: 4px">
+                        <i class="material-icons" style="margin-right: 7px">looks_5</i>
+                        <span th:text="${uzivatelM.getUsername()} + ' - počet peňazí: ' + ${uzivatelM.getMoney() + '$'}"></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
