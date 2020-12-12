@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.forumandroid.R;
@@ -23,15 +24,16 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText registerName, registerEmail, registerPassword, registerPasswordCheck;
     private Button registerButton;
     private ProgressBar registerProgressBar;
+    private TextView registerTextView;
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        if ( firebaseAuth.getCurrentUser() != null ) {
-            /* User already logged in */
-            showHomeActivityAndFinish();
-        }
+//        if ( firebaseAuth.getCurrentUser() != null ) {
+//            /* User already logged in */
+//            showHomeActivityAndFinish();
+//        }
     }
 
     @Override
@@ -44,11 +46,12 @@ public class RegisterActivity extends AppCompatActivity {
 
         // Initialize widgets
         registerName = findViewById(R.id.registerName);
-        registerEmail = findViewById(R.id.loginEmail);
-        registerPassword = findViewById(R.id.loginPassword);
+        registerEmail = findViewById(R.id.registerEmail);
+        registerPassword = findViewById(R.id.registerPassword);
         registerPasswordCheck = findViewById(R.id.registerPasswordCheck);
-        registerButton = findViewById(R.id.loginButton);
-        registerProgressBar = findViewById(R.id.loginProgressBar);
+        registerButton = findViewById(R.id.registerButton);
+        registerProgressBar = findViewById(R.id.registerProgressBar);
+        registerTextView = findViewById(R.id.registerTextView);
 
         registerProgressBar.setVisibility(View.INVISIBLE);
 
@@ -75,6 +78,9 @@ public class RegisterActivity extends AppCompatActivity {
                 CreateAccount(registerEmailText, registerPasswordText, registerNameText);
             }
         });
+
+        // Set text view redirect to login activity
+        registerTextView.setOnClickListener(view -> showLoginActivity());
     }
 
     private void CreateAccount(String registerEmailText, String registerPasswordText, String registerNameText) {
@@ -83,7 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
                 /* Registration successful */
                 showMessage("Account successfully created.");
                 updateUserName(registerNameText, firebaseAuth.getCurrentUser());
-                showHomeActivityAndFinish();
+                showHomeActivity();
             }
             else {
                 /* Registration not successful */
@@ -92,8 +98,13 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void showHomeActivityAndFinish() {
+    private void showHomeActivity() {
         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+        finish();
+    }
+
+    private void showLoginActivity() {
+        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         finish();
     }
 

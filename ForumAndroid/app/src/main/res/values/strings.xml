@@ -5,6 +5,8 @@
     <string name="password">Password</string>
     <string name="password_check">Confirm Password</string>
     <string name="register">Register</string>
-    <string name="login">Login</string>
-    <string name="not_registered">Not registered yet? Create account now.</string>
+    <string name="login">Log-in</string>
+    <string name="not_registered"><u>Not registered yet? Create an account now.</u></string>
+    <string name="wants_login"><u>Already have and account? log in.</u></string>
+    <string name="user_head_image">User head image</string>
 </resources>

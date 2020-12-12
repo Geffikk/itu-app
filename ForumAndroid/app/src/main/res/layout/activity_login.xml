@@ -14,6 +14,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
+        android:contentDescription="@string/user_head_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -26,6 +27,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
+        android:autofillHints="@string/email"
         android:background="@drawable/activity_register_text_style"
         android:ems="10"
         android:hint="@string/email"
@@ -44,6 +46,7 @@
         android:background="@drawable/activity_register_text_style"
         android:ems="10"
         android:hint="@string/password"
+        android:autofillHints="@string/password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,9 +83,9 @@
         android:layout_marginTop="16dp"
         android:clickable="true"
         android:text="@string/not_registered"
-        android:textIsSelectable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+        app:layout_constraintTop_toBottomOf="@+id/loginButton"
+        android:textColor="#949400" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
