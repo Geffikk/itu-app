@@ -33,6 +33,8 @@ public class HomeResource {
     public String tryIt(Model model) {
         return "section/topic/text";
     }
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = { "/", "/home" })
     public String home(Model model) {
