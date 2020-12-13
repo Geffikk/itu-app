@@ -12,10 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ForumAndroid"
         tools:replace="android:allowBackup">
+        <activity android:name=".Activities.ProfileActivity"></activity>
+        <activity android:name=".Activities.SettingsActivity" />
+        <activity android:name=".Activities.ThreadActivity" />
+        <activity
+            android:name=".Activities.ThreadsActivity"
+            android:label="@string/title_activity_threads"
+            android:theme="@style/Theme.ForumAndroid.NoActionBar" />
         <activity
             android:name=".Activities.NavigationActivity"
             android:label="@string/title_activity_navigation"
-            android:theme="@style/Theme.ForumAndroid.NoActionBar"></activity>
+            android:theme="@style/Theme.ForumAndroid.NoActionBar" />
         <activity android:name=".Activities.HomeActivity" />
         <activity android:name=".Activities.RegisterActivity" />
         <activity android:name=".Activities.LoginActivity">
