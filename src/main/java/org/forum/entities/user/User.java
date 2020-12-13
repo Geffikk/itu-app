@@ -293,6 +293,14 @@ public class User {
         return not.toString();
     }
 
+
+    public List<String> getReadTopicsList() {
+        if(this.readTopics.length() > 0) {
+            return Arrays.asList(this.readTopics.split(","));
+        }
+        return new ArrayList<>();
+    }
+
     public void addFavoriteTopic(Topic topic){
         if(favoriteTopics == null){
             favoriteTopics = new ArrayList<>();

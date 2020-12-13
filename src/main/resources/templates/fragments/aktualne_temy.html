@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:insert="fragments/head :: head">
+</head>
+<body>
+<div th:fragment="aktualne_temy" class="row indigo lighten-1">
+    <div class="col s1" style="padding: 3px">
+        <button class="btn right indigo darken-3 modal-trigger" href="#akTemy" type="submit" style="border-radius: 5px" >
+                Aktuálne témy
+        </button>
+    </div>
+    <!-- Modal Structure -->
+    <div class="modal" id="akTemy">
+        <div class="col s12 indigo jednoVlakno white-text center-align" th:each="aktualnaTema : ${aktualneTemy}">
+            <a class="white-text" th:href="@{/forum/rok/} + ${aktualnaTema.getSection().getStudyYear().getYear().getId()} + '/rocnik/' + ${aktualnaTema.getSection().getStudyYear().getId()} + '/skupina/' + ${aktualnaTema.getSection().getId()} + '/vlakno/' + ${aktualnaTema.id}">
+                <span class="nazovVlakna" th:text="${aktualnaTema.title}"></span><br>
+                <span th:text="'Autor: ' + ${aktualnaTema.getUser().getUsername()}"></span><br>
+                <span th:text="${aktualnaTema.creationDate} ? ${#calendars.format(aktualnaTema.creationDate, 'HH:mm:ss')} + ' - ' + ${#calendars.format(aktualnaTema.creationDate, 'dd MMMM yyyy')}"></span>
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
