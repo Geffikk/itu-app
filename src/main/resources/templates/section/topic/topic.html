@@ -35,24 +35,46 @@
 <div class="container">
     <div class="row z-depth-1 indigo darken-3" style="margin-bottom: 40px; padding: 10px;">
         <div class="col s12">
-            <h5 class="white-text">
+
+
+            <h5 th:if="${!topic.isClosed()}" class="white-text">
                 <a th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id}" th:text="${topic.section.name}" class="btn-large indigo waves-effect waves-blue" style="font-family: 'Comic Sans MS'; color: inherit;"></a>
                 -> <span style="font-family: 'Comic Sans MS'" th:text="${topic.title}"></span>
             </h5>
-            <div th:if="${#authentication.getName().equals('ANONYMOUS')}" class="like right">
-                <form th:action="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/add'">
+            <h5 th:if="${topic.isClosed()}" class="white-text">
+                <a th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id}" th:text="${topic.section.name}" class="btn-large indigo waves-effect waves-blue" style="font-family: 'Comic Sans MS'; color: inherit;"></a>
+                -> <span style="font-family: 'Comic Sans MS'" th:text="${topic.title}"></span> -> ZAVRETÉ
+            </h5>
+
+            <div class="">
+                <form th:action="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/readWhole'">
+                    <button type="submit" class="btn-floating btn indigo darken-4 right">
+                        <i class="material-icons">done</i>
+                    </button>
+                </form>
+            </div>
+
+            <div class="">
+                <form th:action="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/delete/' + ${topic.id}" method="get">
+                    <button type="submit" class="btn-floating btn indigo darken-4 right">
+                        <i class="material-icons">delete_forever</i>
+                    </button>
+                </form>
+            </div>
+
+
+
+            <div th:if="${!uzivatel.getUsername().equals('ANONYMOUS')}" class="like right">
+                <form th:action="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/addToFav'">
                     <button th:if="${!uzivatel.getFavoriteTopics().contains(topic)}" type="submit" class="btn-floating btn indigo darken-4 right">
                         <i class="material-icons">favorite_border</i>
                     </button>
+                </form>
+                <form th:action="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/deleteFromFav'">
                     <button th:if="${uzivatel.getFavoriteTopics().contains(topic)}" type="submit" class="btn-floating btn indigo darken-4 right">
                         <i class="material-icons">favorite</i>
                     </button>
                 </form>
-                <!--
-                <a th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/add'">
-                    <i class="material-icons">favorite_border</i>
-                </a>
-                -->
             </div>
         </div>
     </div>
@@ -117,14 +139,21 @@
     </div>
 
     <!-- POSTS -->
-    <div class="row z-depth-1" th:each="post : ${posts}" th:id="${post.id}" style="border-radius: 15px">
+    <div class="row z-depth-1" th:each="post : ${posts}" th:id="${post.id}" th:classappend="${uzivatel.getReadTopicsList().contains(stringIdTopic) and post.isRead()} ? precitaneVlakno : neprecitaneVlakno" style="border-radius: 15px">
 
         <div style="border-style: solid; border-color: midnightblue; border-radius: 15px">
             <div class="row" style="margin-bottom: 0;">
-                <div class="right">
-                    <a href="#" class="btn indigo" style="border-radius: 0px 13px 0px 0px;">
-                        <i class="material-icons">done_outline</i>
-                    </a>
+                <div th:if="${topic.getUser().getUsername().equals(#authentication.getName())}" class="right">
+                    <form th:action="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/prispevok/' + ${post.id} + '/zavri'">
+                        <button th:disabled="${topic.isClosed()}" th:if="${!post.isSolution() and !topic.isClosed()}" type="submit" class="btn indigo" style="border-radius: 0px 13px 0px 0px;">
+                            <i class="">Oznacit ako riesenie</i>
+                        </button>
+                    </form>
+                    <form>
+                        <button th:disabled="${topic.isClosed()}" th:if="${post.isSolution()}" type="submit" class="btn indigo" style="border-radius: 0px 13px 0px 0px;">
+                            <i class="">Riesenie problemu</i>
+                        </button>
+                    </form>
                 </div>
 
                 <!-- Author & Date -->
@@ -165,11 +194,11 @@
             <div class="row rowFotter">
 
                 <div class="center-align likeDiv">
-                    <a th:disabled="${post.getGotLikeFromUsers().contains(uzivatel) or #authentication.getName().equals('ANONYMOUS')}" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/prispevok/pridaj1/' + ${post.id}" class="btn indigo sipka">
+                    <a th:disabled="${post.getGotLikeFromUsers().contains(uzivatel) or uzivatel.getUsername().equals('ANONYMOUS') or topic.isClosed()}" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/prispevok/pridaj1/' + ${post.id}" class="btn indigo sipka">
                         <i class="material-icons">thumb_up</i>
                     </a>
                     <span th:text="${post.ranking}" class="rankingCislo"></span>
-                    <a th:disabled="${post.getGotLikeFromUsers().contains(uzivatel) or #authentication.getName().equals('ANONYMOUS')}" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/prispevok/odcitaj1/' + ${post.id}" class="btn indigo sipka">
+                    <a th:disabled="${post.getGotLikeFromUsers().contains(uzivatel) or uzivatel.getUsername().equals('ANONYMOUS') or topic.isClosed()}" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/prispevok/odcitaj1/' + ${post.id}" class="btn indigo sipka">
                         <i class="material-icons">thumb_down</i>
                     </a>
 
@@ -185,11 +214,19 @@
                 <div>
                     <div th:if="${#authentication.getName().equals(post.topic.user.username)}">
                         <div class="col s2 right" style="margin-top: -38px">
-                            <a class="btn-floating btn-small btnred darken-4 right" th:href="@{/post/delete/} + ${post.id}" style="margin-left: 10px">
+                            <!--
+                            <a th:disabled="${topic.isClosed()}" class="btn-floating btn-small btnred darken-4 right" th:href="@{/post/delete/} + ${post.id}" style="margin-left: 10px">
                                 <i class="material-icons black-text red darken-4">delete</i>
                             </a>
-                            <form th:action="@{/topic/} + ${topic.id} + '/edit/' + ${post.id}">
-                                <button type="submit" class="btn-floating btn btn-small material-icons black-text yellow darken-1 right">
+                            -->
+
+                            <form th:action="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/prispevok/delete/' + ${post.id}">
+                                <button th:disabled="${topic.isClosed()}" type="submit" class="btn-floating btn btn-small material-icons black-text yellow darken-1 right">
+                                    <i class="material-icons black-text red darken-4">delete</i>
+                                </button>
+                            </form>
+                            <form th:action="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/edit/' + ${post.id}">
+                                <button th:disabled="${topic.isClosed()}" type="submit" class="btn-floating btn btn-small material-icons black-text yellow darken-1 right">
                                     <i class="material-icons black-text yellow darken-4">edit</i>
                                 </button>
                             </form>
@@ -201,7 +238,7 @@
     </div>
 
     <!-- SECTION REPLY -->
-    <div class="row">
+    <div th:if="${!topic.isClosed()}" class="row">
         <form th:action="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id}
                                 + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id}" method="POST" th:object="${newPost}">
             <div th:if="${#authorization.expression('hasRole(''ROLE_TEXT'')')}">

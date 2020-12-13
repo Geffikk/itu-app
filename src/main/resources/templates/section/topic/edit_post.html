@@ -11,7 +11,7 @@
         <div class="row" style="padding-top: 75px;">
             <div class="col s1 m2 l4"></div> <!-- center isn't doing its job, so... -->
             <div class="col s10 m8 l4 z-depth-1">
-                <form th:action="@{/topic/} + ${topic.id} + '/save/' + ${idPost}" method="POST" th:object="${editPost}">
+                <form th:action="@{forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/save/' + ${idPost}" method="POST" th:object="${editPost}">
                     <div class="row">
                         <div class="input-field col s12">
                             <input type="text" th:field="*{content}" th:value="*{content}" id="content" name="content"/>

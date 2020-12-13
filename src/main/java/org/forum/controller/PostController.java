@@ -91,8 +91,37 @@ public class PostController {
         post.setRanking(post.getRanking()-1);
         postService.save(post);
 
+        return "redirect:/forum/rok/" + year.getId() + "/rocnik/" + studyYear.getId() + "/skupina/" + section.getId() + "/vlakno/" + topic.getId();
+    }
 
+    @RequestMapping(value = "/{idPrispevku}/zavri")
+    private String closeTopic(@PathVariable int idRoku, @PathVariable int idRocnik,
+                              @PathVariable int idSkupiny, @PathVariable int idVlakno,
+                              @PathVariable int idPrispevku, Model model, Authentication authentication){
 
+        Year year = yearService.findOne(idRoku);
+        StudyYear studyYear = studyYearService.findOne(idRocnik);
+        Section section = sectionService.findOne(idSkupiny);
+        Topic topic = topicService.findOne(idVlakno);
+        Post post = postService.findOne(idPrispevku);
+        User creatorOfPost =  post.getUser();
+
+        //Pridaj peniaze zakladatelovi prispevku
+        creatorOfPost.setMoney(post.getUser().getMoney() + 1000);
+
+        //Pridaj body zakladatelovi prispevku
+        creatorOfPost.setPoints(post.getUser().getPoints() + 1000);
+
+        //Nastavit prispevok ako riesenie
+        post.setSolution(true);
+
+        //zavriet topic
+        topic.setClosed(true);
+
+        //ulozit do db
+        userService.save(creatorOfPost);
+        topicService.save(topic);
+        postService.save(post);
 
         return "redirect:/forum/rok/" + year.getId() + "/rocnik/" + studyYear.getId() + "/skupina/" + section.getId() + "/vlakno/" + topic.getId();
     }

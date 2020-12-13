@@ -16,9 +16,9 @@ public interface TopicRepository extends JpaRepository<Topic, Integer> {
 
     Set<Topic> findByUser(User user);
 
-    Set<Topic> findAllByOrderByCreationDateDesc();
+    List<Topic> findAllByOrderByCreationDateDesc();
 
-    Set<Topic> findTop5ByOrderByCreationDateDesc();
+    List<Topic> findTop5ByOrderByCreationDateDesc();
 
     List<Topic> findByContentLike(String s);
 

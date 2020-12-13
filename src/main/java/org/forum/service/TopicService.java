@@ -15,9 +15,9 @@ public interface TopicService {
 
     Topic findOne(int id);
 
-    Set<Topic> findRecent();
+    List<Topic> findRecent();
 
-    Set<Topic> findAllByOrderByCreationDateDesc();
+    List<Topic> findAllByOrderByCreationDateDesc();
 
     Set<Topic> findBySection(Section section);
 

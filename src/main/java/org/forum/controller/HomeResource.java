@@ -100,6 +100,7 @@ public class HomeResource {
             model.addAttribute("oblubeneVlakna", user.getFavoriteTopics());
         }
 
+        model.addAttribute("aktualneTemy", topicService.findRecent());
         try {
             model.addAttribute("user", userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
         } catch (Exception e) {

@@ -4,10 +4,7 @@ package org.forum.controller;
 import org.forum.entities.StudyYear;
 import org.forum.entities.Year;
 import org.forum.entities.user.User;
-import org.forum.service.SectionService;
-import org.forum.service.StudyYearService;
-import org.forum.service.UserService;
-import org.forum.service.YearService;
+import org.forum.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.core.Authentication;
@@ -35,13 +32,16 @@ public class StudyYearController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private TopicService topicService;
+
     /** STUDY YEAR OVERVIEW **/
     @RequestMapping("{idRocnik}")
     public String getSectionsFromStudyYear(@PathVariable int idRoku, @PathVariable int idRocnik,
                                        Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Year year = yearService.findOne(idRoku);
+
         StudyYear studyYear = studyYearService.findOne(idRocnik);
 
         if(authentication.getName().equals("anonymousUser")){
@@ -52,10 +52,11 @@ public class StudyYearController {
             model.addAttribute("oblubeneVlakna", user.getFavoriteTopics());
         }
 
-        model.addAttribute("rok", year);
-        model.addAttribute("currentPath", year.getName() + " / " + studyYear.getName() + " / ");
+        model.addAttribute("aktualneTemy", topicService.findRecent());
+        model.addAttribute("rok", studyYear.getYear());
+        model.addAttribute("currentPath", studyYear.getYear().getName() + "/" + studyYear.getName() + "/");
         model.addAttribute("skolskyRok", studyYear);
-        model.addAttribute("skolskeRoky", studyYearService.findByYear(year));
+        model.addAttribute("skolskeRoky", studyYearService.findByYear(studyYear.getYear()));
         model.addAttribute("skupiny", sectionService.findByStudyYear(studyYear));
         model.addAttribute("idSkolskehoRoku", idRocnik);
         try {

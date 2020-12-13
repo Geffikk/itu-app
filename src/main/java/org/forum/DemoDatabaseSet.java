@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.io.File;
 import java.util.*;
 
 
@@ -14,7 +15,7 @@ public class DemoDatabaseSet {
 
         // create session factories
         SessionFactory factory = new Configuration()
-                .configure("hibernate.cfg.xml")
+                .configure(new File("hibernate.cfg.xml"))
                 .addAnnotatedClass(Post.class)
                 .addAnnotatedClass(Topic.class)
                 .addAnnotatedClass(Section.class)

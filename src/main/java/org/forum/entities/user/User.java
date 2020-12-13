@@ -46,6 +46,9 @@ public class User {
     @Column(name = "rola")
     private String role = "USER";
 
+    @Column(name = "precitane_skupiny")
+    private String readTopics = "";
+
     @Column(name = "upozornenia")
     private String notifications = "";
 
@@ -206,6 +209,14 @@ public class User {
         this.likedPosts = likedPosts;
     }
 
+    public String getReadTopics() {
+        return readTopics;
+    }
+
+    public void setReadTopics(String readTopics) {
+        this.readTopics = readTopics;
+    }
+
     public List<String> getRoleList() {
         List<String> temp_permissions = new ArrayList<>();
 
@@ -282,6 +293,12 @@ public class User {
         return not.toString();
     }
 
+    }
+        return new ArrayList<>();
+        }
+            return Arrays.asList(this.readTopics.split(","));
+        if(this.readTopics.length() > 0) {
+    public List<String> getReadTopicsList() {
     public void addFavoriteTopic(Topic topic){
         if(favoriteTopics == null){
             favoriteTopics = new ArrayList<>();

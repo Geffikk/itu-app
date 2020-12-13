@@ -4,10 +4,7 @@ package org.forum.controller;
 import org.forum.entities.StudyYear;
 import org.forum.entities.Year;
 import org.forum.entities.user.User;
-import org.forum.service.SectionService;
-import org.forum.service.StudyYearService;
-import org.forum.service.UserService;
-import org.forum.service.YearService;
+import org.forum.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.core.Authentication;
@@ -32,7 +29,7 @@ public class YearController {
     private StudyYearService studyYearService;
 
     @Autowired
-    private SectionService sectionService;
+    private TopicService topicService;
 
     /** STUDY YEAR OVERVIEW **/
     @RequestMapping("{idRoku}")
@@ -51,7 +48,8 @@ public class YearController {
             model.addAttribute("oblubeneVlakna", user.getFavoriteTopics());
         }
 
-        model.addAttribute("currentPath", year.getName() + " / ");
+        model.addAttribute("aktualneTemy", topicService.findRecent());
+        model.addAttribute("currentPath", year.getName() + "/");
         model.addAttribute("skolskeRoky", studyYearService.findByYear(year));
         model.addAttribute("roky", yearService.findAll());
         model.addAttribute("rok", year);

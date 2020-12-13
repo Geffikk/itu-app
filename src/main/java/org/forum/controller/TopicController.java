@@ -41,21 +41,12 @@ public class TopicController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private StudyYearService studyYearService;
 
-    @Autowired
-    private YearService yearService;
 
     @RequestMapping(value = "{idVlakno}")
-    public String getTopicById(@PathVariable int idRoku, @PathVariable int idRocnik,
-                               @PathVariable int idSkupiny, @PathVariable int idVlakno,
-                               Model model) {
+    public String getTopicById(@PathVariable int idVlakno, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Year year = yearService.findOne(idRoku);
-        StudyYear studyYear = studyYearService.findOne(idRocnik);
-        Section section = sectionService.findOne(idSkupiny);
         Topic topic = topicService.findOne(idVlakno);
         NewPostFrom editPostFrom = new NewPostFrom();
 
@@ -71,10 +62,10 @@ public class TopicController {
             model.addAttribute("uzivatel", user);
         }
 
-        model.addAttribute("currentPath", year.getName() + " / " + studyYear.getName() + " / " + section.getName() + " / " + topic.getTitle());
-        model.addAttribute("skolskyRok", studyYear);
-        model.addAttribute("rok", year);
-        model.addAttribute("skupina", section);
+        model.addAttribute("currentPath", topic.getSection().getStudyYear().getYear().getName() + "/" + topic.getSection().getStudyYear().getName() + "/" + topic.getSection().getName() + "/" + topic.getTitle());
+        model.addAttribute("skolskyRok", topic.getSection().getStudyYear());
+        model.addAttribute("rok", topic.getSection().getStudyYear().getYear());
+        model.addAttribute("skupina", topic.getSection());
         model.addAttribute("editPost", editPostFrom);
         model.addAttribute("topic", topic);
         model.addAttribute("posts", postService.findByTopic(idVlakno));
@@ -84,11 +75,14 @@ public class TopicController {
         } catch (Exception e) {
             model.addAttribute("user", null);
         }
+        model.addAttribute("stringIdTopic", String.valueOf(topic.getId()));
         return "section/topic/topic";
     }
 
-    @RequestMapping(value = "{idVlakno}/add")
-    public String addTopicToFavorite(@PathVariable int idRocnik, @PathVariable int idRoku, @PathVariable int idSkupiny, @PathVariable int idVlakno, Model model) {
+
+    /** PRIDAJ VLAKNO K OBLUBENYM **/
+    @RequestMapping(value = "{idVlakno}/addToFav")
+    public String addTopicToFavorite(@PathVariable int idVlakno, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -106,70 +100,146 @@ public class TopicController {
             model.addAttribute("uzivatel", user);
         }
 
-        Year year = yearService.findOne(idRoku);
-        StudyYear studyYear = studyYearService.findOne(idRocnik);
-        Section section = sectionService.findOne(idSkupiny);
         Topic topic = topicService.findOne(idVlakno);
         NewPostFrom editPostFrom = new NewPostFrom();
 
         user.addFavoriteTopic(topic);
         userService.save(user);
 
-        model.addAttribute("aktualnyRocnik", studyYear);
-        model.addAttribute("aktualnyRok", year);
-        model.addAttribute("aktualnaSkupina", section);
+        model.addAttribute("aktualnyRocnik", topic.getSection().getStudyYear());
+        model.addAttribute("aktualnyRok", topic.getSection().getStudyYear().getYear());
+        model.addAttribute("aktualnaSkupina", topic.getSection());
 
         model.addAttribute("editPost", editPostFrom);
-        model.addAttribute("currentPath", year.getName() + " / " + studyYear.getName() + " / " + section.getName() + " / " + topic.getTitle());
+        model.addAttribute("currentPath", topic.getSection().getStudyYear().getYear().getName() + " / " + topic.getSection().getStudyYear().getName() + " / " + topic.getSection().getName() + " / " + topic.getTitle());
         model.addAttribute("topic", topic);
         model.addAttribute("posts", postService.findByTopic(idVlakno));
         model.addAttribute("newPost", new NewPostFrom());
-        return "redirect:/forum/rok/" + year.getId() + "/rocnik/" + studyYear.getId() + "/skupina/" + section.getId() + "/vlakno/" + topic.getId();
+        return "redirect:/forum/rok/" + topic.getSection().getStudyYear().getYear().getId() + "/rocnik/" + topic.getSection().getStudyYear().getId() + "/skupina/" + topic.getSection().getId() + "/vlakno/" + topic.getId();
     }
 
+    /** ODOBER VLAKNO Z OBLUBENYCH **/
+    @RequestMapping(value = "{idVlakno}/deleteFromFav")
+    public String deleteTopicFromFavorite(@PathVariable int idVlakno, Model model) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = new User();
+
+        if(authentication.getName().equals("anonymousUser")){
+            model.addAttribute("oblubeneVlakna", null);
+            User tempUser = new User();
+            tempUser.setUsername("ANONYMOUS");
+            model.addAttribute("uzivatel", tempUser);
+        }
+        else{
+            user = userService.findByUsername(authentication.getName());
+            model.addAttribute("oblubeneVlakna", user.getFavoriteTopics());
+            model.addAttribute("uzivatel", user);
+        }
+
+        Topic topic = topicService.findOne(idVlakno);
+        NewPostFrom editPostFrom = new NewPostFrom();
+
+        user.getFavoriteTopics().remove(topic);
+        userService.save(user);
+
+        model.addAttribute("aktualnyRocnik", topic.getSection().getStudyYear());
+        model.addAttribute("aktualnyRok", topic.getSection().getStudyYear().getYear());
+        model.addAttribute("aktualnaSkupina", topic.getSection());
+
+        model.addAttribute("editPost", editPostFrom);
+        model.addAttribute("currentPath", topic.getSection().getStudyYear().getYear().getName() + "/" + topic.getSection().getStudyYear().getName() + "/" + topic.getSection().getName() + "/" + topic.getTitle());
+        model.addAttribute("topic", topic);
+        model.addAttribute("posts", postService.findByTopic(idVlakno));
+        model.addAttribute("newPost", new NewPostFrom());
+        return "redirect:/forum/rok/" + topic.getSection().getStudyYear().getYear().getId() + "/rocnik/" + topic.getSection().getStudyYear().getId() + "/skupina/" + topic.getSection().getId() + "/vlakno/" + topic.getId();
+    }
+
+    /** PRECITAJ CELE VLAKNO **/
+    @RequestMapping(value = "{idVlakno}/readWhole")
+    public String makeTopicRead(@PathVariable int idVlakno, Model model) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = userService.findByUsername(authentication.getName());
+        Topic topic = topicService.findOne(idVlakno);
+
+
+        if(user.getReadTopics().equals("")){
+            user.setReadTopics(user.getReadTopics() + String.valueOf(topic.getId()));
+        }
+        else{
+            user.setReadTopics(user.getReadTopics() + "," + String.valueOf(topic.getId()));
+        }
+
+
+        List<Post> listPrispevkov = postService.findByTopic(topic);
+        for(Post post : listPrispevkov){
+            post.setRead(true);
+            postService.save(post);
+        }
+        model.addAttribute("stringIdTopic", String.valueOf(topic.getId()));
+        return "redirect:/forum/rok/" + topic.getSection().getStudyYear().getYear().getId() + "/rocnik/" + topic.getSection().getStudyYear().getId() + "/skupina/" + topic.getSection().getId() + "/vlakno/" + topic.getId();
+    }
+
+    /** NOVE VLAKNO V SKUPINE **/
     @RequestMapping(value = "new", method = RequestMethod.GET)
-    public String getNewTopicForm(Model model) {
+    public String getNewTopicForm(@PathVariable int idSkupiny, Model model) {
+
+        Section section = sectionService.findOne(idSkupiny);
+        model.addAttribute("rok", section.getStudyYear().getYear());
+        model.addAttribute("skolskyRok", section.getStudyYear());
+        model.addAttribute("skupina", section);
         model.addAttribute("newTopic", new NewTopicForm());
-        model.addAttribute("sections", sectionService.findAll());
+
         return "section/topic/new_topic_form";
     }
 
-    @RequestMapping(value = "{idTopic}/edit/{idPost}", method = RequestMethod.GET)
-    public String editPost(@PathVariable int idPost,
-                           @PathVariable int idTopic,
+
+    /** EDIT POSTU V TOPICU **/
+    @RequestMapping(value = "{idVlakna}/edit/{idPrispevku}", method = RequestMethod.GET)
+    public String editPost(@PathVariable int idPrispevku,
+                           @PathVariable int idVlakna,
                        Authentication authentication,
                        @Valid @ModelAttribute("editPost") NewPostFrom editPost,
                        Model model) {
 
-        Post post = postService.findOne(idPost);
-        Topic topic = topicService.findOne(idTopic);
+        Post post = postService.findOne(idPrispevku);
+        Topic topic = topicService.findOne(idVlakna);
 
         editPost.setContent(post.getContent());
+        model.addAttribute("rok", topic.getSection().getStudyYear().getYear());
+        model.addAttribute("skolskyRok", topic.getSection().getStudyYear());
+        model.addAttribute("skupina", topic.getSection());
         model.addAttribute("editPost", editPost);
+        model.addAttribute("idPost", idPrispevku);
         model.addAttribute("topic", topic);
-        model.addAttribute("posts", postService.findByTopic(idTopic));
+        model.addAttribute("posts", postService.findByTopic(idVlakna));
 
         return "section/topic/edit_post";
     }
 
-    @RequestMapping(value = "{idTopic}/save/{idPost}", method = RequestMethod.POST)
+    /** UROB ZMENY V POSTE A ULOZ**/
+    @RequestMapping(value = "{idVlakna}/save/{idPrispevku}", method = RequestMethod.POST)
     public String editPost(@Valid @ModelAttribute("editPost") NewPostFrom editPost,
                           BindingResult result,
-                          @PathVariable int idTopic,
-                          @PathVariable int idPost,
+                          @PathVariable int idVlakna,
+                          @PathVariable int idPrispevku,
                           Model model) {
+        Topic topic = topicService.findOne(idVlakna);
 
         if(result.hasErrors()) {
-            model.addAttribute("topic", topicService.findOne(idTopic));
-            model.addAttribute("posts", postService.findByTopic(idTopic));
+            model.addAttribute("topic", topic);
+            model.addAttribute("posts", postService.findByTopic(idVlakna));
             return "section/topic/topic";
         }
-        Post postEdited = postService.findOne(idPost);
+        Post postEdited = postService.findOne(idPrispevku);
         postEdited.setContent(editPost.getContent());
         postService.save(postEdited);
 
         model.asMap().clear();
-        return "redirect:/topic/" + idTopic;
+        return "redirect:/forum/rok/" + topic.getSection().getStudyYear().getYear().getId() + "/rocnik/" + topic.getSection().getStudyYear().getId() + "/skupina/" + topic.getSection().getId() + "/vlakno/" + topic.getId();
     }
 
     @RequestMapping(value = "{idTopic}", method = RequestMethod.POST)
@@ -218,19 +288,17 @@ public class TopicController {
     @RequestMapping(value = "new", method = RequestMethod.POST)
     public String addNewTopic(@Valid @ModelAttribute("newTopic") NewTopicForm newTopic,
                                         BindingResult result,
+                                        @PathVariable int idSkupiny,
                                         Authentication authentication,
                                         Model model) {
 
-        if(result.hasErrors()) {
-            model.addAttribute("sections", sectionService.findAll());
-            return "new_topic_form";
-        }
+        Section section = sectionService.findOne(idSkupiny);
 
         Topic topic = new Topic();
         topic.setUser(userService.findByUsername(authentication.getName()));
         topic.setTitle(newTopic.getTitle());
         topic.setContent(newTopic.getContent());
-        topic.setSection(sectionService.findOne(newTopic.getSectionId()));
+        topic.setSection(section);
         topicService.save(topic);
 
         int temp_id = topic.getId();
@@ -260,15 +328,17 @@ public class TopicController {
         }
 
         return "redirect:/topic/" + topic.getId();
+        return "redirect:/forum/rok/" + section.getStudyYear().getYear().getId() + "/rocnik/" + section.getStudyYear().getId() + "/skupina/" + section.getId() + "/vlakno/" + topic.getId();
 
     }
 
-    @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable int id,
+    @RequestMapping(value = "delete/{idVlakna}", method = RequestMethod.GET)
+    public String delete(@PathVariable int idSkupiny,
+                         @PathVariable int idVlakna,
                          Authentication authentication,
                          RedirectAttributes model) {
-
-        Topic topic = topicService.findOne(id);
+        Section section = sectionService.findOne(idSkupiny);
+        Topic topic = topicService.findOne(idVlakna);
 
 //        if(!topic.getSection().getModeratorsUsername().contains(authentication.getName()) &&
 //                !authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
@@ -285,7 +355,7 @@ public class TopicController {
         topicService.delete(topic);
 
         model.addFlashAttribute("message","topic.successfully.deleted");
-        return "redirect:/section/" + topic.getSection().getId();
+        return "redirect:/forum/rok/" + section.getStudyYear().getYear().getId() + "/rocnik/" + section.getStudyYear().getId() + "/skupina/" + section.getId();
     }
 
 }

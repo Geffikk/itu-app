@@ -14,7 +14,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
     Set<Post> findByUser(User user);
 
-    Set<Post> findByTopic(Topic topic);
+    List<Post> findByTopic(Topic topic);
 
     Set<Post> findAllByOrderByCreationDateDesc();
 

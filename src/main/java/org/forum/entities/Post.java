@@ -38,6 +38,14 @@ public class Post {
     @Column(name = "ranking")
     private Integer ranking;
 
+    /** JE RIESENIE **/
+    @Column(name = "je_riesenie")
+    private boolean solution;
+
+    /** JE PRECITANE **/
+    @Column(name = "je_precitane")
+    private boolean read;
+
     @Column(name = "datum_zalozenia", updatable = false, nullable = false)
     private Date creationDate;
 
@@ -119,6 +127,22 @@ public class Post {
 
     public void setRanking(Integer ranking) {
         this.ranking = ranking;
+    }
+
+    public boolean isSolution() {
+        return solution;
+    }
+
+    public void setSolution(boolean solution) {
+        this.solution = solution;
+    }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
     }
 
     public Date getCreationDate() {

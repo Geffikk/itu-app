@@ -23,6 +23,18 @@
         </div>
     </div>
 
+    <a href="#akTemy" class="btn modal-trigger indigo aktualneTemy">Aktuálne témy</a>
+    <div class="modal" id="akTemy">
+        <div class="col s12 indigo jednoVlakno white-text center-align" th:each="aktualnaTema : ${aktualneTemy}">
+            <a class="white-text" th:href="@{/forum/rok/} + ${aktualnaTema.getSection().getStudyYear().getYear().getId()} + '/rocnik/' + ${aktualnaTema.getSection().getStudyYear().getId()} + '/skupina/' + ${aktualnaTema.getSection().getId()} + '/vlakno/' + ${aktualnaTema.id}">
+                <span class="nazovVlakna" th:text="${aktualnaTema.title}"></span><br>
+                <span th:text="'Autor: ' + ${aktualnaTema.getUser().getUsername()}"></span><br>
+                <span th:text=" ${aktualnaTema.getCreationDate()}"></span>
+            </a>
+
+        </div>
+    </div>
+
     <div class="container forumContainer">
         <div class="row valign-wrapper">
             <div class="col s12 m4 l4">
