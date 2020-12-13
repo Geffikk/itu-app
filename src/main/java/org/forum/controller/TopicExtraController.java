@@ -44,6 +44,17 @@ public class TopicExtraController {
         model.addAttribute("newPost", new NewPostFrom());
         model.addAttribute("editPost", editPostFrom);
         model.addAttribute("currentPath", topic.getSection().getStudyYear().getYear().getName() + " / " + topic.getSection().getStudyYear().getName() + " / " + topic.getSection().getName() + " / " + topicService.findOne(idVlakno).getTitle());
+        try {
+            model.addAttribute("user", userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        } catch (Exception e) {
+            model.addAttribute("user", null);
+        }
+        try {
+            model.addAttribute("uzivatel", userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        } catch (Exception e) {
+            model.addAttribute("uzivatel", null);
+        }
+
 
         return "section/topic/topic";
     }
@@ -71,6 +82,16 @@ public class TopicExtraController {
         model.addAttribute("newPost", new NewPostFrom());
         model.addAttribute("editPost", editPostFrom);
         model.addAttribute("currentPath", topic.getSection().getStudyYear().getYear().getName() + " / " + topic.getSection().getStudyYear().getName() + " / " + topic.getSection().getName() + " / " + topicService.findOne(idVlakno).getTitle());
+        try {
+            model.addAttribute("user", userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        } catch (Exception e) {
+            model.addAttribute("user", null);
+        }
+        try {
+            model.addAttribute("uzivatel", userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        } catch (Exception e) {
+            model.addAttribute("uzivatel", null);
+        }
 
         return "section/topic/topic";
     }

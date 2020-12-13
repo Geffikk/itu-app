@@ -8,6 +8,7 @@
     <nav th:fragment="navbar" class="nav-wrapper indigo">
         <!-- Dropdown Structure -->
         <ul id="dropdown" class="dropdown-content">
+            <li><a class="indigo lighten-3 indigo-text" style="font-family: 'Comic Sans MS'" th:text="${#authentication.getName()}"></a></li>
             <li><a th:href="@{/obchod}" class="indigo white-text">Obchod</a></li>
             <li><a th:href="@{/spinandwin}" class="indigo white-text">Happy Wheel</a></li>
         </ul>

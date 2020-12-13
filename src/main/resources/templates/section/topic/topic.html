@@ -62,8 +62,6 @@
                 </form>
             </div>
 
-
-
             <div th:if="${!uzivatel.getUsername().equals('ANONYMOUS')}" class="like right">
                 <form th:action="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/addToFav'">
                     <button th:if="${!uzivatel.getFavoriteTopics().contains(topic)}" type="submit" class="btn-floating btn indigo darken-4 right">

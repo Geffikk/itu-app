@@ -18,15 +18,15 @@
     <div id="modal" class="modal">
         <form th:action="@{/forum/search}" th:object="${searchPost}">
             <div class="modal-content">
-                <p>Napíš výraz, na základe ktorého chceš vyhľadať vlákno</p>
+                <h5>Napíš výraz, na základe ktorého chceš vyhľadať vlákno</h5>
                 <div class="center-align">
-                        <textarea th:field="*{content}" name="content" id="text">
+                        <textarea th:field="*{content}" name="content" id="text" cols="10" rows="1" style="border-color: #4e54c8">
                         </textarea>
                 </div>
             </div>
             <div class="row">
                 <div class="modal-footer">
-                    <button type="submit" class="modal-close waves-effect waves-green btn-flat yellow darken-4 white-text">Submit</button>
+                    <button type="submit" class="modal-close waves-effect waves-green btn-flat indigo darken-4 white-text">Submit</button>
                 </div>
             </div>
         </form>

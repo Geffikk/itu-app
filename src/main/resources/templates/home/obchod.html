@@ -6,6 +6,7 @@
 
     <!-- CONTENT-->
     <h2 class="nazov">K dipozícií máte:</h2>
+    <div class="center-align"><h4 th:text="'Tvoj budget je: '+${user.getMoney()}+'$'"></h4></div>
     <div class="container upravaDiv">
 
         <div class="row upravaRow">
@@ -16,12 +17,20 @@
                         <p>Lepší search engine</p>
                         <p>Vyhľadávaj lepšie to čo potrebuješ bez stráty času ! (Vyhľadá sekcie na základe
                         použitého slova)</p>
+                        <br>
+                        <br>
+                        <br>
                     </div>
                 </div>
                 <form th:action="@{/obchod/unlock1}">
-                    <p class="center-align">
-                        <button type="submit" th:disabled="${#authorization.expression('hasRole(''ROLE_QUICK'')')}" class="btn waves-effect waves-light indigo">ODOMKNÚŤ (20 000$)<i class="material-icons right">lock_open</i></button>
-                    </p>
+                    <div class="center-align">
+                        <div th:if="${user.getMoney() >= 20000}">
+                            <button type="submit" th:disabled="${#authorization.expression('hasRole(''ROLE_QUICK'')')}" class="btn waves-effect waves-light indigo">ODOMKNÚŤ (20 000$)<i class="material-icons right">lock_open</i></button>
+                        </div>
+                        <div th:unless="${user.getMoney() >= 20000}">
+                            <a type="submit" class="btn waves-effect waves-light indigo modal-trigger" href="#modal1">ODOMKNÚŤ (20 000$)<i class="material-icons right">lock_open</i></a>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="col s12 m6 l6 stvorec">
@@ -29,13 +38,18 @@
                     <div class="card-content">
                         <span class="card-title">Odmena 2.</span>
                         <p>Nový rich text editor</p>
-                        <img th:src="@{resources/img/editor.png}" th:width="530px" th:height="150px"/>
+                        <img th:src="@{resources/img/editor.png}" th:width="530px" th:height="113px"/>
                     </div>
                 </div>
                 <form th:action="@{/obchod/unlock2}">
-                    <p class="center-align">
-                        <button type="submit" th:disabled="${#authorization.expression('hasRole(''ROLE_TEXT'')')}" class="btn waves-effect waves-light indigo">ODOMKNÚŤ (40 000$)<i class="material-icons right">lock_open</i></button>
-                    </p>
+                    <div class="center-align">
+                        <div th:if="${user.getMoney() >= 20000}">
+                            <button type="submit" th:disabled="${#authorization.expression('hasRole(''ROLE_TEXT'')')}" class="btn waves-effect waves-light indigo">ODOMKNÚŤ (40 000$)<i class="material-icons right">lock_open</i></button>
+                        </div>
+                            <div th:unless="${user.getMoney() >= 20000}">
+                            <a type="submit" class="btn waves-effect waves-light indigo modal-trigger" href="#modal1">ODOMKNÚŤ (40 000$)<i class="material-icons right">lock_open</i></a>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="col s12 m6 l6">
@@ -43,13 +57,19 @@
                     <div class="card-content">
                         <span class="card-title">Odmena 3.</span>
                         <p>Zostaň vždy spojený s témami, ktoré sa ťa najviac dotýkajú. Priraď si určité slová (alebo frázy),
-                        ktoré ťa zaujímajú a my ťa informujeme ak sa podobná téma objaví.</p>
+                        ktoré ťa zaujímajú a my ťa informujeme ak sa podobná téma objaví. (Odmenu nájdeš vo svojom profile)</p>
+                        <br>
                     </div>
                 </div>
                 <form th:action="@{/obchod/unlock3}">
-                    <p class="center-align">
+                    <div class="center-align">
+                        <div th:if="${user.getMoney() >= 200}">
                         <button type="submit" th:disabled="${#authorization.expression('hasRole(''ROLE_NOTIF'')')}" class="btn waves-effect waves-light indigo">ODOMKNÚŤ (30 000$)<i class="material-icons right">lock_open</i></button>
-                    </p>
+                        </div>
+                        <div th:unless="${user.getMoney() >= 200}">
+                            <a type="submit" class="btn waves-effect waves-light indigo modal-trigger" href="#modal1">ODOMKNÚŤ (30 000$)<i class="material-icons right">lock_open</i></a>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="col s12 m6 l6">
@@ -57,6 +77,9 @@
                     <div class="card-content">
                         <span class="card-title">Odmena 4.</span>
                         <p>Zmeň si svoje prihlasovacie meno no bude ťa to niečo stáť</p>
+                        <br>
+                        <br>
+                        <br>
                     </div>
                 </div>
                 <p class="center-align">
@@ -68,10 +91,22 @@
     </div>
 
     <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+            <div class="modal-content">
+                <h4 style="font-family: 'Comic Sans MS'">Nemáš dostatok peňazí !</h4>
+            </div>
+            <div class="row">
+                <div class="modal-footer">
+                    <button type="submit" class="modal-close waves-effect waves-green btn-flat indigo darken-4 white-text">Submit</button>
+                </div>
+            </div>
+    </div>
+
+    <!-- Modal Structure -->
     <div id="modal" class="modal">
         <form th:action="@{/obchod/unlock4}" th:object="${zmena_mena}">
             <div class="modal-content">
-                <h4>Zmeň si svoje meno</h4>
+                <h4 style="font-family: 'Comic Sans MS'">Zmeň si svoje meno</h4>
                 <div class="center-align">
                         <textarea th:field="*{content}" name="content" id="text">
                         </textarea>
@@ -79,7 +114,7 @@
             </div>
             <div class="row">
                 <div class="modal-footer">
-                    <button type="submit" class="modal-close waves-effect waves-green btn-flat yellow darken-4 white-text">Submit</button>
+                    <button type="submit" class="modal-close waves-effect waves-green btn-flat indigo darken-4 white-text">Submit</button>
                 </div>
             </div>
         </form>

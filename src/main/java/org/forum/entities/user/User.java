@@ -293,12 +293,6 @@ public class User {
         return not.toString();
     }
 
-    }
-        return new ArrayList<>();
-        }
-            return Arrays.asList(this.readTopics.split(","));
-        if(this.readTopics.length() > 0) {
-    public List<String> getReadTopicsList() {
     public void addFavoriteTopic(Topic topic){
         if(favoriteTopics == null){
             favoriteTopics = new ArrayList<>();
@@ -311,6 +305,13 @@ public class User {
             likedPosts = new ArrayList<>();
         }
         likedPosts.add(post);
+    }
+
+    public List<String> getReadTopicsList() {
+        if(this.readTopics.length() > 0) {
+            return Arrays.asList(this.readTopics.split(","));
+        }
+        return new ArrayList<>();
     }
 }
 

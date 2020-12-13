@@ -144,6 +144,11 @@ public class HomeResource {
                 new HashSet<>(topic_temp));
 
         model.addAttribute("vlakna", listWithoutDuplicates);
+        try {
+            model.addAttribute("user", userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        } catch (Exception e) {
+            model.addAttribute("user", null);
+        }
 
         System.out.println(searchPost.getContent());
         return "section/topic/specific_topics";

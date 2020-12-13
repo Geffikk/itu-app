@@ -327,9 +327,7 @@ public class TopicController {
             }
         }
 
-        return "redirect:/topic/" + topic.getId();
         return "redirect:/forum/rok/" + section.getStudyYear().getYear().getId() + "/rocnik/" + section.getStudyYear().getId() + "/skupina/" + section.getId() + "/vlakno/" + topic.getId();
-
     }
 
     @RequestMapping(value = "delete/{idVlakna}", method = RequestMethod.GET)

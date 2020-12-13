@@ -6,23 +6,24 @@
 </head>
 <body>
 <nav th:insert="fragments/navbar :: navbar" id="up"></nav>
-<div class="left" style="margin-top: 70px; font-family: 'Comic Sans MS'">
-    <h5 th:text="'Cash: '+ ${user.getMoney()} + '$'"></h5>
+
+<div th:style="'background:url(' + @{/resources/img/moon.jpg} + ');'">
+<div class="left" style="font-family: 'Comic Sans MS'">
+    <h5 class="white-text" th:text="'Cash: '+ ${user.getMoney()} + '$'"></h5>
 </div>
 <div align="center">
-
     <div class="power_controls" style="margin-left: 56px">
         <br /><br />
-        <div th:if="${user.getMoney() > 700}">
-            <p style="font-family: 'Comic Sans MS'; font-size: 15px">One spin cost: 700$</p>
+        <div th:if="${user.getMoney() > 700}" class="row">
+            <p class="white-text" style="font-family: 'Comic Sans MS'; font-size: 15px; margin-right: 80px">One spin cost: 700$</p>
             <img id="spin_button" class="modal-trigger" href="#modal2" th:src="@{resources/img/logo_winaspin.png}" alt="Spin"/>
         </div>
-        <div th:unless="${user.getMoney() > 700}">
-            <p style="font-family: 'Comic Sans MS'; font-size: 15px">One spin cost: 700$</p>
+        <div th:unless="${user.getMoney() > 700}" class="row">
+            <p style="font-family: 'Comic Sans MS'; font-size: 15px; margin-right: 80px">One spin cost: 700$</p>
             <img id="spin_button1" class="modal-trigger" href="#modal3" th:src="@{resources/img/logo_winaspin.png}" alt="Spin"/>
         </div>
         <br /><br />
-        <i style="margin-left: 14px" id="spin_arrow" class="large material-icons">arrow_downward</i>
+        <i style="margin-left: 14px" id="spin_arrow" class="large material-icons icon-white">arrow_downward</i>
     </div>
 
     <canvas id="canvas" width="434" height="434">
@@ -252,7 +253,7 @@
             </div>
         </div>
     </div>
-
+</div>
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>
 </html>

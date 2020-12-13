@@ -5,40 +5,50 @@
 <head th:insert="fragments/head :: head">
 </head>
 <body>
-<div th:fragment="google_alerts" class="row">
-    <div class="col s1" style="padding: 3px">
-        Chceš dostať upozornenie ak sa vyskytne téma, ktorá ťa zaujíma ? Napíš frázy, ktoré ťa zaujímajú a my ťa informujeme, ak
-        o tom vznikne debata.
-        <button class="btn btn-primary right indigo darken-3 modal-trigger" href="#modal" type="submit" style="border-radius: 5px">
-            <div class="row">
-                Pridať
-            </div>
-        </button>
-    </div>
-    <div class="col s3" style="padding-left: 30px">
-        <div class="row z-depth-1" th:each="notif : ${userProfile.user.getNotificationList}" th:id="${userProfile.user.id}">
-            <form th:action="@{mojProfil/delete/} + ${notif}">
-                <div class="row">
-                    <h6 class="left-align vertical-align" th:text="${notif}"></h6>
-                    <button class="btn-floating btn-small btnred darken-4 right" type="submit" style="margin-right: 25px">
-                        <i class="material-icons black-text red darken-4">delete</i>
+<div th:fragment="google_alerts">
+    <div class="card">
+        <div class="row">
+            <div class="col s12" style="padding: 3px">
+                <div class="col s10">
+                    <h6 style="font-family: 'Comic Sans MS'">Chceš dostať upozornenie ak sa vyskytne téma, ktorá ťa zaujíma ? Napíš frázy, ktoré ťa zaujímajú a my ťa informujeme, ak
+                        o tom vznikne debata.</h6>
+                </div>
+                <div class="col s2">
+                    <button class="btn btn-primary right indigo darken-3 modal-trigger" href="#modal" type="submit" style="border-radius: 5px">
+                        <div class="row">
+                            Pridať
+                        </div>
                     </button>
                 </div>
-            </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s3 center-align" style="padding-left: 30px">
+                <div class="row z-depth-1" th:each="notif : ${userProfile.user.getNotificationList}" th:id="${userProfile.user.id}">
+                    <form th:action="@{mojProfil/delete/} + ${notif}">
+                        <div class="row">
+                            <h6 class="left-align vertical-align" style="padding: 25px 0px 0px 10px" th:text="${notif}"></h6>
+                            <button class="btn-floating btn-small btnred darken-4 right" type="submit" style="margin-right: 25px">
+                                <i class="material-icons black-text red darken-4">delete</i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
     <!-- Modal Structure -->
     <div id="modal" class="modal">
         <form th:action="@{/mojProfil/notification}" th:object="${upozornenie}">
             <div class="modal-content">
-                <p>Napíš výraz, na základe ktorého chceš dostať upozornenie ak sa takéto vlákno objaví</p>
+                <h6>Napíš výraz, na základe ktorého chceš dostať upozornenie ak sa takéto vlákno objaví</h6>
                 <div class="center-align">
-                        <textarea th:field="*{content}" name="content" id="text"></textarea>
+                        <textarea th:field="*{content}" name="content" id="text" style="border-color: #4e54c8"></textarea>
                 </div>
             </div>
             <div class="row">
                 <div class="modal-footer">
-                    <button type="submit" class="modal-close waves-effect waves-green btn-flat yellow darken-4 white-text">Submit</button>
+                    <button type="submit" class="modal-close waves-effect waves-green btn-flat indigo darken-4 white-text">Submit</button>
                 </div>
             </div>
         </form>
