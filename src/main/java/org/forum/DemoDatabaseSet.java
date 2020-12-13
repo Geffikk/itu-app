@@ -35,8 +35,8 @@ public class DemoDatabaseSet {
             // create objects
             System.out.println("Creating new objects...");
 
-            User tempUser1 = new User("patriktomov@gmail.com", "Patres", "$2y$12$M7fYQOMVRAuCK0bzrTqMiunl6BQv4IzmFGr6.5yYPE6okcgPTqfZS", 100, 10);
-            User tempUser2 = new User("maros.geffert@gmail.com", "Maros", "$2y$12$M7fYQOMVRAuCK0bzrTqMiunl6BQv4IzmFGr6.5yYPE6okcgPTqfZS", 200, 20);
+            User tempUser1 = new User("patriktomov@gmail.com", "Patres", "$2y$12$M7fYQOMVRAuCK0bzrTqMiunl6BQv4IzmFGr6.5yYPE6okcgPTqfZS", 100, 1000);
+            User tempUser2 = new User("maros.geffert@gmail.com", "Maros", "$2y$12$M7fYQOMVRAuCK0bzrTqMiunl6BQv4IzmFGr6.5yYPE6okcgPTqfZS", 200, 25000);
             User tempUser3 = new User("maros1.geffert@gmail.com", "Andrej", "$2y$12$M7fYQOMVRAuCK0bzrTqMiunl6BQv4IzmFGr6.5yYPE6okcgPTqfZS", 300, 30);
             User tempUser4 = new User("maros2.geffert@gmail.com", "Adam", "$2y$12$M7fYQOMVRAuCK0bzrTqMiunl6BQv4IzmFGr6.5yYPE6okcgPTqfZS", 400, 40);
             User tempUser5 = new User("maros3.geffert@gmail.com", "Tomas", "$2y$12$M7fYQOMVRAuCK0bzrTqMiunl6BQv4IzmFGr6.5yYPE6okcgPTqfZS", 500, 60);
