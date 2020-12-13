@@ -4,35 +4,15 @@
 <head th:insert="fragments/head :: head">
 <body>
     <nav th:insert="fragments/navbar :: navbar"></nav>
-    <div th:if="${#authentication.getAuthorities().contains('ROLE_QUICK')}">
+
+    <div th:insert="fragments/oblubene_temy:: oblubene_temy"></div>
+
+
+    <div sec:authorize="hasRole('ROLE_QUICK')">
         <div th:insert="fragments/quicksearch:: quicksearch"></div>
     </div>
-
-    <div th:if="${oblubeneVlakna != null}" class="oblubeneVlakna valign-wrapper  indigo darken-1 z-depth-3">
-        <div class="oblubeneTemy">
-            <span class="white-text oblubeneVlakno">Oblubene temy: </span>
-        </div>
-
-        <div class="oblubenyPredmet center-align" th:each="oblubeneVlakno : ${oblubeneVlakna}">
-            <div class="oblubeneVlakno">
-                <a th:href="@{/forum/rok/} + ${oblubeneVlakno.getSection().getStudyYear().getYear().getId()} + '/rocnik/' + ${oblubeneVlakno.getSection().getStudyYear().getId()} + '/skupina/' + ${oblubeneVlakno.getSection().getId()} + '/vlakno/' + ${oblubeneVlakno.getId()}">
-                    <span th:text="${oblubeneVlakno.getTitle()}" class="white-text"></span><br>
-                    <span th:text="${oblubeneVlakno.getSection().getName()}" class="white-text"></span>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <a href="#akTemy" class="btn modal-trigger indigo aktualneTemy">Aktuálne témy</a>
-    <div class="modal" id="akTemy">
-        <div class="col s12 indigo jednoVlakno white-text center-align" th:each="aktualnaTema : ${aktualneTemy}">
-            <a class="white-text" th:href="@{/forum/rok/} + ${aktualnaTema.getSection().getStudyYear().getYear().getId()} + '/rocnik/' + ${aktualnaTema.getSection().getStudyYear().getId()} + '/skupina/' + ${aktualnaTema.getSection().getId()} + '/vlakno/' + ${aktualnaTema.id}">
-                <span class="nazovVlakna" th:text="${aktualnaTema.title}"></span><br>
-                <span th:text="'Autor: ' + ${aktualnaTema.getUser().getUsername()}"></span><br>
-                <span th:text=" ${aktualnaTema.getCreationDate()}"></span>
-            </a>
-
-        </div>
+    <div>
+        <div th:insert="fragments/aktualne_temy :: aktualne_temy"></div>
     </div>
 
     <div class="container forumContainer">

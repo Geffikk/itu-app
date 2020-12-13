@@ -6,26 +6,17 @@
 </head>
 <body>
     <nav th:replace="fragments/navbar :: navbar"></nav>
-    <div th:if="${#authentication.getAuthorities().contains('ROLE_QUICK')}">
+    <div th:insert="fragments/oblubene_temy:: oblubene_temy"></div>
+
+
+    <div sec:authorize="hasRole('ROLE_QUICK')">
         <div th:insert="fragments/quicksearch:: quicksearch"></div>
     </div>
-
-    <div th:if="${oblubeneVlakna != null}" class="oblubeneVlakna valign-wrapper  indigo darken-1 z-depth-3">
-        <div class="oblubeneTemy">
-            <span class="white-text oblubeneVlakno">Oblubene temy: </span>
-        </div>
-
-        <div class="oblubenyPredmet center-align" th:each="oblubeneVlakno : ${oblubeneVlakna}">
-            <div class="oblubeneVlakno">
-                <a th:href="@{/forum/rok/} + ${oblubeneVlakno.getSection().getStudyYear().getYear().getId()} + '/rocnik/' + ${oblubeneVlakno.getSection().getStudyYear().getId()} + '/skupina/' + ${oblubeneVlakno.getSection().getId()} + '/vlakno/' + ${oblubeneVlakno.getId()}">
-                    <span th:text="${oblubeneVlakno.getTitle()}" class="white-text"></span><br>
-                    <span th:text="${oblubeneVlakno.getSection().getName()}" class="white-text"></span>
-                </a>
-            </div>
-        </div>
+    <div>
+        <div th:insert="fragments/aktualne_temy :: aktualne_temy"></div>
     </div>
 
-    <div class="aktualneTemy">
+    <div class="novaTema">
         <form th:action="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/new'">
             <button type="submit" class="btn indigo">
                 <i class="">Nová téma</i>
@@ -51,7 +42,7 @@
                             <a class="white-text" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${vlakno.id}">
                                 <span class="nazovVlakna" th:text="${vlakno.title}"></span><br>
                                 <span th:text="'Autor: ' + ${vlakno.getUser().getUsername()}"></span><br>
-                                <span th:text=" ${vlakno.getCreationDate()}"></span>
+                                <span th:text="${vlakno.creationDate} ? ${#calendars.format(vlakno.creationDate, 'HH:mm:ss')} + ' - ' + ${#calendars.format(vlakno.creationDate, 'dd MMMM yyyy')}"></span>
                             </a>
 
                         </div>

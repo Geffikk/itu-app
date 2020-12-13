@@ -55,6 +55,7 @@ public class SectionController {
             model.addAttribute("oblubeneVlakna", user.getFavoriteTopics());
         }
 
+        model.addAttribute("aktualneTemy", topicService.findRecent());
         model.addAttribute("currentPath", section.getStudyYear().getYear().getName() + "/" + section.getStudyYear().getName() + "/" + section.getName() + "/");
         model.addAttribute("skolskyRok", section.getStudyYear());
         model.addAttribute("roky", yearService.findAll());
