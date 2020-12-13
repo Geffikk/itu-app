@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:insert="fragments/head :: head">
 <body>
     <nav th:insert="fragments/navbar :: navbar"></nav>
-
 
     <div th:if="${oblubeneVlakna != null}" class="oblubeneVlakna valign-wrapper  indigo darken-1 z-depth-3">
         <div class="oblubeneTemy">
@@ -20,27 +20,9 @@
             </div>
         </div>
     </div>
-    -->
-    <button class="btn btn-primary right indigo darken-3 modal-trigger" href="#modal" type="submit">
-        <i class="material-icons blue-text">send</i>
-    </button>
 
-    <!-- Modal Structure -->
-    <div id="modal" class="modal">
-        <form th:action="@{/forum/search}" th:object="${searchPost}">
-            <div class="modal-content">
-                <div class="center-align">
-                    <textarea th:field="*{content}" name="content" id="text">
-                    &lt;p&gt;This is some sample content.&lt;/p&gt;
-                    </textarea>
-                </div>
-            </div>
-            <div class="row">
-                <div class="modal-footer">
-                    <button type="submit" class="modal-close waves-effect waves-green btn-flat yellow darken-4 white-text">Submit</button>
-                </div>
-            </div>
-        </form>
+    <div sec:authorize="hasRole('ROLE_QUICK')">
+        <div th:insert="fragments/quicksearch:: quicksearch"></div>
     </div>
 
     <div class="container forumContainer">

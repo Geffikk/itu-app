@@ -9,18 +9,15 @@
 
 <div class="container forumContainer">
     <div class="row valign-wrapper">
-        <div class="col s12 m8 l8">
-            <div class="card sectionCard">
-                V tychto vláknach sa nachádza vás výraz.
-                <div class="scrollTopics">
-                    <div class="col s12 jednoVlakno indigo white-text center-align" th:each="vlakno : ${vlakna}">
-                        <a class="white-text">
-                            <span class="nazovVlakna" th:text="${vlakno.title}"></span><br>
-                            <span th:text="'Autor: ' + ${vlakno.getUser().getUsername()}"></span><br>
-                            <span th:text=" ${vlakno.getCreationDate()}"></span>
-                        </a>
-
-                    </div>
+        <div class="card sectionCard">
+            V tychto vláknach sa nachádza vás výraz.
+            <div class="scrollTopics">
+                <div class="col s12 jednoVlakno indigo white-text center-align" th:each="vlakno : ${vlakna}">
+                    <a class="white-text" th:href="@{/vlakno/}+${vlakno.id}">
+                        <span class="nazovVlakna" th:text="${vlakno.title}"></span><br>
+                        <span th:text="'Autor: ' + ${vlakno.getUser().getUsername()}"></span><br>
+                        <span th:text=" ${vlakno.getCreationDate()}"></span>
+                    </a>
                 </div>
             </div>
         </div>

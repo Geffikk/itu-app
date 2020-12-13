@@ -4,6 +4,9 @@
 <head th:insert="fragments/head :: head">
 <body>
     <nav th:insert="fragments/navbar :: navbar"></nav>
+    <div th:if="${#authentication.getAuthorities().contains('ROLE_QUICK')}">
+        <div th:insert="fragments/quicksearch:: quicksearch"></div>
+    </div>
 
     <div th:if="${oblubeneVlakna != null}" class="oblubeneVlakna valign-wrapper  indigo darken-1 z-depth-3">
         <div class="oblubeneTemy">

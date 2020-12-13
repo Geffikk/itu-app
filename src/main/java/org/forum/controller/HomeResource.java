@@ -28,7 +28,6 @@ import java.util.List;
 public class HomeResource {
 
 
-
     @Autowired
     private YearService yearService;
 
@@ -46,6 +45,12 @@ public class HomeResource {
 
     @RequestMapping(value = { "/", "/home" })
     public String home(Model model) {
+
+        try {
+            model.addAttribute("user", userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        } catch (Exception e) {
+            model.addAttribute("user", null);
+        }
         return "home/home";
     }
 
@@ -60,6 +65,14 @@ public class HomeResource {
 
     @RequestMapping(value = "/obchod")
     public String showShop(Model model) {
+        try {
+            model.addAttribute("user", userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        } catch (Exception e) {
+            model.addAttribute("user", null);
+        }
+
+        NewPostFrom newPostFrom = new NewPostFrom();
+        model.addAttribute("zmena_mena", newPostFrom);
         return "home/obchod";
     }
 
@@ -87,9 +100,11 @@ public class HomeResource {
             model.addAttribute("oblubeneVlakna", user.getFavoriteTopics());
         }
 
-
-        NewPostFrom searchPost = new NewPostFrom();
-
+        try {
+            model.addAttribute("user", userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        } catch (Exception e) {
+            model.addAttribute("user", null);
+        }
         model.addAttribute("currentPath", "null");
         model.addAttribute("roky", yearService.findAll());
         model.addAttribute("searchPost", searchPost);
@@ -131,6 +146,28 @@ public class HomeResource {
 
         System.out.println(searchPost.getContent());
         return "section/topic/specific_topics";
+    }
+
+    @RequestMapping(value = "/notifications")
+    public String notifications(Model model) {
+
+        User user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        List<Topic> topics = new ArrayList<>();
+        int temp_id = 0;
+
+        for (String id : user.getNotificationListId()) {
+            temp_id = Integer.parseInt(id);
+            topics.add(topicService.findOne(temp_id));
+        }
+
+        try {
+            model.addAttribute("user", userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        } catch (Exception e) {
+            model.addAttribute("user", null);
+        }
+        model.addAttribute("vlakna", topics);
+        return "section/topic/notifications";
     }
 
     @RequestMapping("/403")

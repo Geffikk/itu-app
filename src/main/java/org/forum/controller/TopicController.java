@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @ComponentScan
 @Controller
@@ -77,6 +79,11 @@ public class TopicController {
         model.addAttribute("topic", topic);
         model.addAttribute("posts", postService.findByTopic(idVlakno));
         model.addAttribute("newPost", new NewPostFrom());
+        try {
+            model.addAttribute("user", userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        } catch (Exception e) {
+            model.addAttribute("user", null);
+        }
         return "section/topic/topic";
     }
 
@@ -172,7 +179,7 @@ public class TopicController {
                           @PathVariable int idRoku,
                           @PathVariable int idRocnik,
                           @PathVariable int idSkupiny,
-                          @PathVariable int idTopic,
+                          @PathVariable Integer idTopic,
                           Model model) {
 
         if(result.hasErrors()) {
@@ -186,6 +193,23 @@ public class TopicController {
         post.setTopic(topicService.findOne(idTopic));
         post.setUser(userService.findByUsername(authentication.getName()));
         postService.save(post);
+
+        /* NOTIFICATIONS */
+        List<User> users = userService.findAll();
+        List<String> list_of_not_id = new ArrayList<>();
+        String str_list_of_not_id = "";
+
+        for (User user : users) {
+            for(String notification : user.getNotificationList()) {
+                if(newPrispevok.getContent().indexOf(notification) == 0) {
+                    list_of_not_id = user.getNotificationListId();
+                    list_of_not_id.add(idTopic.toString());
+                    str_list_of_not_id = user.notificationFromListToStringId(list_of_not_id);
+                    user.setNotifications_id(str_list_of_not_id);
+                    userService.save(user);
+                }
+            }
+        }
 
         model.asMap().clear();
         return "redirect:/forum/rok/"+idRoku+"/rocnik/"+idRocnik+"/skupina/"+idSkupiny+"/vlakno/" + idTopic;
@@ -208,6 +232,32 @@ public class TopicController {
         topic.setContent(newTopic.getContent());
         topic.setSection(sectionService.findOne(newTopic.getSectionId()));
         topicService.save(topic);
+
+        int temp_id = topic.getId();
+
+        /* NOTIFICATIONS */
+        List<User> users = userService.findAll();
+        List<String> list_of_not_id = new ArrayList<>();
+        String str_list_of_not_id = "";
+
+        for (User user : users) {
+            for(String notification : user.getNotificationList()) {
+                if(newTopic.getContent().indexOf(notification) == 0) {
+                    list_of_not_id = user.getNotificationListId();
+                    list_of_not_id.add(Integer.toString(temp_id));
+                    str_list_of_not_id = user.notificationFromListToStringId(list_of_not_id);
+                    user.setNotifications_id(str_list_of_not_id);
+                    userService.save(user);
+                }
+                if(newTopic.getTitle().indexOf(notification) == 0) {
+                    list_of_not_id = user.getNotificationListId();
+                    list_of_not_id.add(Integer.toString(temp_id));
+                    str_list_of_not_id = user.notificationFromListToStringId(list_of_not_id);
+                    user.setNotifications_id(str_list_of_not_id);
+                    userService.save(user);
+                }
+            }
+        }
 
         return "redirect:/topic/" + topic.getId();
 
