@@ -2,6 +2,8 @@ package org.forum.controller;
 
 import org.forum.entities.Post;
 import org.forum.entities.Topic;
+import org.forum.entities.Post;
+import org.forum.entities.Topic;
 import org.forum.entities.user.User;
 import org.forum.entities.user.UserProfile;
 import org.forum.entities.user.exception.UserNotFoundException;
@@ -72,6 +74,8 @@ public class HomeResource {
     /** FORUM **/
     @RequestMapping(value = "/forum")
     public String showForum(Model model) {
+        NewPostFrom searchPost = new NewPostFrom();
+
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
