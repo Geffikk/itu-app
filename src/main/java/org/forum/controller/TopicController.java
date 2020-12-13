@@ -52,9 +52,12 @@ public class TopicController {
 
         if(authentication.getName().equals("anonymousUser")){
             model.addAttribute("oblubeneVlakna", null);
-            User tempUser = new User();
-            tempUser.setUsername("ANONYMOUS");
-            model.addAttribute("uzivatel", tempUser);
+            User user1 = new User();
+            List<Topic> listOfTopics = new ArrayList<>();
+            listOfTopics.add(new Topic());
+            user1.setFavoriteTopics(listOfTopics);
+            model.addAttribute("uzivatel", user1);
+
         }
         else{
             User user = userService.findByUsername(authentication.getName());
@@ -90,9 +93,11 @@ public class TopicController {
 
         if(authentication.getName().equals("anonymousUser")){
             model.addAttribute("oblubeneVlakna", null);
-            User tempUser = new User();
-            tempUser.setUsername("ANONYMOUS");
-            model.addAttribute("uzivatel", tempUser);
+            User user1 = new User();
+            List<Topic> listOfTopics = new ArrayList<>();
+            listOfTopics.add(new Topic());
+            user1.setFavoriteTopics(listOfTopics);
+            model.addAttribute("uzivatel", user1);
         }
         else{
             user = userService.findByUsername(authentication.getName());
@@ -327,7 +332,6 @@ public class TopicController {
             }
         }
 
-        return "redirect:/topic/" + topic.getId();
         return "redirect:/forum/rok/" + section.getStudyYear().getYear().getId() + "/rocnik/" + section.getStudyYear().getId() + "/skupina/" + section.getId() + "/vlakno/" + topic.getId();
 
     }

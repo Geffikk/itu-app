@@ -8,10 +8,10 @@
     <!-- CONTENT-->
 
 
-  <div class="container">
+  <div class="container rowContainer">
     <div class="row rowRanking">
       <div class="col s12 m6 l6">
-          <div class="card">
+          <div class="card cardRanking">
               <div class="card-content">
                   <span class="card-title">Top 5 poradcov!!!</span>
                   <div th:each="uzivatelP, iterStat1 : ${uzivateliaPoints}" class="valign-wrapper">
@@ -41,7 +41,7 @@
           </div>
       </div>
       <div class="col s12 m6 l6">
-        <div class="card">
+        <div class="card cardRanking">
             <div class="card-content">
                 <span class="card-title">Top 5 rich bitches!!!</span>
                 <div th:each="uzivatelM, iterStat2 : ${uzivateliaMoney}">

@@ -40,11 +40,12 @@ public class PostController {
     @Autowired
     private TopicService topicService;
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable int id,
+    @RequestMapping(value = "/delete/{idPrispevok}", method = RequestMethod.GET)
+    public String delete(@PathVariable int idVlakno,@PathVariable int idPrispevok,
                          Authentication authentication,
                          RedirectAttributes model) {
-        Post post = postService.findOne(id);
+        Post post = postService.findOne(idPrispevok);
+        Topic topic = topicService.findOne(idVlakno);
 
         if (post == null || authentication == null || authentication.getName() == null) {
             return "redirect:/";
@@ -53,17 +54,13 @@ public class PostController {
         postService.delete(post);
 
         model.addFlashAttribute("message", "post.successfully.deleted");
-        return "redirect:/topic/" + post.getTopic().getId();
+        return "redirect:/forum/rok/" + topic.getSection().getStudyYear().getYear().getId() + "/rocnik/" + topic.getSection().getStudyYear().getId() + "/skupina/" + topic.getSection().getId() + "/vlakno/" + topic.getId() ;
     }
 
     @RequestMapping(value = "/pridaj1/{idPrispevku}")
-    private String incrementRankingOfPost(@PathVariable int idRoku, @PathVariable int idRocnik,
-                                          @PathVariable int idSkupiny, @PathVariable int idVlakno,
+    private String incrementRankingOfPost(@PathVariable int idVlakno,
                                           @PathVariable int idPrispevku, Model model, Authentication authentication){
         Post post = postService.findOne(idPrispevku);
-        Year year = yearService.findOne(idRoku);
-        StudyYear studyYear = studyYearService.findOne(idRocnik);
-        Section section = sectionService.findOne(idSkupiny);
         Topic topic = topicService.findOne(idVlakno);
         User user = userService.findByUsername(authentication.getName());
 
@@ -71,18 +68,14 @@ public class PostController {
         post.setRanking(post.getRanking()+1);
         postService.save(post);
 
-        return "redirect:/forum/rok/" + year.getId() + "/rocnik/" + studyYear.getId() + "/skupina/" + section.getId() + "/vlakno/" + topic.getId();
+        return "redirect:/forum/rok/" + topic.getSection().getStudyYear().getYear().getId() + "/rocnik/" + topic.getSection().getStudyYear().getId() + "/skupina/" + topic.getSection().getId() + "/vlakno/" + topic.getId();
     }
 
 
     @RequestMapping(value = "/odcitaj1/{idPrispevku}")
-    private String decrementRankingOfPost(@PathVariable int idRoku, @PathVariable int idRocnik,
-                                          @PathVariable int idSkupiny, @PathVariable int idVlakno,
-                                          @PathVariable int idPrispevku, Model model, Authentication authentication){
+    private String decrementRankingOfPost( @PathVariable int idVlakno,
+                                          @PathVariable int idPrispevku, Authentication authentication){
         Post post = postService.findOne(idPrispevku);
-        Year year = yearService.findOne(idRoku);
-        StudyYear studyYear = studyYearService.findOne(idRocnik);
-        Section section = sectionService.findOne(idSkupiny);
         Topic topic = topicService.findOne(idVlakno);
         User user = userService.findByUsername(authentication.getName());
 
@@ -91,17 +84,13 @@ public class PostController {
         post.setRanking(post.getRanking()-1);
         postService.save(post);
 
-        return "redirect:/forum/rok/" + year.getId() + "/rocnik/" + studyYear.getId() + "/skupina/" + section.getId() + "/vlakno/" + topic.getId();
+        return "redirect:/forum/rok/" + topic.getSection().getStudyYear().getYear().getId() + "/rocnik/" + topic.getSection().getStudyYear().getId() + "/skupina/" + topic.getSection().getId() + "/vlakno/" + topic.getId();
     }
 
     @RequestMapping(value = "/{idPrispevku}/zavri")
-    private String closeTopic(@PathVariable int idRoku, @PathVariable int idRocnik,
-                              @PathVariable int idSkupiny, @PathVariable int idVlakno,
-                              @PathVariable int idPrispevku, Model model, Authentication authentication){
+    private String closeTopic(@PathVariable int idVlakno,
+                              @PathVariable int idPrispevku){
 
-        Year year = yearService.findOne(idRoku);
-        StudyYear studyYear = studyYearService.findOne(idRocnik);
-        Section section = sectionService.findOne(idSkupiny);
         Topic topic = topicService.findOne(idVlakno);
         Post post = postService.findOne(idPrispevku);
         User creatorOfPost =  post.getUser();
@@ -123,6 +112,6 @@ public class PostController {
         topicService.save(topic);
         postService.save(post);
 
-        return "redirect:/forum/rok/" + year.getId() + "/rocnik/" + studyYear.getId() + "/skupina/" + section.getId() + "/vlakno/" + topic.getId();
+        return "redirect:/forum/rok/" + topic.getSection().getStudyYear().getYear().getId() + "/rocnik/" + topic.getSection().getStudyYear().getId() + "/skupina/" + topic.getSection().getId() + "/vlakno/" + topic.getId();
     }
 }

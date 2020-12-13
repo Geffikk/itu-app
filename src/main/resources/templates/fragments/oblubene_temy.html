@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:insert="fragments/head :: head">
+</head>
+<body>
+<div th:fragment="oblubene_temy" class="row indigo lighten-1" style="margin: 0">
+    <div th:if="${oblubeneVlakna != null}" class="oblubeneVlakna valign-wrapper  indigo darken-1 z-depth-3">
+        <div class="oblubeneTemy">
+            <span class="white-text oblubeneVlakno">Oblubene temy: </span>
+        </div>
+
+        <div class="oblubenyPredmet center-align" th:each="oblubeneVlakno : ${oblubeneVlakna}">
+            <div class="oblubeneVlakno">
+                <a th:href="@{/forum/rok/} + ${oblubeneVlakno.getSection().getStudyYear().getYear().getId()} + '/rocnik/' + ${oblubeneVlakno.getSection().getStudyYear().getId()} + '/skupina/' + ${oblubeneVlakno.getSection().getId()} + '/vlakno/' + ${oblubeneVlakno.getId()}">
+                    <span th:text="${oblubeneVlakno.getTitle()}" class="white-text"></span><br>
+                    <span th:text="${oblubeneVlakno.getSection().getName()}" class="white-text"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
