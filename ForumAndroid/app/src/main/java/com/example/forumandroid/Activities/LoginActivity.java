@@ -29,10 +29,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-//        if ( firebaseAuth.getCurrentUser() != null ) {
-//            /* User already logged in */
-//            showHomeActivityAndFinish();
-//        }
+        if ( firebaseAuth.getCurrentUser() != null ) {
+            /* User already logged in */
+            showHomeActivity();
+        }
     }
 
     @Override
@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showHomeActivity() {
-        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+        startActivity(new Intent(getApplicationContext(), NavigationActivity.class));
         finish();
     }
 

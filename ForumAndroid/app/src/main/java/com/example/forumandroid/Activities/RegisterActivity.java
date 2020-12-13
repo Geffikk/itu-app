@@ -1,11 +1,9 @@
 package com.example.forumandroid.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,11 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.forumandroid.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -28,7 +22,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     // Declare Firebase Auth and firestore
     private FirebaseAuth firebaseAuth;
-    private FirebaseFirestore firebaseStore;
+    private FirebaseFirestore db;
 
     // Declare widgets
     private EditText registerName, registerEmail, registerPassword, registerPasswordCheck;
@@ -40,10 +34,10 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-//        if ( firebaseAuth.getCurrentUser() != null ) {
-//            /* User already logged in */
-//            showHomeActivityAndFinish();
-//        }
+        if ( firebaseAuth.getCurrentUser() != null ) {
+            /* User already logged in */
+            showHomeActivity();
+        }
     }
 
     @Override
@@ -53,7 +47,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         // Initialize Firebase Auth and firestore
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseStore = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         // Initialize widgets
         registerName = findViewById(R.id.registerName);
@@ -108,7 +102,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void showHomeActivity() {
-        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+        startActivity(new Intent(getApplicationContext(), NavigationActivity.class));
         finish();
     }
 
@@ -118,10 +112,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void updateUserName(String registerNameText, String userId) {
-        Map<String, Object> user = new HashMap<>();
-        user.put("name", registerNameText);
+        Map<String, Object> name = new HashMap<>();
+        name.put("name", registerNameText);
 
-        firebaseStore.collection("users").document(userId).set(user);
+        db.collection("users").document(userId).set(name);
     }
 
     private void showMessage(String msg) {
