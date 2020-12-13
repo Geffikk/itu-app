@@ -24,6 +24,9 @@ public class HomeResource {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private TopicService topicService;
+
 
     @RequestMapping(value = { "/help" })
     public String tryIt(Model model) {
@@ -71,7 +74,7 @@ public class HomeResource {
             model.addAttribute("oblubeneVlakna", user.getFavoriteTopics());
         }
 
-
+        model.addAttribute("aktualneTemy", topicService.findRecent());
         model.addAttribute("currentPath", "null");
         model.addAttribute("roky", yearService.findAll());
         return "forum/forum";

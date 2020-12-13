@@ -56,12 +56,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Set<Post> findByTopic(int idVlakna) {
+    public List<Post> findByTopic(int idVlakna) {
         return findByTopic(topicService.findOne(idVlakna));
     }
 
     @Override
-    public Set<Post> findByTopic(Topic topic) {
+    public List<Post> findByTopic(Topic topic) {
         return postRepository.findByTopic(topic);
     }
 

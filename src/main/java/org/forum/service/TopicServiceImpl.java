@@ -14,6 +14,7 @@ import java.util.Set;
 @Service
 public class TopicServiceImpl implements TopicService {
 
+
     @Autowired
     private TopicRepository topicRepository;
 
@@ -39,12 +40,13 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Set<Topic> findRecent() {
+    public List<Topic> findRecent() {
         return topicRepository.findTop5ByOrderByCreationDateDesc();
     }
 
+
     @Override
-    public Set<Topic> findAllByOrderByCreationDateDesc() {
+    public List<Topic> findAllByOrderByCreationDateDesc() {
         return topicRepository.findAllByOrderByCreationDateDesc();
     }
 

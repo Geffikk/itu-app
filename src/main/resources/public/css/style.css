@@ -232,7 +232,7 @@ h2{
 
 .kdeSom{
 	position: absolute;
-	width: 320px;
+	width: 350px;
 	height: 70px;
 	margin-left: 200px;
 	margin-bottom: -100px;
@@ -725,4 +725,18 @@ h2{
 .likeDiv{
 	margin-left: 450px;
 	margin-bottom: 4px;
+}
+
+.aktualneTemy{
+	position: fixed;
+	top: 125px;
+	right: 1px;
+}
+
+.precitaneVlakno{
+	background-color: white;
+}
+
+.neprecitaneVlakno{
+    background-color: lightgray;
 }

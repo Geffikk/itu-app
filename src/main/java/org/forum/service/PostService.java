@@ -21,9 +21,9 @@ public interface PostService {
 
     Set<Post> findByUser(User user);
 
-    Set<Post> findByTopic(int idVlakna);
+    List<Post> findByTopic(int idVlakna);
 
-    Set<Post> findByTopic(Topic topic);
+    List<Post> findByTopic(Topic topic);
 
     void save(Post post);
 

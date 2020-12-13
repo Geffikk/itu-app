@@ -46,6 +46,12 @@ public class User {
     @Column(name = "rola")
     private String role = "USER";
 
+    @Column(name = "upozornenia")
+    private String notifications = "";
+
+    @Column(name = "precitane_skupiny")
+    private String readTopics = "";
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "uzivatelske_info_id")
     private UserAdditionalInfo info;
@@ -132,10 +138,17 @@ public class User {
         return money;
     }
 
+    public String getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(String notifications) {
+        this.notifications = notifications;
+    }
+
     public void setMoney(int money) {
         this.money = money;
     }
-
 
     public Date getCreatedAt() {
         return createdAt;
@@ -161,7 +174,6 @@ public class User {
         this.role = role;
     }
 
-
     public UserAdditionalInfo getInfo() {
         return info;
     }
@@ -178,13 +190,20 @@ public class User {
         this.favoriteTopics = favoriteTopics;
     }
 
-
     public List<Post> getLikedPosts() {
         return likedPosts;
     }
 
     public void setLikedPosts(List<Post> likedPosts) {
         this.likedPosts = likedPosts;
+    }
+
+    public String getReadTopics() {
+        return readTopics;
+    }
+
+    public void setReadTopics(String readTopics) {
+        this.readTopics = readTopics;
     }
 
     public List<String> getRoleList() {
@@ -194,6 +213,37 @@ public class User {
         return new ArrayList<>();
     }
 
+    public List<String> getNotificationList() {
+        List<String> temp_permissions = new ArrayList<>();
+
+        if(this.notifications.length() > 0) {
+            temp_permissions = Arrays.asList(this.notifications.split(","));
+
+            return new ArrayList<>(temp_permissions);
+        }
+        return new ArrayList<>();
+    }
+
+    public List<String> getReadTopicsList() {
+        if(this.readTopics.length() > 0) {
+            return Arrays.asList(this.readTopics.split(","));
+        }
+        return new ArrayList<>();
+    }
+
+    public String notificationFromListToString(List<String> list) {
+        StringBuilder not = new StringBuilder();
+        int size = list.size();
+
+        for (String item : list) {
+            size = size - 1;
+            not.append(item);
+
+            if (size != 0)
+                not.append(',');
+        }
+        return not.toString();
+    }
 
     public void addFavoriteTopic(Topic topic){
         if(favoriteTopics == null){

@@ -45,8 +45,6 @@ public class SectionController {
                                        Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Year year = yearService.findOne(idRoku);
-        StudyYear studyYear = studyYearService.findOne(idRocnik);
         Section section = sectionService.findOne(idSkupiny);
 
         if(authentication.getName().equals("anonymousUser")){
@@ -57,12 +55,12 @@ public class SectionController {
             model.addAttribute("oblubeneVlakna", user.getFavoriteTopics());
         }
 
-        model.addAttribute("currentPath", year.getName() + " / " + studyYear.getName() + " / " + section.getName() + " / ");
-        model.addAttribute("skolskyRok", studyYear);
+        model.addAttribute("currentPath", section.getStudyYear().getYear().getName() + "/" + section.getStudyYear().getName() + "/" + section.getName() + "/");
+        model.addAttribute("skolskyRok", section.getStudyYear());
         model.addAttribute("roky", yearService.findAll());
         model.addAttribute("vlakna", topicService.findBySection(idSkupiny));
-        model.addAttribute("rok", year);
-        model.addAttribute("skupiny", sectionService.findByStudyYear(studyYear));
+        model.addAttribute("rok", section.getStudyYear().getYear());
+        model.addAttribute("skupiny", sectionService.findByStudyYear(section.getStudyYear()));
         model.addAttribute("skupina", section);
         model.addAttribute("skupinaId", idSkupiny);
         return "section/section";
