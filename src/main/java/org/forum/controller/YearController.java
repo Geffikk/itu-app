@@ -4,6 +4,7 @@ package org.forum.controller;
 import org.forum.entities.StudyYear;
 import org.forum.entities.Year;
 import org.forum.entities.user.User;
+import org.forum.newform.NewPostFrom;
 import org.forum.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -54,6 +55,9 @@ public class YearController {
         model.addAttribute("roky", yearService.findAll());
         model.addAttribute("rok", year);
         model.addAttribute("idRoku", idRoku);
+
+        NewPostFrom searchPost = new NewPostFrom();
+        model.addAttribute("searchPost", searchPost);
 
         try {
             model.addAttribute("user", userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));

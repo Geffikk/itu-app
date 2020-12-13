@@ -4,6 +4,7 @@ import org.forum.entities.Section;
 import org.forum.entities.StudyYear;
 import org.forum.entities.Year;
 import org.forum.entities.user.User;
+import org.forum.newform.NewPostFrom;
 import org.forum.newform.NewSectionForm;
 import org.forum.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,8 @@ public class SectionController {
         } catch (Exception e) {
             model.addAttribute("user", null);
         }
+        NewPostFrom searchPost = new NewPostFrom();
+        model.addAttribute("searchPost", searchPost);
 
         return "section/section";
     }

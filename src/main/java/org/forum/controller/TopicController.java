@@ -197,6 +197,11 @@ public class TopicController {
         model.addAttribute("skolskyRok", section.getStudyYear());
         model.addAttribute("skupina", section);
         model.addAttribute("newTopic", new NewTopicForm());
+        try {
+            model.addAttribute("user", userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        } catch (Exception e) {
+            model.addAttribute("user", null);
+        }
 
         return "section/topic/new_topic_form";
     }
@@ -221,6 +226,12 @@ public class TopicController {
         model.addAttribute("idPost", idPrispevku);
         model.addAttribute("topic", topic);
         model.addAttribute("posts", postService.findByTopic(idVlakna));
+        try {
+            model.addAttribute("user", userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        } catch (Exception e) {
+            model.addAttribute("user", null);
+        }
+
 
         return "section/topic/edit_post";
     }

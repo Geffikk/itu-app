@@ -4,6 +4,7 @@ package org.forum.controller;
 import org.forum.entities.StudyYear;
 import org.forum.entities.Year;
 import org.forum.entities.user.User;
+import org.forum.newform.NewPostFrom;
 import org.forum.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -64,6 +65,8 @@ public class StudyYearController {
         } catch (Exception e) {
             model.addAttribute("user", null);
         }
+        NewPostFrom searchPost = new NewPostFrom();
+        model.addAttribute("searchPost", searchPost);
 
         return "forum/forumSkupiny";
     }

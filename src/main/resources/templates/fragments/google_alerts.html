@@ -27,7 +27,7 @@
                 <div class="row z-depth-1" th:each="notif : ${userProfile.user.getNotificationList}" th:id="${userProfile.user.id}">
                     <form th:action="@{mojProfil/delete/} + ${notif}">
                         <div class="row">
-                            <h6 class="left-align vertical-align" style="padding: 25px 0px 0px 10px" th:text="${notif}"></h6>
+                            <h6 class="left-align vertical-align" style="padding-left: 25px; padding-top: 10px" th:text="${notif}"></h6>
                             <button class="btn-floating btn-small btnred darken-4 right" type="submit" style="margin-right: 25px">
                                 <i class="material-icons black-text red darken-4">delete</i>
                             </button>
