@@ -5,6 +5,7 @@ import org.forum.entities.user.User;
 import org.forum.entities.user.UserAdditionalInfo;
 import org.forum.entities.user.UserProfile;
 import org.forum.entities.user.exception.UserNotFoundException;
+import org.forum.newform.NewPostFrom;
 import org.forum.newform.NewSectionForm;
 import org.forum.newform.ProfilForm;
 import org.forum.service.SectionService;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +31,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @ComponentScan
 @Controller
@@ -52,16 +56,57 @@ public class UserController {
                             Model model) {
         String username = authentication.getName();
         UserProfile userProfile;
+        NewPostFrom newPostFrom = new NewPostFrom();
+
         try {
             userProfile = userProfileService.findOne(username);
         } catch (NullPointerException e) {
             throw new UserNotFoundException();
         }
+
+        model.addAttribute("user", userProfile.getUser());
         model.addAttribute("userProfile", userProfile);
         model.addAttribute("profilForm", new ProfilForm());
         model.addAttribute("newSection", new NewSectionForm());
+        model.addAttribute("upozornenie", new NewPostFrom());
         return "user/myprofile";
     }
+
+    @RequestMapping(value = "/mojProfil/notification")
+    public String addNotification(Model model,
+                                  @Valid @ModelAttribute("upozornenie") NewPostFrom upozornenie) {
+
+        User user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        List<String> notifications = new ArrayList<>();
+        String str_notifications = "";
+        notifications = user.getNotificationList();
+
+        notifications.add(upozornenie.getContent());
+        str_notifications = user.notificationFromListToString(notifications);
+        System.out.println(str_notifications);
+
+        user.setNotifications(str_notifications);
+        userService.save(user);
+
+        return "redirect:/mojProfil";
+    }
+
+    @RequestMapping(value = "/mojProfil/delete/{notif}")
+    public String deleteNotification(Model model,@PathVariable String notif) {
+
+        User user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        List<String> list = user.getNotificationList();
+        String list_to_str = "";
+
+        list.remove(notif);
+        list_to_str = user.notificationFromListToString(list);
+        user.setNotifications(list_to_str);
+        userService.save(user);
+
+        return "redirect:/mojProfil";
+    }
+
 
     @RequestMapping(value = "/myprofile/edit", method = RequestMethod.GET)
     public String editMyProfile(Authentication authentication,
@@ -87,8 +132,6 @@ public class UserController {
         model.addAttribute("userAdditionalInfo", userAdditionalInfo);
         model.addAttribute("profilForm", new ProfilForm());
         model.addAttribute("newSection", new NewSectionForm());
-
-
         return "user/user_edit_form";
     }
 

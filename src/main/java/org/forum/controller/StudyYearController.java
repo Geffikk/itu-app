@@ -58,6 +58,12 @@ public class StudyYearController {
         model.addAttribute("skolskeRoky", studyYearService.findByYear(year));
         model.addAttribute("skupiny", sectionService.findByStudyYear(studyYear));
         model.addAttribute("idSkolskehoRoku", idRocnik);
+        try {
+            model.addAttribute("user", userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        } catch (Exception e) {
+            model.addAttribute("user", null);
+        }
+
         return "forum/forumSkupiny";
     }
 }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:insert="fragments/head :: head">
+</head>
+<body>
+<div th:fragment="quicksearch" class="row indigo lighten-1">
+    <div class="col s1" style="padding: 3px">
+        <button class="btn btn-primary right indigo darken-3 modal-trigger" href="#modal" type="submit" style="border-radius: 5px">
+            <div class="row">
+                Quick Search
+                <i class="material-icons blue-text">search</i>
+            </div>
+        </button>
+    </div>
+    <!-- Modal Structure -->
+    <div id="modal" class="modal">
+        <form th:action="@{/forum/search}" th:object="${searchPost}">
+            <div class="modal-content">
+                <p>Napíš výraz, na základe ktorého chceš vyhľadať vlákno</p>
+                <div class="center-align">
+                        <textarea th:field="*{content}" name="content" id="text">
+                        </textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="modal-footer">
+                    <button type="submit" class="modal-close waves-effect waves-green btn-flat yellow darken-4 white-text">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -16,6 +16,7 @@
                             <h5 class="center bold">INFO</h5>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col s6 right-align">
                             <p th:if="${userProfile.user.info.name != ''}">Meno</p>
@@ -60,6 +61,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div th:if="${#authorization.expression('hasRole(''ROLE_NOTIF'')')}">
+            <div th:insert="fragments/google_alerts :: google_alerts"></div>
         </div>
     </div>
 

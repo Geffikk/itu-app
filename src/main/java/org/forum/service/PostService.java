@@ -25,6 +25,8 @@ public interface PostService {
 
     Set<Post> findByTopic(Topic topic);
 
+    List<Post> findAllByContent(String s);
+
     void save(Post post);
 
     void delete(int id);

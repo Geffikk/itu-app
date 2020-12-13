@@ -6,6 +6,9 @@
 </head>
 <body>
 <nav th:insert="fragments/navbar :: navbar" id="up"></nav>
+<div th:if="${#authentication.getAuthorities().contains('ROLE_QUICK')}">
+    <div th:insert="fragments/quicksearch:: quicksearch"></div>
+</div>
 
 <div class="scrollDown">
     <a href="#down" class="btn indigo right">
@@ -36,7 +39,7 @@
                 <a th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id}" th:text="${topic.section.name}" class="btn-large indigo waves-effect waves-blue" style="font-family: 'Comic Sans MS'; color: inherit;"></a>
                 -> <span style="font-family: 'Comic Sans MS'" th:text="${topic.title}"></span>
             </h5>
-            <div th:if="${!uzivatel.getUsername().equals('ANONYMOUS')}" class="like right">
+            <div th:if="${#authentication.getName().equals('ANONYMOUS')}" class="like right">
                 <form th:action="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/add'">
                     <button th:if="${!uzivatel.getFavoriteTopics().contains(topic)}" type="submit" class="btn-floating btn indigo darken-4 right">
                         <i class="material-icons">favorite_border</i>
@@ -60,9 +63,28 @@
             <div class="row"  style="margin-bottom: 0;">
                 <div class="col s10">
                     <!-- Author & Date -->
-                    <a th:href="@{/user/} + ${topic.user.username}"><span th:text="'@' + ${topic.user.username}"></span></a>
-                    <span th:text="${topic.creationDate} ? ${#calendars.format(topic.creationDate, 'HH:mm:ss - dd MMMM yyyy')}"></span>
+                    <div class="popup" onmousemove="showElement1()" onmouseout="hideElement1()">
+                        <a th:href="@{/user/} + ${topic.user.username}"><span th:text="'@' + ${topic.user.username}"></span></a>
+                            <span class="popuptext" id="myPopup2" th:text="'Pocet bodov: '+${topic.user.points}">
+                            </span>
+                        <span th:text="${topic.creationDate} ? ${#calendars.format(topic.creationDate, 'HH:mm:ss - dd MMMM yyyy')}"></span>
+                    </div>
                     <div class="divider"></div>
+                    <br>
+                    <br>
+
+                    <script>
+                        function showElement1()
+                        {
+                            var popup = document.getElementById("myPopup2");
+                            popup.classList.toggle("show");
+                        }
+                        function hideElement1()
+                        {
+                            var popup = document.getElementById("myPopup2");
+                            popup.classList.toggle("close");
+                        }
+                    </script>
 
                     <!-- Message -->
                     <p th:utext="${#strings.replace(topic.content,T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"></p>
@@ -107,8 +129,28 @@
 
                 <!-- Author & Date -->
                 <div class="datebox indigo darken-1 right">
-                    <a class="blue-text datefont" th:href="@{/user/} + ${post.user.username}"><span th:text="'@' + ${post.user.username}"></span></a>
+                    <div class="popup" onmousemove="showElement()" onmouseout="hideElement()">
+                        <a id="username" class="blue-text datefont popup" th:href="@{/user/} + ${post.user.username}"
+                           th:text="'@' + ${post.user.username}" onmousemove="showElement();" onmouseout="hideElement();">
+                        </a>
+                        <span class="popuptext" id="myPopup1" th:text="'Pocet bodov: '+${post.user.points}">
+                        </span>
+                    </div>
+
                     <span class="blue-text datefont" th:text="${post.creationDate} ? ${#calendars.format(post.creationDate, 'HH:mm:ss')} + ' ' + #{page.topic.on.day} + ' ' + ${#calendars.format(post.creationDate, 'dd MMMM yyyy')}"></span>
+
+                    <script>
+                        function showElement()
+                        {
+                            var popup = document.getElementById("myPopup1");
+                            popup.classList.toggle("show");
+                        }
+                        function hideElement()
+                        {
+                            var popup = document.getElementById("myPopup1");
+                            popup.classList.toggle("close");
+                        }
+                    </script>
                 </div>
                 <br>
                 <br>
@@ -123,11 +165,11 @@
             <div class="row rowFotter">
 
                 <div class="center-align likeDiv">
-                    <a th:disabled="${post.getGotLikeFromUsers().contains(uzivatel) or uzivatel.getUsername().equals('ANONYMOUS')}" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/prispevok/pridaj1/' + ${post.id}" class="btn indigo sipka">
+                    <a th:disabled="${post.getGotLikeFromUsers().contains(uzivatel) or #authentication.getName().equals('ANONYMOUS')}" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/prispevok/pridaj1/' + ${post.id}" class="btn indigo sipka">
                         <i class="material-icons">thumb_up</i>
                     </a>
                     <span th:text="${post.ranking}" class="rankingCislo"></span>
-                    <a th:disabled="${post.getGotLikeFromUsers().contains(uzivatel) or uzivatel.getUsername().equals('ANONYMOUS')}" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/prispevok/odcitaj1/' + ${post.id}" class="btn indigo sipka">
+                    <a th:disabled="${post.getGotLikeFromUsers().contains(uzivatel) or #authentication.getName().equals('ANONYMOUS')}" th:href="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id} + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id} + '/prispevok/odcitaj1/' + ${post.id}" class="btn indigo sipka">
                         <i class="material-icons">thumb_down</i>
                     </a>
 
@@ -162,23 +204,32 @@
     <div class="row">
         <form th:action="@{/forum/rok/} + ${rok.id} + '/rocnik/' + ${skolskyRok.id}
                                 + '/skupina/' + ${skupina.id} + '/vlakno/' + ${topic.id}" method="POST" th:object="${newPost}">
-
+            <div th:if="${#authorization.expression('hasRole(''ROLE_TEXT'')')}">
                 <textarea th:field="*{content}" name="content" id="editor">
                     &lt;p&gt;This is some sample content.&lt;/p&gt;
                 </textarea>
-            <script>
-                ClassicEditor
+                <script>
+                    ClassicEditor
                     .create( document.querySelector( '#editor' ) )
                     .then( editor => {
-                        console.log( editor );
+                    console.log( editor );
                     } )
                     .catch( error => {
-                        console.error( error );
+                    console.error( error );
                     } );
-            </script>
-            <button class="btn btn-primary right indigo darken-3" type="submit">
-                <i class="material-icons blue-text">send</i>
-            </button>
+                </script>
+                <button class="btn btn-primary right indigo darken-3" type="submit">
+                    <i class="material-icons blue-text">send</i>
+                </button>
+            </div>
+            <div th:unless="${#authorization.expression('hasRole(''ROLE_TEXT'')')}">
+                <textarea th:field="*{content}" name="content" id="text">
+                    &lt;p&gt;This is some sample content.&lt;/p&gt;
+                </textarea>
+                <button class="btn btn-primary right indigo darken-3" type="submit">
+                    <i class="material-icons blue-text">send</i>
+                </button>
+            </div>
         </form>
     </div>
 

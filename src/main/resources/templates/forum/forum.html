@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:insert="fragments/head :: head">
 <body>
     <nav th:insert="fragments/navbar :: navbar"></nav>
-
 
     <div th:if="${oblubeneVlakna != null}" class="oblubeneVlakna valign-wrapper  indigo darken-1 z-depth-3">
         <div class="oblubeneTemy">
@@ -21,6 +21,9 @@
         </div>
     </div>
 
+    <div sec:authorize="hasRole('ROLE_QUICK')">
+        <div th:insert="fragments/quicksearch:: quicksearch"></div>
+    </div>
 
     <div class="container forumContainer">
         <div class="row rowRok">

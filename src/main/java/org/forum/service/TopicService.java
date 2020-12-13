@@ -29,6 +29,10 @@ public interface TopicService {
 
     Set<Topic> findByUser(User user);
 
+    List<Topic> findAllByContent(String s);
+
+    List<Topic> findAllByTitle(String s);
+
     void delete(int id);
 
     void delete(Topic topic);

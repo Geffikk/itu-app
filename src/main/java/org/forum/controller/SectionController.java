@@ -65,6 +65,12 @@ public class SectionController {
         model.addAttribute("skupiny", sectionService.findByStudyYear(studyYear));
         model.addAttribute("skupina", section);
         model.addAttribute("skupinaId", idSkupiny);
+        try {
+            model.addAttribute("user", userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        } catch (Exception e) {
+            model.addAttribute("user", null);
+        }
+
         return "section/section";
     }
 

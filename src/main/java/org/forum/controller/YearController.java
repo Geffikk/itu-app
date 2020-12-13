@@ -57,6 +57,12 @@ public class YearController {
         model.addAttribute("rok", year);
         model.addAttribute("idRoku", idRoku);
 
+        try {
+            model.addAttribute("user", userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        } catch (Exception e) {
+            model.addAttribute("user", null);
+        }
+
         return "forum/forumRocniky";
     }
 }
