@@ -24,10 +24,10 @@
                 </div>
                 <form th:action="@{/obchod/unlock1}">
                     <div class="center-align">
-                        <div th:if="${user.getMoney() >= 20000}">
+                        <div th:if="${user.getMoney() >= 200}">
                             <button type="submit" th:disabled="${#authorization.expression('hasRole(''ROLE_QUICK'')')}" class="btn waves-effect waves-light indigo">ODOMKNÚŤ (20 000$)<i class="material-icons right">lock_open</i></button>
                         </div>
-                        <div th:unless="${user.getMoney() >= 20000}">
+                        <div th:unless="${user.getMoney() >= 200}">
                             <a type="submit" class="btn waves-effect waves-light indigo modal-trigger" href="#modal1">ODOMKNÚŤ (20 000$)<i class="material-icons right">lock_open</i></a>
                         </div>
                     </div>
@@ -63,10 +63,10 @@
                 </div>
                 <form th:action="@{/obchod/unlock3}">
                     <div class="center-align">
-                        <div th:if="${user.getMoney() >= 200}">
+                        <div th:if="${user.getMoney() >= 20000}">
                         <button type="submit" th:disabled="${#authorization.expression('hasRole(''ROLE_NOTIF'')')}" class="btn waves-effect waves-light indigo">ODOMKNÚŤ (30 000$)<i class="material-icons right">lock_open</i></button>
                         </div>
-                        <div th:unless="${user.getMoney() >= 200}">
+                        <div th:unless="${user.getMoney() >= 20000}">
                             <a type="submit" class="btn waves-effect waves-light indigo modal-trigger" href="#modal1">ODOMKNÚŤ (30 000$)<i class="material-icons right">lock_open</i></a>
                         </div>
                     </div>

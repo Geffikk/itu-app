@@ -7,14 +7,14 @@
 
     <div th:insert="fragments/oblubene_temy:: oblubene_temy"></div>
 
+    <div class="indigo lighten-3" style="padding-bottom: 3px">
 
-    <div sec:authorize="hasRole('ROLE_QUICK')">
-        <div th:insert="fragments/quicksearch:: quicksearch"></div>
-    </div>
-    <div>
-        <div th:insert="fragments/aktualne_temy :: aktualne_temy"></div>
-    </div>
+        <div th:insert="fragments/aktualne_temy :: aktualne_temy" style="float: left"></div>
 
+        <div sec:authorize="hasRole('ROLE_QUICK')" style="float: left">
+            <div th:insert="fragments/quicksearch:: quicksearch"></div>
+        </div>
+    </div>
 
     <div class="container forumContainer">
         <div class="row valign-wrapper">
