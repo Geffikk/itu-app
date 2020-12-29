@@ -5,12 +5,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.forumandroid.R;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    DrawerLayout drawerLayout;
+    private DrawerLayout drawerLayout;
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,11 +20,17 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         drawerLayout = findViewById(R.id.drawerLayout);
+
+        textView = findViewById(R.id.toolbar_text);
+
+        textView.setText("Settings");
     }
 
     public void clickMenu(View view) {
         HomeActivity.openDrawer(drawerLayout);
     }
+
+    public void clickMore(View view) { }
 
     public void clickHome(View view) {
         HomeActivity.redirectActivity(this, HomeActivity.class);
