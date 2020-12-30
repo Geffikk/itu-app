@@ -1,5 +1,6 @@
 package com.example.forumandroid.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -7,20 +8,31 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.forumandroid.Adapters.GroupAdapter;
 import com.example.forumandroid.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -31,6 +43,8 @@ public class HomeActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ListView listView;
     private TextView textView;
+    private EditText groupName;
+    private EditText groupDescription;
 
     // For debugging
     private final String TAG = HomeActivity.class.getSimpleName();
@@ -47,6 +61,8 @@ public class HomeActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawerLayout);
         listView = findViewById(R.id.listView);
         textView = findViewById(R.id.toolbar_text);
+        groupName = findViewById(R.id.groupName);
+        groupDescription = findViewById(R.id.groupDescription);
 
         textView.setText("Groups");
 
@@ -58,7 +74,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        closeDrawer(drawerLayout);
+        closeLeftDrawer(drawerLayout);
+        closeRightDrawer(drawerLayout);
     }
 
     private void updateGroups() {
@@ -109,7 +126,56 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void clickMenu(View view){
-        openDrawer(drawerLayout);
+        openLeftDrawer(drawerLayout);
+    }
+
+    public void clickedAddGroup(View view) {
+        openRightDrawer(drawerLayout);
+    }
+
+    public void clickedCreateGroup(View view) {
+        groupName = findViewById(R.id.groupName);
+        groupDescription = findViewById(R.id.groupDescription);
+        String groupNameText = groupName.getText().toString();
+        String groupDescriptionText = groupDescription.getText().toString();
+
+        if ( groupNameText.isEmpty() || groupDescriptionText.isEmpty() ) {
+            /* Empty input */
+            showMessage("All fields are required.", getApplicationContext());
+            return;
+        }
+
+        CreateGroup(firebaseAuth.getCurrentUser().getUid(), new Timestamp(new Date()), groupDescriptionText, groupNameText);
+    }
+
+    private void CreateGroup(String author, Timestamp date, String description, String name) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("author", author);
+        data.put("date", date);
+        data.put("description", description);
+        data.put("name", name);
+
+        db.collection("groups")
+                .add(data)
+                .addOnSuccessListener(documentReference -> {
+                    closeRightDrawer(drawerLayout);
+                    showMessage("Group created successfully", getApplicationContext());
+
+                    Intent intent = new Intent(this, GroupActivity.class);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("groupName", name);
+                    intent.putExtras(bundle);
+
+                    startActivity(intent);
+
+                    groupName.setText("");
+                    groupDescription.setText("");
+                })
+                .addOnFailureListener(e -> {
+                    closeRightDrawer(drawerLayout);
+                    showMessage("Group no created. Reason: " + e, getApplicationContext());
+                });
     }
 
     public void clickMore(View view) {}
@@ -124,6 +190,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void clickGroupLeft(View view) {
         TextView textViewGroup = view.findViewById(R.id.textViewLeft);
+
         String groupName = textViewGroup.getText().toString();
 
         Intent intent = new Intent(this, GroupActivity.class);
@@ -156,13 +223,27 @@ public class HomeActivity extends AppCompatActivity {
         logout(this);
     }
 
-    public static void openDrawer(DrawerLayout drawerLayout) {
-        drawerLayout.openDrawer(GravityCompat.START);
+    public static void openLeftDrawer(DrawerLayout drawerLayout) {
+        if ( ! drawerLayout.isDrawerOpen(GravityCompat.END) ) {
+            drawerLayout.openDrawer(GravityCompat.START);
+        }
     }
 
-    public static void closeDrawer(DrawerLayout drawerLayout) {
+    public static void openRightDrawer(DrawerLayout drawerLayout) {
+        if ( ! drawerLayout.isDrawerOpen(GravityCompat.START) ) {
+            drawerLayout.openDrawer(GravityCompat.END);
+        }
+    }
+
+    public static void closeLeftDrawer(DrawerLayout drawerLayout) {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
+        }
+    }
+
+    public static void closeRightDrawer(DrawerLayout drawerLayout) {
+        if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
+            drawerLayout.closeDrawer(GravityCompat.END);
         }
     }
 
@@ -177,5 +258,10 @@ public class HomeActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         activity.startActivity(intent);
+    }
+
+    public static void showMessage(String msg, Context context) {
+        // Throw Toast msg
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 }

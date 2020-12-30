@@ -27,7 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void clickMenu(View view) {
-        HomeActivity.openDrawer(drawerLayout);
+        //HomeActivity.openDrawer(drawerLayout);
     }
 
     public void clickMore(View view) { }
@@ -52,6 +52,6 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        HomeActivity.closeDrawer(drawerLayout);
+        //HomeActivity.closeDrawer(drawerLayout);
     }
 }

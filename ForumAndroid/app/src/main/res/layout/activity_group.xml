@@ -33,6 +33,29 @@
                     android:layout_marginEnd="64dp"
                     android:id="@+id/listView" />
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="32dp"
+                        android:background="@drawable/add_group_button_shape"
+                        android:padding="8dp"
+                        android:id="@+id/addGroupImageView"
+                        android:clickable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:onClick="clickedAddThread"
+                        android:src="@drawable/ic_baseline_add_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </RelativeLayout>
 
         </LinearLayout>
@@ -47,6 +70,19 @@
 
         <include
             layout="@layout/drawer"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="@color/white"
+        android:clickable="false"
+        android:focusable="false" >
+
+        <include
+            layout="@layout/drawer_add_thread"/>
 
     </RelativeLayout>
 

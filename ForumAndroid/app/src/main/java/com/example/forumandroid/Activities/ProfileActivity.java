@@ -38,7 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void clickMenu(View view) {
-        HomeActivity.openDrawer(drawerLayout);
+        //HomeActivity.openDrawer(drawerLayout);
     }
 
     public void clickMore(View view) { }
@@ -63,7 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        HomeActivity.closeDrawer(drawerLayout);
+        //HomeActivity.closeDrawer(drawerLayout);
     }
 
     private void updateDrawerProfile() {
