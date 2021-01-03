@@ -23,6 +23,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:ellipsize="end"
+            android:paddingHorizontal="10dp"
+            android:maxLines="1"
             android:id="@+id/toolbar_text"
             android:textColor="#3b008f"
             android:text="Toolbar Text"
@@ -45,9 +48,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp" />
+            android:background="@android:color/darker_gray" />
 
     </LinearLayout>
 

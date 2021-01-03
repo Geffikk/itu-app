@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.forumandroid.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 

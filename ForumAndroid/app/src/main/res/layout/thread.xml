@@ -16,7 +16,7 @@
         android:textSize="17sp"
         android:textColor="@color/black"
         android:textStyle="bold|italic"
-        android:onClick="clickGroup"
+        android:onClick="clickThread"
         android:foreground="?attr/selectableItemBackground"
         android:id="@+id/textView"
         android:text="thread"/>

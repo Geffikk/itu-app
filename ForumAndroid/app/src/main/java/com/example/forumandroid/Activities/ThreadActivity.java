@@ -13,8 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.forumandroid.Adapters.GroupAdapter;
-import com.example.forumandroid.Adapters.ThreadAdapter;
+import com.example.forumandroid.Adapters.PostAdapter;
 import com.example.forumandroid.R;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +21,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,7 +30,7 @@ import java.util.Map;
 import static com.example.forumandroid.Activities.HomeActivity.closeRightDrawer;
 import static com.example.forumandroid.Activities.HomeActivity.showMessage;
 
-public class GroupActivity extends AppCompatActivity {
+public class ThreadActivity extends AppCompatActivity {
 
     // Declare Firebase Auth and firestore
     private FirebaseAuth firebaseAuth;
@@ -38,45 +38,45 @@ public class GroupActivity extends AppCompatActivity {
 
     private ListView listView;
     private DrawerLayout drawerLayout;
-    private EditText threadName;
-    private EditText threadDescription;
+    private EditText post;
+    private TextView description;
+    private TextView nameAndDate;
 
-    // Debugging tool
-    private final String TAG = GroupActivity.class.getSimpleName();
+    // for debugging
+    private final String TAG = ThreadActivity.class.getSimpleName();
 
-    private String groupName;
-    private String groupId;
+    private String threadName;
+    private String threadId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group);
+        setContentView(R.layout.activity_thread);
 
         listView = findViewById(R.id.listView);
         drawerLayout = findViewById(R.id.drawerLayout);
-        threadName = findViewById(R.id.threadName);
-        threadDescription = findViewById(R.id.threadDescription);
-
-        groupName = getIntent().getExtras().getString("groupName");
+        description = findViewById(R.id.description);
+        nameAndDate = findViewById(R.id.nameAndDate);
+        threadName = getIntent().getExtras().getString("threadName");
 
         // Set toolbar text
         TextView textView = findViewById(R.id.toolbar_text);
-        textView.setText(groupName);
+        textView.setText(threadName);
 
         // Initialize Firebase Auth and firestore
         firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        // Get group ID from db
-        db.collection("groups")
-                .whereEqualTo("name", groupName)
+        // Get thread ID from db
+        db.collection("threads")
+                .whereEqualTo("name", threadName)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            groupId = document.getId();
-                            updateThreads();
+                            threadId = document.getId();
                             updateDescription();
+                            updatePosts();
                         }
                     }
                 });
@@ -88,63 +88,83 @@ public class GroupActivity extends AppCompatActivity {
         HomeActivity.openLeftDrawer(drawerLayout);
     }
 
-    public void clickedAddThread(View view) {
+    public void clickedAddPost(View view) {
         HomeActivity.openRightDrawer(drawerLayout);
     }
 
-    public void clickedCreateThread(View view) {
-        threadName = findViewById(R.id.threadName);
-        threadDescription = findViewById(R.id.threadDescription);
-        String threadNameText = threadName.getText().toString();
-        String threadDescriptionText = threadDescription.getText().toString();
+    public void clickedShowDescription(View view) {
+        LinearLayout linearLayout = findViewById(R.id.descriptionLayout);
+        ImageView imageView = findViewById(R.id.ImageViewShowDescription);
 
-        if ( threadNameText.isEmpty() || threadDescriptionText.isEmpty() ) {
+        if ( linearLayout.getVisibility() == View.VISIBLE ) {
+            imageView.setImageResource(R.drawable.ic_baseline_arrow_downward_24);
+            linearLayout.setVisibility(View.GONE);
+        }
+        else {
+            imageView.setImageResource(R.drawable.ic_baseline_arrow_upward_24);
+            linearLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void clickedCreatePost(View view) {
+        post = findViewById(R.id.post);
+        String postText = post.getText().toString();
+
+        if ( postText.isEmpty() ) {
             /* Empty input */
-            showMessage("All fields are required.", getApplicationContext());
+            showMessage("Write a comment first.", getApplicationContext());
             return;
         }
 
-        CreateThread(firebaseAuth.getCurrentUser().getUid(), groupId, new Timestamp(new Date()), threadDescriptionText, threadNameText);
+        CreatePost(firebaseAuth.getCurrentUser().getUid(), new Timestamp(new Date()), postText);
     }
 
-    private void CreateThread(String author, String group, Timestamp date, String description, String name) {
+    private void CreatePost(String authorId, Timestamp date, String post) {
         Map<String, Object> data = new HashMap<>();
-        data.put("author", author);
+        data.put("author", authorId);
         data.put("date", date);
-        data.put("group", group);
-        data.put("description", description);
-        data.put("name", name);
+        data.put("post", post);
+        data.put("thread", threadId);
 
-        db.collection("threads")
+        db.collection("posts")
                 .add(data)
                 .addOnSuccessListener(documentReference -> {
                     closeRightDrawer(drawerLayout);
-                    showMessage("Thread created successfully", getApplicationContext());
+                    showMessage("Post created successfully", getApplicationContext());
 
                     Intent intent = new Intent(this, ThreadActivity.class);
 
                     Bundle bundle = new Bundle();
-                    bundle.putString("threadName", name);
+                    bundle.putString("threadName", threadName);
                     intent.putExtras(bundle);
 
                     startActivity(intent);
 
-                    EditText editTextThreadName = findViewById(R.id.threadName);
-                    EditText editTextThreadDescription = findViewById(R.id.threadDescription);
-                    editTextThreadName.setText("");
-                    editTextThreadDescription.setText("");
+                    EditText editText = findViewById(R.id.post);
+                    editText.setText("");
 
-                    recreate();
+                    finish();
                 })
                 .addOnFailureListener(e -> {
                     closeRightDrawer(drawerLayout);
-                    showMessage("Thread no created. Reason: " + e, getApplicationContext());
+                    showMessage("Post no created. Reason: " + e, getApplicationContext());
                 });
     }
 
-    public void deleteGroup(View view) {
+    public void clickMore(View view) {
+        LinearLayout linearLayout = findViewById(R.id.deleteThread);
 
-        db.collection("groups").document(groupId)
+        if ( linearLayout.getVisibility() == View.VISIBLE ) {
+            linearLayout.setVisibility(View.GONE);
+        }
+        else {
+            linearLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void deleteThread(View view) {
+
+        db.collection("threads").document(threadId)
                 .get()
                 .addOnCompleteListener(task -> {
 
@@ -155,7 +175,7 @@ public class GroupActivity extends AppCompatActivity {
                         String authorId = document.getString("author");
 
                         if ( firebaseAuth.getCurrentUser().getUid().equals(authorId) ) {
-                            db.collection("groups").document(groupId).delete();
+                            db.collection("threads").document(threadId).delete();
                             finish();
                         }
                         else {
@@ -166,17 +186,6 @@ public class GroupActivity extends AppCompatActivity {
                         Log.d(TAG, "Error getting documents: ", task.getException());
                     }
                 });
-    }
-
-    public void clickMore(View view) {
-        LinearLayout linearLayout = findViewById(R.id.deleteGroup);
-
-        if ( linearLayout.getVisibility() == View.VISIBLE ) {
-            linearLayout.setVisibility(View.GONE);
-        }
-        else {
-            linearLayout.setVisibility(View.VISIBLE);
-        }
     }
 
     public void clickHome(View view) {
@@ -195,36 +204,6 @@ public class GroupActivity extends AppCompatActivity {
         HomeActivity.logout(this, firebaseAuth);
     }
 
-    public void clickThread(View view) {
-        Intent intent = new Intent(this, ThreadActivity.class);
-
-        TextView textView = view.findViewById(R.id.textView);
-        String textViewText = textView.getText().toString();
-
-        Bundle bundle = new Bundle();
-        bundle.putString("threadName", textViewText);
-        intent.putExtras(bundle);
-
-        startActivity(intent);
-
-        threadName.setText("");
-        threadDescription.setText("");
-    }
-
-    public void clickedShowDescription(View view) {
-        LinearLayout linearLayout = findViewById(R.id.descriptionLayoutGroups);
-        ImageView imageView = findViewById(R.id.ImageViewShowDescriptionGroup);
-
-        if ( linearLayout.getVisibility() == View.VISIBLE ) {
-            imageView.setImageResource(R.drawable.ic_baseline_arrow_downward_24);
-            linearLayout.setVisibility(View.GONE);
-        }
-        else {
-            imageView.setImageResource(R.drawable.ic_baseline_arrow_upward_24);
-            linearLayout.setVisibility(View.VISIBLE);
-        }
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -234,7 +213,7 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     private void updateDescription() {
-        db.collection("groups").document(groupId)
+        db.collection("threads").document(threadId)
                 .get()
                 .addOnCompleteListener(task -> {
 
@@ -242,12 +221,12 @@ public class GroupActivity extends AppCompatActivity {
 
                         DocumentSnapshot document = task.getResult();
 
-                        TextView textViewDescription = findViewById(R.id.descriptionGroups);
-                        TextView textViewNameAndDate = findViewById(R.id.nameAndDateGroups);
-
                         String authorId = document.getString("author");
+                        Timestamp date = document.getTimestamp("date");
+                        String nameAndDateText = date.toDate().toString();
+
                         String descriptionText = document.getString("description");
-                        textViewDescription.setText(descriptionText);
+                        description.setText(descriptionText);
 
                         db.collection("users").document(authorId)
                                 .get()
@@ -258,7 +237,7 @@ public class GroupActivity extends AppCompatActivity {
 
                                         String authorName = document2.getString("name");
 
-                                        textViewNameAndDate.setText("By " + authorName);
+                                        nameAndDate.setText("By " + authorName + " at " + nameAndDateText);
                                     }
                                     else {
                                         Log.d(TAG, "Error getting documents: ", task2.getException());
@@ -266,39 +245,62 @@ public class GroupActivity extends AppCompatActivity {
                                 });
                     }
                     else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
-                    }
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
                 });
     }
 
-    private void updateThreads() {
-        db.collection("threads")
-                .whereEqualTo("group", groupId)
+
+    private void updatePosts() {
+        db.collection("posts")
+                .whereEqualTo("thread", threadId)
+                .orderBy("date")
                 .get()
                 .addOnCompleteListener(task -> {
-
                     if (task.isSuccessful() && task.getResult() != null) {
-                        ArrayList<String> arrayList = new ArrayList<>();
+                        ArrayList<String> posts = new ArrayList<>();
+                        ArrayList<String> authors = new ArrayList<>();
+                        ArrayList<String> dates = new ArrayList<>();
+                        ArrayList<String> authorsNames = new ArrayList<>();
+
+                        Log.d(TAG, String.valueOf(task.getResult().size()));
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            arrayList.add(document.getString("name"));
-
-                            Log.d(TAG, document.getId() + " => " + document.getData());
+                            posts.add(document.getString("post"));
+                            authors.add(document.getString("author"));
+                            Timestamp timestamp = document.getTimestamp("date");
+                            dates.add(timestamp.toDate().toString());
                         }
 
-                        TextView noThreads = findViewById(R.id.no_threads);
+                        TextView noPosts = findViewById(R.id.no_posts);
 
-                        if (arrayList.size() < 1) {
-                            noThreads.setVisibility(View.VISIBLE);
+                        if (posts.size() < 1) {
+                            noPosts.setVisibility(View.VISIBLE);
                         }
                         else {
-                            noThreads.setVisibility(View.GONE);
-                            ThreadAdapter threadAdapter = new ThreadAdapter(GroupActivity.this, arrayList);
-                            listView.setAdapter(threadAdapter);
+                            noPosts.setVisibility(View.GONE);
+
+                            db.collection("users")
+                                    .get()
+                                    .addOnCompleteListener(task2 -> {
+                                        if (task2.isSuccessful()) {
+                                            for (String id : authors) {
+                                                for (QueryDocumentSnapshot document : task2.getResult()) {
+                                                    if (document.getId().equals(id)) {
+                                                        authorsNames.add(document.getString("name"));
+                                                        break;
+                                                    }
+                                                }
+                                            }
+
+                                            PostAdapter postAdapter = new PostAdapter(ThreadActivity.this, posts, authorsNames, dates);
+                                            listView.setAdapter(postAdapter);
+                                        }
+                                    });
                         }
                     } else {
                         if ( task.isSuccessful() ) {
-                            Log.d(TAG, "No threads to display");
+                            Log.d(TAG, "No posts to display");
                         }
                         else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

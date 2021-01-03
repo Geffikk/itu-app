@@ -13,11 +13,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    DrawerLayout drawerLayout;
-
     // Declare Firebase Auth and firestore
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
+
+    DrawerLayout drawerLayout;
     private TextView textView;
 
     @Override
@@ -38,7 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void clickMenu(View view) {
-        //HomeActivity.openDrawer(drawerLayout);
+        HomeActivity.openLeftDrawer(drawerLayout);
     }
 
     public void clickMore(View view) { }
@@ -51,19 +51,20 @@ public class ProfileActivity extends AppCompatActivity {
         recreate();
     }
 
-    public void clickSettings() {
+    public void clickSettings(View view) {
         HomeActivity.redirectActivity(this, SettingsActivity.class);
     }
 
-    public void clickLogout() {
-        HomeActivity.logout(this);
+    public void clickLogout(View view) {
+        HomeActivity.logout(this, firebaseAuth);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        //HomeActivity.closeDrawer(drawerLayout);
+        HomeActivity.openLeftDrawer(drawerLayout);
+        HomeActivity.openRightDrawer(drawerLayout);
     }
 
     private void updateDrawerProfile() {

@@ -6,7 +6,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.GroupActivity">
+    tools:context=".Activities.ThreadActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,15 +21,15 @@
             android:layout_height="wrap_content"
             android:gravity="end"
             android:layout_gravity="end"
-            android:id="@+id/deleteGroup"
-            android:onClick="deleteGroup"
+            android:id="@+id/deleteThread"
+            android:onClick="deleteThread"
             android:background="@drawable/dp1_stroke_shape"
             android:visibility="gone">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Delete group"
+                android:text="Delete thread"
                 android:padding="12dp"
                 android:textStyle="bold"
                 android:textSize="16sp"/>
@@ -37,9 +37,8 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <LinearLayout
@@ -48,7 +47,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="16dp"
                 android:background="@drawable/description_shape"
-                android:id="@+id/descriptionLayoutGroups"
+                android:id="@+id/descriptionLayout"
                 android:paddingVertical="8dp"
                 android:orientation="vertical">
 
@@ -60,7 +59,7 @@
                     android:maxLines="1"
                     android:paddingHorizontal="12dp"
                     android:textColor="#f44"
-                    android:id="@+id/nameAndDateGroups" />
+                    android:id="@+id/nameAndDate" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -68,7 +67,7 @@
                     android:text="Description"
                     android:paddingHorizontal="12dp"
                     android:textSize="16sp"
-                    android:id="@+id/descriptionGroups" />
+                    android:id="@+id/description" />
 
             </LinearLayout>
 
@@ -76,9 +75,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="No threads yet."
+                android:text="No posts yet."
                 android:textColor="#f55"
-                android:id="@+id/no_threads"
+                android:id="@+id/no_posts"
                 android:visibility="gone"/>
 
             <ImageView
@@ -89,9 +88,15 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginTop="10dp"
                 android:padding="5dp"
-                android:id="@+id/ImageViewShowDescriptionGroup"
+                android:id="@+id/ImageViewShowDescription"
                 android:onClick="clickedShowDescription"
                 android:layout_gravity="right"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="#000" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -99,10 +104,11 @@
 
                 <ListView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginEnd="64dp"
-                    android:id="@+id/listView" />
+                    android:layout_marginEnd="32dp"
+                    android:id="@+id/listView"
+                    android:divider="#000" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
@@ -117,11 +123,11 @@
                         android:layout_marginBottom="32dp"
                         android:background="@drawable/add_group_button_shape"
                         android:padding="8dp"
-                        android:id="@+id/addThreadImageView"
+                        android:id="@+id/addPostButton"
                         android:clickable="true"
                         android:foreground="?attr/selectableItemBackground"
-                        android:onClick="clickedAddThread"
-                        android:src="@drawable/ic_baseline_add_24"
+                        android:onClick="clickedAddPost"
+                        android:src="@drawable/ic_baseline_rate_review_24"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -153,7 +159,7 @@
         android:focusable="false" >
 
         <include
-            layout="@layout/drawer_add_thread"/>
+            layout="@layout/drawer_add_post"/>
 
     </RelativeLayout>
 

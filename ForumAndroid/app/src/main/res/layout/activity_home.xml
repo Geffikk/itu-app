@@ -30,7 +30,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/listView"
-                    android:layout_marginHorizontal="16dp"
                     android:divider="#000"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -46,7 +45,7 @@
                         android:layout_marginBottom="32dp"
                         android:background="@drawable/add_group_button_shape"
                         android:padding="8dp"
-                        android:id="@+id/addGroupImageView"
+                        android:id="@+id/addThreadImageView"
                         android:clickable="true"
                         android:foreground="?attr/selectableItemBackground"
                         android:onClick="clickedAddGroup"

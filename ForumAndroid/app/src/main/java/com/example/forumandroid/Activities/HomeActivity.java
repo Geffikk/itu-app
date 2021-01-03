@@ -1,18 +1,14 @@
 package com.example.forumandroid.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-//import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -21,11 +17,8 @@ import android.widget.Toast;
 
 import com.example.forumandroid.Adapters.GroupAdapter;
 import com.example.forumandroid.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -42,7 +35,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private ListView listView;
-    private TextView textView;
     private EditText groupName;
     private EditText groupDescription;
 
@@ -60,7 +52,7 @@ public class HomeActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawerLayout);
         listView = findViewById(R.id.listView);
-        textView = findViewById(R.id.toolbar_text);
+        TextView textView = findViewById(R.id.toolbar_text);
         groupName = findViewById(R.id.groupName);
         groupDescription = findViewById(R.id.groupDescription);
 
@@ -80,6 +72,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void updateGroups() {
         db.collection("groups")
+                .orderBy("name")
                 .get()
                 .addOnCompleteListener(task -> {
 
@@ -169,8 +162,12 @@ public class HomeActivity extends AppCompatActivity {
 
                     startActivity(intent);
 
-                    groupName.setText("");
-                    groupDescription.setText("");
+                    EditText editTextGroupName = findViewById(R.id.groupName);
+                    EditText editTextGroupDescription = findViewById(R.id.groupDescription);
+                    editTextGroupName.setText("");
+                    editTextGroupDescription.setText("");
+
+                    recreate();
                 })
                 .addOnFailureListener(e -> {
                     closeRightDrawer(drawerLayout);
@@ -215,12 +212,12 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void clickSettings() {
+    public void clickSettings(View view) {
         redirectActivity(this, SettingsActivity.class);
     }
 
-    public void clickLogout() {
-        logout(this);
+    public void clickLogout(View view) {
+        logout(this, firebaseAuth);
     }
 
     public static void openLeftDrawer(DrawerLayout drawerLayout) {
@@ -247,9 +244,10 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    public static void logout(Activity activity) {
-        activity.finish();
-        System.exit(0);
+    public static void logout(Activity activity, FirebaseAuth firebaseAuth) {
+        firebaseAuth.signOut();
+        activity.startActivity(new Intent(activity, LoginActivity.class));
+        activity.finishAffinity();
     }
 
     public static void redirectActivity(Activity activity, Class aClass) {

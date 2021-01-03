@@ -30,8 +30,8 @@
         android:autofillHints="Name of thread"
         android:background="@drawable/group_name_shape"
         android:hint="Name of thread"
-        android:inputType="text"
-        android:maxLength="20" />
+        android:inputType="textMultiLine"
+        android:maxLength="50" />
 
     <EditText
         android:id="@+id/threadDescription"
@@ -44,8 +44,8 @@
         android:ems="10"
         android:gravity="top"
         android:hint="Name of thread"
-        android:inputType="text"
-        android:maxLength="100" />
+        android:inputType="textMultiLine"
+        android:maxLength="1000" />
 
     <Button
         android:id="@+id/addThreadButton"
@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:onClick="clickedCreateThread"
-        android:background="@drawable/activity_register_button_style"
+        android:background="@drawable/activity_register_button_shape"
         android:text="Create" />
 
 </LinearLayout>
