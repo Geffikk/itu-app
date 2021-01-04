@@ -44,7 +44,6 @@ public class GroupActivity extends AppCompatActivity {
     // Debugging tool
     private final String TAG = GroupActivity.class.getSimpleName();
 
-    private String groupName;
     private String groupId;
 
     @Override
@@ -57,11 +56,15 @@ public class GroupActivity extends AppCompatActivity {
         threadName = findViewById(R.id.threadName);
         threadDescription = findViewById(R.id.threadDescription);
 
-        groupName = getIntent().getExtras().getString("groupName");
+        String groupName = getIntent().getExtras().getString("groupName");
 
         // Set toolbar text
         TextView textView = findViewById(R.id.toolbar_text);
         textView.setText(groupName);
+
+        // set visible MORE on toolbar
+        ImageView imageView = findViewById(R.id.toolbarMore);
+        imageView.setVisibility(View.VISIBLE);
 
         // Initialize Firebase Auth and firestore
         firebaseAuth = FirebaseAuth.getInstance();

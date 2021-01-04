@@ -3,19 +3,31 @@ package com.example.forumandroid.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.forumandroid.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.example.forumandroid.Activities.HomeActivity.closeRightDrawer;
+import static com.example.forumandroid.Activities.HomeActivity.showMessage;
+
 public class ProfileActivity extends AppCompatActivity {
 
     // Declare Firebase Auth and firestore
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
+
+    // Debugging tool
+    private final String TAG = ProfileActivity.class.getSimpleName();
 
     DrawerLayout drawerLayout;
     private TextView textView;
@@ -35,6 +47,54 @@ public class ProfileActivity extends AppCompatActivity {
         textView.setText("Profile");
 
         updateDrawerProfile();
+        updateUserInfo();
+    }
+
+    private void updateUserInfo() {
+        EditText firstname = findViewById(R.id.name);
+        EditText surname = findViewById(R.id.surname);
+        EditText mobile = findViewById(R.id.mobile);
+        EditText city = findViewById(R.id.city);
+        EditText bio = findViewById(R.id.bio);
+
+        db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get().addOnSuccessListener(task -> {
+            String firstnameText = task.getString("firstname");
+            String surnameText = task.getString("surname");
+            String mobileText = task.getString("mobile");
+            String cityText = task.getString("city");
+            String bioText = task.getString("bio");
+
+            firstname.setText( (firstnameText == null) ? "" : firstnameText);
+            surname.setText( (surnameText == null) ? "" : surnameText);
+            mobile.setText( (mobileText == null) ? "" : mobileText);
+            city.setText( (cityText == null) ? "" : cityText);
+            bio.setText( (bioText == null) ? "" : bioText);
+        });
+    }
+
+    public void clickedUpdateUserInfo(View view) {
+        EditText firstname = findViewById(R.id.name);
+        EditText surname = findViewById(R.id.surname);
+        EditText mobile = findViewById(R.id.mobile);
+        EditText city = findViewById(R.id.city);
+        EditText bio = findViewById(R.id.bio);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("firstname", firstname.getText().toString());
+        data.put("surname", surname.getText().toString());
+        data.put("mobile", mobile.getText().toString());
+        data.put("city", city.getText().toString());
+        data.put("bio", bio.getText().toString());
+
+        db.collection("users").document(firebaseAuth.getCurrentUser().getUid())
+                .update(data)
+                .addOnSuccessListener(documentReference -> {
+                    HomeActivity.showMessage("Profile updated successfully", getApplicationContext());
+                    updateUserInfo();
+                })
+                .addOnFailureListener(e -> {
+                    HomeActivity.showMessage("Profile couldn't be updated", getApplicationContext());
+                });
     }
 
     public void clickMenu(View view) {

@@ -63,6 +63,10 @@ public class ThreadActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.toolbar_text);
         textView.setText(threadName);
 
+        // set visible MORE on toolbar
+        ImageView imageView = findViewById(R.id.toolbarMore);
+        imageView.setVisibility(View.VISIBLE);
+
         // Initialize Firebase Auth and firestore
         firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
